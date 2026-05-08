@@ -1,0 +1,5664 @@
+{
+  "SaveVersion": 3,
+  "SavedAtUtc": "2026-05-01T08:55:08.5736906Z",
+  "Units": [
+    {
+      "ID": 0,
+      "Name": "Explorer",
+      "TypeIndex": 0,
+      "Planet": 0,
+      "Region": 0,
+      "Action": 0
+    }
+  ],
+  "NextUnitId": 1,
+  "Techs": [
+    {
+      "ID": 0,
+      "Name": "Colonization Basics",
+      "Description": "Fundamental settlement knowledge",
+      "Cost": 10,
+      "MinScience": 0,
+      "Prerequisites": [],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [],
+      "GridPosition": {
+        "X": 1,
+        "Y": 6
+      },
+      "UiPosition": {
+        "X": 50,
+        "Y": 444
+      }
+    },
+    {
+      "ID": 1,
+      "Name": "Industrial Mining",
+      "Description": "Improved resource extraction techniques",
+      "Cost": 30,
+      "MinScience": 0,
+      "Prerequisites": [
+        0
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Mountains",
+          "FoodProd": 0,
+          "MatProd": 1,
+          "SciProd": 0,
+          "EnergyProd": 0
+        }
+      ],
+      "GridPosition": {
+        "X": 2,
+        "Y": 1
+      },
+      "UiPosition": {
+        "X": 350,
+        "Y": 124
+      }
+    },
+    {
+      "ID": 2,
+      "Name": "Research Methods",
+      "Description": "Foundations of scientific inquiry",
+      "Cost": 25,
+      "MinScience": 0,
+      "Prerequisites": [
+        0
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Desert",
+          "FoodProd": 0,
+          "MatProd": 0,
+          "SciProd": 1,
+          "EnergyProd": 0
+        },
+        {
+          "Habitat": "Ruins",
+          "FoodProd": 0,
+          "MatProd": 0,
+          "SciProd": 1,
+          "EnergyProd": 0
+        }
+      ],
+      "GridPosition": {
+        "X": 2,
+        "Y": 4
+      },
+      "UiPosition": {
+        "X": 350,
+        "Y": 316
+      }
+    },
+    {
+      "ID": 3,
+      "Name": "Construction Techniques",
+      "Description": "Enhanced building practices",
+      "Cost": 35,
+      "MinScience": 20,
+      "Prerequisites": [
+        0
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [],
+      "GridPosition": {
+        "X": 2,
+        "Y": 7
+      },
+      "UiPosition": {
+        "X": 350,
+        "Y": 508
+      }
+    },
+    {
+      "ID": 4,
+      "Name": "Renewable Energy",
+      "Description": "Sustainable power sources",
+      "Cost": 40,
+      "MinScience": 10,
+      "Prerequisites": [
+        0
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Mountains",
+          "FoodProd": 0,
+          "MatProd": 0,
+          "SciProd": 0,
+          "EnergyProd": 1
+        },
+        {
+          "Habitat": "Desert",
+          "FoodProd": 0,
+          "MatProd": 0,
+          "SciProd": 0,
+          "EnergyProd": 1
+        }
+      ],
+      "GridPosition": {
+        "X": 2,
+        "Y": 9
+      },
+      "UiPosition": {
+        "X": 350,
+        "Y": 636
+      }
+    },
+    {
+      "ID": 5,
+      "Name": "Advanced Mining",
+      "Description": "Advanced mining operations",
+      "Cost": 60,
+      "MinScience": 30,
+      "Prerequisites": [
+        1
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Volcano",
+          "FoodProd": 0,
+          "MatProd": 1,
+          "SciProd": 0,
+          "EnergyProd": 0
+        }
+      ],
+      "GridPosition": {
+        "X": 3,
+        "Y": 1
+      },
+      "UiPosition": {
+        "X": 650,
+        "Y": 124
+      }
+    },
+    {
+      "ID": 6,
+      "Name": "Polar Research",
+      "Description": "Studies in extreme environments",
+      "Cost": 50,
+      "MinScience": 25,
+      "Prerequisites": [
+        2
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Arctic",
+          "FoodProd": 0,
+          "MatProd": 0,
+          "SciProd": 1,
+          "EnergyProd": 0
+        }
+      ],
+      "GridPosition": {
+        "X": 3,
+        "Y": 3
+      },
+      "UiPosition": {
+        "X": 650,
+        "Y": 252
+      }
+    },
+    {
+      "ID": 7,
+      "Name": "Advanced Genetics",
+      "Description": "Genetic manipulation for production",
+      "Cost": 80,
+      "MinScience": 50,
+      "Prerequisites": [
+        2
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Forest",
+          "FoodProd": 1,
+          "MatProd": 0,
+          "SciProd": 0,
+          "EnergyProd": 0
+        },
+        {
+          "Habitat": "Prairie",
+          "FoodProd": 1,
+          "MatProd": 0,
+          "SciProd": 0,
+          "EnergyProd": 0
+        }
+      ],
+      "GridPosition": {
+        "X": 3,
+        "Y": 5
+      },
+      "UiPosition": {
+        "X": 650,
+        "Y": 380
+      }
+    },
+    {
+      "ID": 8,
+      "Name": "Geothermal Energy",
+      "Description": "Harnessing planetary heat",
+      "Cost": 70,
+      "MinScience": 40,
+      "Prerequisites": [
+        4
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Volcano",
+          "FoodProd": 0,
+          "MatProd": 0,
+          "SciProd": 0,
+          "EnergyProd": 2
+        }
+      ],
+      "GridPosition": {
+        "X": 3,
+        "Y": 9
+      },
+      "UiPosition": {
+        "X": 650,
+        "Y": 636
+      }
+    },
+    {
+      "ID": 9,
+      "Name": "Colonization Technology",
+      "Description": "Nanoscale building enhancements",
+      "Cost": 100,
+      "MinScience": 70,
+      "Prerequisites": [
+        3
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Valley",
+          "FoodProd": 0,
+          "MatProd": 1,
+          "SciProd": 0,
+          "EnergyProd": 0
+        }
+      ],
+      "GridPosition": {
+        "X": 3,
+        "Y": 7
+      },
+      "UiPosition": {
+        "X": 650,
+        "Y": 508
+      }
+    },
+    {
+      "ID": 10,
+      "Name": "Quantum Materials",
+      "Description": "Exotic material processing",
+      "Cost": 120,
+      "MinScience": 90,
+      "Prerequisites": [
+        5
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Mountains",
+          "FoodProd": 0,
+          "MatProd": 2,
+          "SciProd": 0,
+          "EnergyProd": 0
+        }
+      ],
+      "GridPosition": {
+        "X": 4,
+        "Y": 1
+      },
+      "UiPosition": {
+        "X": 950,
+        "Y": 124
+      }
+    },
+    {
+      "ID": 11,
+      "Name": "Alien Xenology",
+      "Description": "Deep study of alien life",
+      "Cost": 110,
+      "MinScience": 80,
+      "Prerequisites": [
+        6
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "Ruins",
+          "FoodProd": 0,
+          "MatProd": 0,
+          "SciProd": 2,
+          "EnergyProd": 0
+        }
+      ],
+      "GridPosition": {
+        "X": 4,
+        "Y": 3
+      },
+      "UiPosition": {
+        "X": 950,
+        "Y": 252
+      }
+    },
+    {
+      "ID": 12,
+      "Name": "Fusion Power",
+      "Description": "Advanced energy fusion",
+      "Cost": 150,
+      "MinScience": 120,
+      "Prerequisites": [
+        8
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [
+        {
+          "Habitat": "City",
+          "FoodProd": 0,
+          "MatProd": 0,
+          "SciProd": 0,
+          "EnergyProd": 2
+        }
+      ],
+      "GridPosition": {
+        "X": 4,
+        "Y": 9
+      },
+      "UiPosition": {
+        "X": 950,
+        "Y": 636
+      }
+    },
+    {
+      "ID": 13,
+      "Name": "Farming Techniques",
+      "Description": "New techniques of farming",
+      "Cost": 25,
+      "MinScience": 0,
+      "Prerequisites": [
+        0
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [],
+      "GridPosition": {
+        "X": 2,
+        "Y": 11
+      },
+      "UiPosition": {
+        "X": 350,
+        "Y": 764
+      }
+    },
+    {
+      "ID": 14,
+      "Name": "Aquaculture Development",
+      "Description": "Deep research about water resources",
+      "Cost": 60,
+      "MinScience": 15,
+      "Prerequisites": [
+        13
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [],
+      "GridPosition": {
+        "X": 3,
+        "Y": 11
+      },
+      "UiPosition": {
+        "X": 650,
+        "Y": 764
+      }
+    },
+    {
+      "ID": 15,
+      "Name": "Freight Logistics",
+      "Description": "Enables basic probe ships",
+      "Cost": 50,
+      "MinScience": 25,
+      "Prerequisites": [
+        9
+      ],
+      "IsResearched": false,
+      "IsInProgress": false,
+      "ResearchProgress": 0,
+      "BonusUnlocks": [],
+      "GridPosition": {
+        "X": 4,
+        "Y": 7
+      },
+      "UiPosition": {
+        "X": 950,
+        "Y": 508
+      }
+    }
+  ],
+  "GlobalScience": 5,
+  "CurrentResearch": -1,
+  "GlobalHabitatBonuses": [],
+  "TechScrollOffset": {
+    "X": 0,
+    "Y": 0
+  },
+  "StarPositions": [
+    {
+      "X": 276,
+      "Y": 194
+    },
+    {
+      "X": 301,
+      "Y": 293
+    },
+    {
+      "X": 496,
+      "Y": 750
+    },
+    {
+      "X": 1467,
+      "Y": 327
+    },
+    {
+      "X": 2437,
+      "Y": 1197
+    },
+    {
+      "X": 1185,
+      "Y": 952
+    },
+    {
+      "X": 2096,
+      "Y": 810
+    },
+    {
+      "X": 1050,
+      "Y": 889
+    },
+    {
+      "X": 1271,
+      "Y": 1061
+    },
+    {
+      "X": 575,
+      "Y": 806
+    },
+    {
+      "X": 718,
+      "Y": 952
+    },
+    {
+      "X": 788,
+      "Y": 220
+    },
+    {
+      "X": 1771,
+      "Y": 1396
+    },
+    {
+      "X": 1789,
+      "Y": 440
+    },
+    {
+      "X": 2448,
+      "Y": 1392
+    },
+    {
+      "X": 2319,
+      "Y": 352
+    },
+    {
+      "X": 2346,
+      "Y": 609
+    },
+    {
+      "X": 2173,
+      "Y": 227
+    },
+    {
+      "X": 1545,
+      "Y": 741
+    },
+    {
+      "X": 999,
+      "Y": 805
+    },
+    {
+      "X": 1283,
+      "Y": 784
+    },
+    {
+      "X": 868,
+      "Y": 487
+    },
+    {
+      "X": 1144,
+      "Y": 464
+    },
+    {
+      "X": 1972,
+      "Y": 317
+    },
+    {
+      "X": 2339,
+      "Y": 656
+    },
+    {
+      "X": 2551,
+      "Y": 458
+    },
+    {
+      "X": 276,
+      "Y": 1287
+    },
+    {
+      "X": 1436,
+      "Y": 1381
+    },
+    {
+      "X": 764,
+      "Y": 1327
+    },
+    {
+      "X": 2181,
+      "Y": 1400
+    },
+    {
+      "X": 1201,
+      "Y": 822
+    },
+    {
+      "X": 1704,
+      "Y": 325
+    },
+    {
+      "X": 651,
+      "Y": 894
+    },
+    {
+      "X": 2,
+      "Y": 1338
+    },
+    {
+      "X": 1416,
+      "Y": 841
+    },
+    {
+      "X": 2387,
+      "Y": 621
+    },
+    {
+      "X": 2540,
+      "Y": 528
+    },
+    {
+      "X": 1208,
+      "Y": 1348
+    },
+    {
+      "X": 2530,
+      "Y": 930
+    },
+    {
+      "X": 1928,
+      "Y": 1323
+    },
+    {
+      "X": 1207,
+      "Y": 344
+    },
+    {
+      "X": 119,
+      "Y": 263
+    },
+    {
+      "X": 1961,
+      "Y": 876
+    },
+    {
+      "X": 463,
+      "Y": 147
+    },
+    {
+      "X": 682,
+      "Y": 743
+    },
+    {
+      "X": 405,
+      "Y": 483
+    },
+    {
+      "X": 1216,
+      "Y": 272
+    },
+    {
+      "X": 639,
+      "Y": 516
+    },
+    {
+      "X": 1162,
+      "Y": 214
+    },
+    {
+      "X": 1316,
+      "Y": 69
+    },
+    {
+      "X": 660,
+      "Y": 1345
+    },
+    {
+      "X": 2061,
+      "Y": 68
+    },
+    {
+      "X": 279,
+      "Y": 864
+    },
+    {
+      "X": 478,
+      "Y": 275
+    },
+    {
+      "X": 1115,
+      "Y": 1232
+    },
+    {
+      "X": 881,
+      "Y": 1136
+    },
+    {
+      "X": 1094,
+      "Y": 640
+    },
+    {
+      "X": 739,
+      "Y": 344
+    },
+    {
+      "X": 1590,
+      "Y": 913
+    },
+    {
+      "X": 2065,
+      "Y": 199
+    },
+    {
+      "X": 237,
+      "Y": 1380
+    },
+    {
+      "X": 2235,
+      "Y": 1080
+    },
+    {
+      "X": 2478,
+      "Y": 1161
+    },
+    {
+      "X": 20,
+      "Y": 1041
+    },
+    {
+      "X": 254,
+      "Y": 1240
+    },
+    {
+      "X": 1202,
+      "Y": 252
+    },
+    {
+      "X": 2391,
+      "Y": 1216
+    },
+    {
+      "X": 844,
+      "Y": 419
+    },
+    {
+      "X": 2092,
+      "Y": 1202
+    },
+    {
+      "X": 2494,
+      "Y": 400
+    },
+    {
+      "X": 313,
+      "Y": 77
+    },
+    {
+      "X": 1660,
+      "Y": 881
+    },
+    {
+      "X": 398,
+      "Y": 820
+    },
+    {
+      "X": 2064,
+      "Y": 132
+    },
+    {
+      "X": 2046,
+      "Y": 1066
+    },
+    {
+      "X": 2428,
+      "Y": 592
+    },
+    {
+      "X": 284,
+      "Y": 454
+    },
+    {
+      "X": 792,
+      "Y": 965
+    },
+    {
+      "X": 1799,
+      "Y": 508
+    },
+    {
+      "X": 1452,
+      "Y": 417
+    },
+    {
+      "X": 2084,
+      "Y": 607
+    },
+    {
+      "X": 463,
+      "Y": 1357
+    },
+    {
+      "X": 858,
+      "Y": 1098
+    },
+    {
+      "X": 788,
+      "Y": 514
+    },
+    {
+      "X": 350,
+      "Y": 177
+    },
+    {
+      "X": 1650,
+      "Y": 623
+    },
+    {
+      "X": 1149,
+      "Y": 295
+    },
+    {
+      "X": 2020,
+      "Y": 1009
+    },
+    {
+      "X": 1980,
+      "Y": 1172
+    },
+    {
+      "X": 2365,
+      "Y": 426
+    },
+    {
+      "X": 2323,
+      "Y": 115
+    },
+    {
+      "X": 2338,
+      "Y": 718
+    },
+    {
+      "X": 589,
+      "Y": 587
+    },
+    {
+      "X": 2447,
+      "Y": 317
+    },
+    {
+      "X": 1494,
+      "Y": 443
+    },
+    {
+      "X": 2406,
+      "Y": 1350
+    },
+    {
+      "X": 1595,
+      "Y": 618
+    },
+    {
+      "X": 425,
+      "Y": 179
+    },
+    {
+      "X": 85,
+      "Y": 1277
+    },
+    {
+      "X": 828,
+      "Y": 1168
+    },
+    {
+      "X": 909,
+      "Y": 323
+    },
+    {
+      "X": 875,
+      "Y": 968
+    },
+    {
+      "X": 2238,
+      "Y": 1034
+    },
+    {
+      "X": 1596,
+      "Y": 848
+    },
+    {
+      "X": 1176,
+      "Y": 302
+    },
+    {
+      "X": 434,
+      "Y": 1029
+    },
+    {
+      "X": 2044,
+      "Y": 437
+    },
+    {
+      "X": 2278,
+      "Y": 1294
+    },
+    {
+      "X": 182,
+      "Y": 915
+    },
+    {
+      "X": 1573,
+      "Y": 880
+    },
+    {
+      "X": 1730,
+      "Y": 446
+    },
+    {
+      "X": 1238,
+      "Y": 158
+    },
+    {
+      "X": 1364,
+      "Y": 686
+    },
+    {
+      "X": 1910,
+      "Y": 1018
+    },
+    {
+      "X": 2392,
+      "Y": 208
+    },
+    {
+      "X": 2424,
+      "Y": 340
+    },
+    {
+      "X": 628,
+      "Y": 769
+    },
+    {
+      "X": 424,
+      "Y": 903
+    },
+    {
+      "X": 1532,
+      "Y": 486
+    },
+    {
+      "X": 251,
+      "Y": 730
+    },
+    {
+      "X": 1507,
+      "Y": 277
+    },
+    {
+      "X": 1597,
+      "Y": 1111
+    },
+    {
+      "X": 1902,
+      "Y": 235
+    },
+    {
+      "X": 2386,
+      "Y": 678
+    },
+    {
+      "X": 41,
+      "Y": 695
+    },
+    {
+      "X": 1432,
+      "Y": 306
+    },
+    {
+      "X": 2377,
+      "Y": 575
+    },
+    {
+      "X": 602,
+      "Y": 294
+    },
+    {
+      "X": 167,
+      "Y": 1366
+    },
+    {
+      "X": 1147,
+      "Y": 1381
+    },
+    {
+      "X": 16,
+      "Y": 840
+    },
+    {
+      "X": 1078,
+      "Y": 1278
+    },
+    {
+      "X": 2229,
+      "Y": 1046
+    },
+    {
+      "X": 856,
+      "Y": 862
+    },
+    {
+      "X": 1775,
+      "Y": 337
+    },
+    {
+      "X": 197,
+      "Y": 917
+    },
+    {
+      "X": 19,
+      "Y": 870
+    },
+    {
+      "X": 1725,
+      "Y": 1098
+    },
+    {
+      "X": 68,
+      "Y": 1433
+    },
+    {
+      "X": 1582,
+      "Y": 293
+    },
+    {
+      "X": 803,
+      "Y": 225
+    },
+    {
+      "X": 1555,
+      "Y": 1289
+    },
+    {
+      "X": 253,
+      "Y": 114
+    },
+    {
+      "X": 2200,
+      "Y": 1087
+    },
+    {
+      "X": 373,
+      "Y": 733
+    },
+    {
+      "X": 1837,
+      "Y": 487
+    },
+    {
+      "X": 1208,
+      "Y": 662
+    },
+    {
+      "X": 2542,
+      "Y": 461
+    },
+    {
+      "X": 278,
+      "Y": 1111
+    },
+    {
+      "X": 530,
+      "Y": 531
+    },
+    {
+      "X": 1999,
+      "Y": 217
+    },
+    {
+      "X": 1948,
+      "Y": 74
+    },
+    {
+      "X": 576,
+      "Y": 891
+    },
+    {
+      "X": 1458,
+      "Y": 926
+    },
+    {
+      "X": 445,
+      "Y": 62
+    },
+    {
+      "X": 582,
+      "Y": 941
+    },
+    {
+      "X": 2144,
+      "Y": 113
+    },
+    {
+      "X": 1153,
+      "Y": 940
+    },
+    {
+      "X": 1312,
+      "Y": 530
+    },
+    {
+      "X": 699,
+      "Y": 721
+    },
+    {
+      "X": 395,
+      "Y": 137
+    },
+    {
+      "X": 815,
+      "Y": 1096
+    },
+    {
+      "X": 284,
+      "Y": 522
+    },
+    {
+      "X": 1332,
+      "Y": 77
+    },
+    {
+      "X": 1168,
+      "Y": 1113
+    },
+    {
+      "X": 186,
+      "Y": 871
+    },
+    {
+      "X": 1554,
+      "Y": 1269
+    },
+    {
+      "X": 1507,
+      "Y": 312
+    },
+    {
+      "X": 212,
+      "Y": 334
+    },
+    {
+      "X": 1907,
+      "Y": 734
+    },
+    {
+      "X": 2052,
+      "Y": 520
+    },
+    {
+      "X": 19,
+      "Y": 1034
+    },
+    {
+      "X": 792,
+      "Y": 291
+    },
+    {
+      "X": 1019,
+      "Y": 634
+    },
+    {
+      "X": 876,
+      "Y": 1010
+    },
+    {
+      "X": 2400,
+      "Y": 214
+    },
+    {
+      "X": 82,
+      "Y": 140
+    },
+    {
+      "X": 1910,
+      "Y": 1153
+    },
+    {
+      "X": 1826,
+      "Y": 1376
+    },
+    {
+      "X": 2262,
+      "Y": 653
+    },
+    {
+      "X": 1398,
+      "Y": 1213
+    },
+    {
+      "X": 1676,
+      "Y": 763
+    },
+    {
+      "X": 1640,
+      "Y": 1160
+    },
+    {
+      "X": 95,
+      "Y": 466
+    },
+    {
+      "X": 684,
+      "Y": 608
+    },
+    {
+      "X": 808,
+      "Y": 598
+    },
+    {
+      "X": 1723,
+      "Y": 478
+    },
+    {
+      "X": 2221,
+      "Y": 1208
+    },
+    {
+      "X": 477,
+      "Y": 812
+    },
+    {
+      "X": 1028,
+      "Y": 1217
+    },
+    {
+      "X": 2101,
+      "Y": 1330
+    },
+    {
+      "X": 1230,
+      "Y": 1094
+    },
+    {
+      "X": 1427,
+      "Y": 982
+    },
+    {
+      "X": 2247,
+      "Y": 99
+    },
+    {
+      "X": 2243,
+      "Y": 89
+    },
+    {
+      "X": 1326,
+      "Y": 782
+    },
+    {
+      "X": 2237,
+      "Y": 131
+    },
+    {
+      "X": 1470,
+      "Y": 200
+    },
+    {
+      "X": 858,
+      "Y": 816
+    },
+    {
+      "X": 701,
+      "Y": 236
+    },
+    {
+      "X": 1458,
+      "Y": 977
+    },
+    {
+      "X": 2447,
+      "Y": 115
+    },
+    {
+      "X": 272,
+      "Y": 826
+    },
+    {
+      "X": 2218,
+      "Y": 645
+    },
+    {
+      "X": 467,
+      "Y": 680
+    },
+    {
+      "X": 1107,
+      "Y": 273
+    },
+    {
+      "X": 690,
+      "Y": 528
+    },
+    {
+      "X": 965,
+      "Y": 1218
+    },
+    {
+      "X": 2531,
+      "Y": 1311
+    },
+    {
+      "X": 1616,
+      "Y": 1039
+    },
+    {
+      "X": 754,
+      "Y": 303
+    },
+    {
+      "X": 1991,
+      "Y": 941
+    },
+    {
+      "X": 1968,
+      "Y": 917
+    },
+    {
+      "X": 1105,
+      "Y": 919
+    },
+    {
+      "X": 875,
+      "Y": 946
+    },
+    {
+      "X": 2151,
+      "Y": 125
+    },
+    {
+      "X": 319,
+      "Y": 309
+    },
+    {
+      "X": 902,
+      "Y": 644
+    },
+    {
+      "X": 1793,
+      "Y": 200
+    },
+    {
+      "X": 921,
+      "Y": 375
+    },
+    {
+      "X": 717,
+      "Y": 1190
+    },
+    {
+      "X": 991,
+      "Y": 1083
+    },
+    {
+      "X": 333,
+      "Y": 227
+    },
+    {
+      "X": 2117,
+      "Y": 1408
+    },
+    {
+      "X": 1822,
+      "Y": 211
+    },
+    {
+      "X": 2247,
+      "Y": 214
+    },
+    {
+      "X": 523,
+      "Y": 263
+    },
+    {
+      "X": 189,
+      "Y": 907
+    },
+    {
+      "X": 616,
+      "Y": 941
+    },
+    {
+      "X": 525,
+      "Y": 422
+    },
+    {
+      "X": 1468,
+      "Y": 359
+    },
+    {
+      "X": 2,
+      "Y": 226
+    },
+    {
+      "X": 2289,
+      "Y": 651
+    },
+    {
+      "X": 1064,
+      "Y": 903
+    },
+    {
+      "X": 637,
+      "Y": 95
+    },
+    {
+      "X": 881,
+      "Y": 1094
+    },
+    {
+      "X": 148,
+      "Y": 1053
+    },
+    {
+      "X": 910,
+      "Y": 840
+    },
+    {
+      "X": 304,
+      "Y": 572
+    },
+    {
+      "X": 869,
+      "Y": 527
+    },
+    {
+      "X": 2023,
+      "Y": 1302
+    },
+    {
+      "X": 1176,
+      "Y": 441
+    },
+    {
+      "X": 1305,
+      "Y": 989
+    },
+    {
+      "X": 935,
+      "Y": 185
+    },
+    {
+      "X": 128,
+      "Y": 695
+    },
+    {
+      "X": 169,
+      "Y": 230
+    },
+    {
+      "X": 222,
+      "Y": 810
+    },
+    {
+      "X": 1679,
+      "Y": 628
+    },
+    {
+      "X": 1989,
+      "Y": 1087
+    },
+    {
+      "X": 2527,
+      "Y": 1200
+    },
+    {
+      "X": 2047,
+      "Y": 789
+    },
+    {
+      "X": 2385,
+      "Y": 1156
+    },
+    {
+      "X": 886,
+      "Y": 60
+    },
+    {
+      "X": 588,
+      "Y": 920
+    },
+    {
+      "X": 2411,
+      "Y": 1065
+    },
+    {
+      "X": 1909,
+      "Y": 193
+    },
+    {
+      "X": 1966,
+      "Y": 608
+    },
+    {
+      "X": 2313,
+      "Y": 1015
+    },
+    {
+      "X": 2359,
+      "Y": 637
+    },
+    {
+      "X": 1487,
+      "Y": 128
+    },
+    {
+      "X": 2149,
+      "Y": 457
+    },
+    {
+      "X": 893,
+      "Y": 1078
+    },
+    {
+      "X": 2034,
+      "Y": 814
+    },
+    {
+      "X": 1769,
+      "Y": 1177
+    },
+    {
+      "X": 2312,
+      "Y": 1169
+    },
+    {
+      "X": 579,
+      "Y": 1339
+    },
+    {
+      "X": 1929,
+      "Y": 366
+    },
+    {
+      "X": 1454,
+      "Y": 260
+    },
+    {
+      "X": 2054,
+      "Y": 134
+    },
+    {
+      "X": 1160,
+      "Y": 650
+    },
+    {
+      "X": 2094,
+      "Y": 909
+    },
+    {
+      "X": 2415,
+      "Y": 126
+    },
+    {
+      "X": 662,
+      "Y": 163
+    },
+    {
+      "X": 676,
+      "Y": 508
+    },
+    {
+      "X": 2432,
+      "Y": 1007
+    },
+    {
+      "X": 663,
+      "Y": 1282
+    },
+    {
+      "X": 250,
+      "Y": 1437
+    },
+    {
+      "X": 795,
+      "Y": 554
+    },
+    {
+      "X": 2053,
+      "Y": 896
+    },
+    {
+      "X": 2374,
+      "Y": 1202
+    },
+    {
+      "X": 599,
+      "Y": 475
+    },
+    {
+      "X": 2420,
+      "Y": 159
+    },
+    {
+      "X": 2160,
+      "Y": 462
+    },
+    {
+      "X": 2232,
+      "Y": 576
+    },
+    {
+      "X": 2027,
+      "Y": 1379
+    },
+    {
+      "X": 1051,
+      "Y": 1393
+    },
+    {
+      "X": 2379,
+      "Y": 1093
+    },
+    {
+      "X": 1223,
+      "Y": 1026
+    },
+    {
+      "X": 2312,
+      "Y": 80
+    },
+    {
+      "X": 1628,
+      "Y": 1242
+    },
+    {
+      "X": 1669,
+      "Y": 1362
+    },
+    {
+      "X": 1505,
+      "Y": 229
+    },
+    {
+      "X": 772,
+      "Y": 135
+    },
+    {
+      "X": 1262,
+      "Y": 541
+    },
+    {
+      "X": 844,
+      "Y": 1303
+    },
+    {
+      "X": 833,
+      "Y": 1227
+    },
+    {
+      "X": 1397,
+      "Y": 943
+    },
+    {
+      "X": 1317,
+      "Y": 997
+    },
+    {
+      "X": 1782,
+      "Y": 1255
+    },
+    {
+      "X": 2541,
+      "Y": 64
+    }
+  ],
+  "Ships": [
+    {
+      "Id": 0,
+      "Name": "Ship1",
+      "TypeIndex": 0,
+      "AssignedPlanet": 0,
+      "Status": 1,
+      "CurrentPosition": {
+        "X": 977,
+        "Y": 411
+      },
+      "TargetPlanet": -1,
+      "FinalTurnAction": 0,
+      "LoadedUnits": [],
+      "CargoFood": 0,
+      "CargoMat": 0
+    },
+    {
+      "Id": 1,
+      "Name": "Ship2",
+      "TypeIndex": 2,
+      "AssignedPlanet": 0,
+      "Status": 1,
+      "CurrentPosition": {
+        "X": 977,
+        "Y": 411
+      },
+      "TargetPlanet": -1,
+      "FinalTurnAction": 0,
+      "LoadedUnits": [],
+      "CargoFood": 0,
+      "CargoMat": 0
+    }
+  ],
+  "NextShipId": 2,
+  "Turn": 2,
+  "ScrollOffset": {
+    "X": 177,
+    "Y": 0
+  },
+  "PosX": 177,
+  "PosY": 0,
+  "CurrentPlanet": -1,
+  "SelectedUnit": -1,
+  "PossibleDestinations": [],
+  "confirmEndTurn": false,
+  "confirmRecruit": false,
+  "recruitIndex": -1,
+  "hasRecruitedThisTurn": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "confirmBuild": false,
+  "buildReg": -1,
+  "buildImprovementIndex": -1,
+  "confirmOccupy": false,
+  "occupyReg": -1,
+  "chooseBuild": false,
+  "chooseReg": -1,
+  "Planets": [
+    {
+      "Name": "Graf",
+      "XPos": 977,
+      "YPos": 411,
+      "Dimens": 36,
+      "Population": 100,
+      "Temperature": 16,
+      "Habitat": [
+        0,
+        -4,
+        -7,
+        -5,
+        -5,
+        -3,
+        -1,
+        -7,
+        -3,
+        -4,
+        -9,
+        -99,
+        -2,
+        -8,
+        -4,
+        -9,
+        -5,
+        -3,
+        -6,
+        -1,
+        -9,
+        -1,
+        -5,
+        -7,
+        -5,
+        -4,
+        -5,
+        -99,
+        -8,
+        -99,
+        -9,
+        -99,
+        -3,
+        -7,
+        -5,
+        -6,
+        -9
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil",
+        "Mineral Vein",
+        "Exotic Flora",
+        "Iron Ore"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        1,
+        -1,
+        7,
+        -1,
+        3,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 0,
+      "Food": 7,
+      "Mat": -5,
+      "Energy": 21,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 245,
+        "G": 150,
+        "R": 51,
+        "A": 255,
+        "PackedValue": 4294284851
+      }
+    },
+    {
+      "Name": "Rappaport",
+      "XPos": 549,
+      "YPos": 1014,
+      "Dimens": 12,
+      "Population": 0,
+      "Temperature": -50,
+      "Habitat": [
+        -99,
+        -4,
+        -7,
+        -3,
+        -1,
+        -4,
+        -2,
+        -99,
+        -3,
+        -99,
+        -7,
+        -99,
+        -99,
+        -99,
+        -8,
+        -99,
+        -5,
+        -99,
+        -99,
+        -99,
+        -6,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -4,
+        -99,
+        -99,
+        -99,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil",
+        "Mineral Vein"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        1,
+        0,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 0,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 4,
+        "G": 194,
+        "R": 114,
+        "A": 255,
+        "PackedValue": 4278502002
+      }
+    },
+    {
+      "Name": "Cylon",
+      "XPos": 393,
+      "YPos": 337,
+      "Dimens": 19,
+      "Population": 0,
+      "Temperature": -10,
+      "Habitat": [
+        -99,
+        -5,
+        -3,
+        -1,
+        -1,
+        -9,
+        -2,
+        -2,
+        -7,
+        -99,
+        -6,
+        -99,
+        -1,
+        -99,
+        -9,
+        -99,
+        -99,
+        -4,
+        -8,
+        -99,
+        -99,
+        -8,
+        -99,
+        -99,
+        -8,
+        -99,
+        -6,
+        -99,
+        -99,
+        -99,
+        -7,
+        -99,
+        -99,
+        -99,
+        -99,
+        -5,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil",
+        "Crystal Deposits"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        1,
+        2,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 0,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 28,
+        "G": 224,
+        "R": 227,
+        "A": 255,
+        "PackedValue": 4280082659
+      }
+    },
+    {
+      "Name": "Mira",
+      "XPos": 2228,
+      "YPos": 985,
+      "Dimens": 23,
+      "Population": 0,
+      "Temperature": 48,
+      "Habitat": [
+        -99,
+        -5,
+        -5,
+        -8,
+        -5,
+        -4,
+        -3,
+        -5,
+        -7,
+        -8,
+        -4,
+        -99,
+        -3,
+        -99,
+        -2,
+        -7,
+        -3,
+        -99,
+        -99,
+        -7,
+        -99,
+        -99,
+        -99,
+        -99,
+        -4,
+        -99,
+        -9,
+        -99,
+        -99,
+        -99,
+        -9,
+        -9,
+        -8,
+        -2,
+        -99,
+        -99,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Mineral Vein",
+        "Fertile Soil"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        0,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 0,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 53,
+        "G": 167,
+        "R": 64,
+        "A": 255,
+        "PackedValue": 4281706304
+      }
+    },
+    {
+      "Name": "Regula",
+      "XPos": 435,
+      "YPos": 512,
+      "Dimens": 25,
+      "Population": 0,
+      "Temperature": -37,
+      "Habitat": [
+        -99,
+        -1,
+        -2,
+        -3,
+        -4,
+        -5,
+        -3,
+        -99,
+        -5,
+        -2,
+        -7,
+        -99,
+        -99,
+        -3,
+        -4,
+        -5,
+        -1,
+        -99,
+        -2,
+        -99,
+        -99,
+        -99,
+        -99,
+        -7,
+        -5,
+        -7,
+        -99,
+        -5,
+        -99,
+        -9,
+        -99,
+        -4,
+        -99,
+        -99,
+        -99,
+        -1,
+        -2
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Exotic Flora",
+        "Mineral Vein",
+        "Iron Ore",
+        "Ancient Settlement",
+        "Iron Ore",
+        "Fertile Soil",
+        "Crystal Deposits"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        1,
+        -1,
+        7,
+        0,
+        -1,
+        3,
+        -1,
+        3,
+        -1,
+        4,
+        -1,
+        -1,
+        2,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 175,
+        "G": 20,
+        "R": 147,
+        "A": 255,
+        "PackedValue": 4289664147
+      }
+    },
+    {
+      "Name": "Bootes",
+      "XPos": 1356,
+      "YPos": 162,
+      "Dimens": 24,
+      "Population": 0,
+      "Temperature": -25,
+      "Habitat": [
+        -99,
+        -1,
+        -4,
+        -4,
+        -6,
+        -5,
+        -1,
+        -2,
+        -5,
+        -99,
+        -7,
+        -2,
+        -3,
+        -99,
+        -5,
+        -4,
+        -7,
+        -4,
+        -99,
+        -3,
+        -7,
+        -99,
+        -99,
+        -9,
+        -99,
+        -2,
+        -99,
+        -2,
+        -99,
+        -8,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil",
+        "Iron Ore"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        3,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 230,
+        "G": 26,
+        "R": 214,
+        "A": 255,
+        "PackedValue": 4293270230
+      }
+    },
+    {
+      "Name": "Hallone",
+      "XPos": 973,
+      "YPos": 1201,
+      "Dimens": 30,
+      "Population": 0,
+      "Temperature": 41,
+      "Habitat": [
+        -99,
+        -2,
+        -3,
+        -3,
+        -1,
+        -6,
+        -3,
+        -5,
+        -99,
+        -4,
+        -6,
+        -1,
+        -8,
+        -99,
+        -1,
+        -4,
+        -2,
+        -1,
+        -1,
+        -8,
+        -99,
+        -99,
+        -99,
+        -99,
+        -9,
+        -1,
+        -5,
+        -9,
+        -99,
+        -99,
+        -7,
+        -6,
+        -99,
+        -99,
+        -5,
+        -6,
+        -6
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Ancient Settlement",
+        "Fertile Soil",
+        "High-Class Timber",
+        "Geothermal Vents",
+        "Iron Ore"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        3,
+        1,
+        5,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        9,
+        -1,
+        -1,
+        4,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 191,
+        "G": 186,
+        "R": 128,
+        "A": 255,
+        "PackedValue": 4290755200
+      }
+    },
+    {
+      "Name": "Sol",
+      "XPos": 885,
+      "YPos": 547,
+      "Dimens": 19,
+      "Population": 0,
+      "Temperature": -7,
+      "Habitat": [
+        -99,
+        -4,
+        -2,
+        -6,
+        -2,
+        -3,
+        -4,
+        -99,
+        -7,
+        -3,
+        -8,
+        -99,
+        -99,
+        -99,
+        -99,
+        -4,
+        -99,
+        -2,
+        -4,
+        -9,
+        -6,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -9,
+        -9,
+        -99,
+        -4,
+        -99,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil",
+        "Crystal Deposits"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        1,
+        2,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 230,
+        "G": 203,
+        "R": 95,
+        "A": 255,
+        "PackedValue": 4293315423
+      }
+    },
+    {
+      "Name": "Rigel",
+      "XPos": 567,
+      "YPos": 834,
+      "Dimens": 29,
+      "Population": 0,
+      "Temperature": 97,
+      "Habitat": [
+        -99,
+        -7,
+        -2,
+        -3,
+        -2,
+        -1,
+        -1,
+        -9,
+        -6,
+        -2,
+        -7,
+        -99,
+        -7,
+        -99,
+        -7,
+        -2,
+        -4,
+        -99,
+        -2,
+        -6,
+        -6,
+        -7,
+        -3,
+        -7,
+        -8,
+        -99,
+        -2,
+        -99,
+        -99,
+        -8,
+        -99,
+        -1,
+        -2,
+        -99,
+        -99,
+        -3,
+        -2
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil",
+        "Ancient Settlement"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        4,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 54,
+        "G": 237,
+        "R": 143,
+        "A": 255,
+        "PackedValue": 4281789839
+      }
+    },
+    {
+      "Name": "Ovion",
+      "XPos": 2104,
+      "YPos": 1108,
+      "Dimens": 12,
+      "Population": 0,
+      "Temperature": 85,
+      "Habitat": [
+        -99,
+        -7,
+        -6,
+        -5,
+        -1,
+        -6,
+        -1,
+        -99,
+        -99,
+        -5,
+        -4,
+        -4,
+        -9,
+        -99,
+        -5,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 226,
+        "G": 101,
+        "R": 136,
+        "A": 255,
+        "PackedValue": 4293027208
+      }
+    },
+    {
+      "Name": "Equuleus",
+      "XPos": 2216,
+      "YPos": 751,
+      "Dimens": 16,
+      "Population": 0,
+      "Temperature": 1,
+      "Habitat": [
+        -99,
+        -8,
+        -5,
+        -5,
+        -5,
+        -4,
+        -7,
+        -5,
+        -8,
+        -99,
+        -99,
+        -99,
+        -99,
+        -7,
+        -9,
+        -99,
+        -99,
+        -99,
+        -8,
+        -7,
+        -99,
+        -4,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -4,
+        -99,
+        -6,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Geothermal Vents",
+        "Fertile Soil",
+        "Fertile Soil",
+        "Crystal Deposits"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        9,
+        -1,
+        2,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 248,
+        "G": 238,
+        "R": 166,
+        "A": 255,
+        "PackedValue": 4294504102
+      }
+    },
+    {
+      "Name": "Cleopatra",
+      "XPos": 1554,
+      "YPos": 626,
+      "Dimens": 20,
+      "Population": 0,
+      "Temperature": 96,
+      "Habitat": [
+        -99,
+        -5,
+        -3,
+        -2,
+        -6,
+        -7,
+        -7,
+        -3,
+        -9,
+        -1,
+        -99,
+        -99,
+        -3,
+        -7,
+        -7,
+        -8,
+        -99,
+        -1,
+        -2,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -3,
+        -4,
+        -99,
+        -2,
+        -8,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "High-Class Timber",
+        "Crystal Deposits",
+        "High-Class Timber"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        5,
+        2,
+        -1,
+        5,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 224,
+        "G": 187,
+        "R": 120,
+        "A": 255,
+        "PackedValue": 4292918136
+      }
+    },
+    {
+      "Name": "Fornax",
+      "XPos": 1050,
+      "YPos": 985,
+      "Dimens": 24,
+      "Population": 0,
+      "Temperature": 33,
+      "Habitat": [
+        -99,
+        -6,
+        -4,
+        -7,
+        -4,
+        -4,
+        -5,
+        -8,
+        -6,
+        -4,
+        -99,
+        -8,
+        -3,
+        -99,
+        -99,
+        -99,
+        -7,
+        -99,
+        -1,
+        -99,
+        -7,
+        -99,
+        -99,
+        -5,
+        -4,
+        -99,
+        -99,
+        -8,
+        -9,
+        -99,
+        -99,
+        -99,
+        -99,
+        -2,
+        -6,
+        -1,
+        -6
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil",
+        "Iron Ore",
+        "Geothermal Vents",
+        "Ancient Settlement",
+        "Quantum Crystals"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        -1,
+        4,
+        -1,
+        -1,
+        1,
+        3,
+        -1,
+        -1,
+        -1,
+        9,
+        -1,
+        -1,
+        -1,
+        -1,
+        8,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 219,
+        "G": 224,
+        "R": 167,
+        "A": 255,
+        "PackedValue": 4292599975
+      }
+    },
+    {
+      "Name": "Ceti Alpha one",
+      "XPos": 1945,
+      "YPos": 670,
+      "Dimens": 21,
+      "Population": 0,
+      "Temperature": 50,
+      "Habitat": [
+        -99,
+        -1,
+        -5,
+        -4,
+        -7,
+        -3,
+        -6,
+        -4,
+        -99,
+        -99,
+        -8,
+        -99,
+        -4,
+        -99,
+        -2,
+        -4,
+        -5,
+        -2,
+        -6,
+        -2,
+        -99,
+        -99,
+        -99,
+        -2,
+        -9,
+        -4,
+        -99,
+        -9,
+        -99,
+        -99,
+        -99,
+        -3,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Mineral Vein",
+        "Crystal Deposits",
+        "Iron Ore",
+        "High-Class Timber",
+        "Geothermal Vents"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        0,
+        2,
+        -1,
+        -1,
+        5,
+        3,
+        -1,
+        -1,
+        -1,
+        9,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 210,
+        "G": 228,
+        "R": 142,
+        "A": 255,
+        "PackedValue": 4292011150
+      }
+    },
+    {
+      "Name": "Omicron",
+      "XPos": 2355,
+      "YPos": 885,
+      "Dimens": 32,
+      "Population": 0,
+      "Temperature": 45,
+      "Habitat": [
+        -99,
+        -9,
+        -5,
+        -6,
+        -1,
+        -7,
+        -1,
+        -1,
+        -4,
+        -99,
+        -8,
+        -7,
+        -5,
+        -1,
+        -8,
+        -9,
+        -1,
+        -99,
+        -7,
+        -99,
+        -4,
+        -99,
+        -9,
+        -4,
+        -99,
+        -6,
+        -8,
+        -7,
+        -1,
+        -9,
+        -5,
+        -5,
+        -99,
+        -99,
+        -9,
+        -4,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Fertile Soil",
+        "Iron Ore",
+        "Exotic Flora"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        1,
+        7,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        3,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 214,
+        "G": 143,
+        "R": 63,
+        "A": 255,
+        "PackedValue": 4292251455
+      }
+    },
+    {
+      "Name": "Arkto",
+      "XPos": 1411,
+      "YPos": 420,
+      "Dimens": 33,
+      "Population": 0,
+      "Temperature": -32,
+      "Habitat": [
+        -99,
+        -4,
+        -4,
+        -6,
+        -5,
+        -5,
+        -2,
+        -6,
+        -5,
+        -3,
+        -5,
+        -99,
+        -2,
+        -3,
+        -4,
+        -2,
+        -4,
+        -4,
+        -8,
+        -9,
+        -6,
+        -99,
+        -7,
+        -8,
+        -4,
+        -3,
+        -8,
+        -7,
+        -5,
+        -2,
+        -99,
+        -99,
+        -99,
+        -3,
+        -99,
+        -99,
+        -6
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Ancient Settlement",
+        "Ancient Settlement"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        4,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        4,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 247,
+        "G": 229,
+        "R": 134,
+        "A": 255,
+        "PackedValue": 4294436230
+      }
+    },
+    {
+      "Name": "Lyra",
+      "XPos": 1795,
+      "YPos": 986,
+      "Dimens": 34,
+      "Population": 0,
+      "Temperature": 61,
+      "Habitat": [
+        -99,
+        -7,
+        -5,
+        -5,
+        -7,
+        -5,
+        -5,
+        -99,
+        -6,
+        -7,
+        -5,
+        -3,
+        -6,
+        -6,
+        -6,
+        -1,
+        -5,
+        -1,
+        -3,
+        -99,
+        -6,
+        -99,
+        -4,
+        -1,
+        -9,
+        -8,
+        -7,
+        -99,
+        -99,
+        -2,
+        -99,
+        -3,
+        -8,
+        -7,
+        -2,
+        -5,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "High-Class Timber",
+        "Mineral Vein",
+        "Exotic Flora",
+        "High-Class Timber",
+        "Exotic Flora",
+        "Fertile Soil",
+        "Mineral Vein"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        5,
+        5,
+        -1,
+        0,
+        7,
+        -1,
+        -1,
+        -1,
+        1,
+        0,
+        -1,
+        7,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 184,
+        "G": 169,
+        "R": 228,
+        "A": 255,
+        "PackedValue": 4290292196
+      }
+    },
+    {
+      "Name": "Alioth",
+      "XPos": 1684,
+      "YPos": 1248,
+      "Dimens": 26,
+      "Population": 0,
+      "Temperature": 57,
+      "Habitat": [
+        -99,
+        -6,
+        -3,
+        -6,
+        -6,
+        -9,
+        -6,
+        -99,
+        -3,
+        -99,
+        -5,
+        -7,
+        -2,
+        -2,
+        -7,
+        -8,
+        -9,
+        -2,
+        -4,
+        -99,
+        -99,
+        -99,
+        -99,
+        -99,
+        -9,
+        -8,
+        -99,
+        -4,
+        -99,
+        -9,
+        -2,
+        -99,
+        -6,
+        -99,
+        -99,
+        -99,
+        -2
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Quantum Crystals",
+        "High-Class Timber",
+        "High-Class Timber"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        5,
+        -1,
+        8,
+        -1,
+        -1,
+        5,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 72,
+        "G": 5,
+        "R": 62,
+        "A": 255,
+        "PackedValue": 4282910014
+      }
+    },
+    {
+      "Name": "Lynx Ceti",
+      "XPos": 1233,
+      "YPos": 1198,
+      "Dimens": 24,
+      "Population": 0,
+      "Temperature": 74,
+      "Habitat": [
+        -99,
+        -6,
+        -3,
+        -3,
+        -1,
+        -2,
+        -4,
+        -8,
+        -99,
+        -1,
+        -6,
+        -99,
+        -8,
+        -99,
+        -2,
+        -5,
+        -1,
+        -99,
+        -3,
+        -7,
+        -99,
+        -2,
+        -9,
+        -9,
+        -8,
+        -99,
+        -2,
+        -99,
+        -99,
+        -2,
+        -99,
+        -99,
+        -5,
+        -99,
+        -99,
+        -6,
+        -7
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Iron Ore",
+        "Iron Ore"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        3,
+        3,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 95,
+        "G": 170,
+        "R": 228,
+        "A": 255,
+        "PackedValue": 4284459748
+      }
+    },
+    {
+      "Name": "Ordadz",
+      "XPos": 2217,
+      "YPos": 545,
+      "Dimens": 33,
+      "Population": 0,
+      "Temperature": -30,
+      "Habitat": [
+        -99,
+        -1,
+        -4,
+        -1,
+        -4,
+        -1,
+        -4,
+        -1,
+        -3,
+        -7,
+        -5,
+        -3,
+        -2,
+        -1,
+        -2,
+        -2,
+        -5,
+        -1,
+        -6,
+        -99,
+        -9,
+        -2,
+        -99,
+        -1,
+        -99,
+        -8,
+        -9,
+        -8,
+        -2,
+        -6,
+        -8,
+        -99,
+        -99,
+        -9,
+        -1,
+        -9,
+        -99
+      ],
+      "Improvements": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "OccupiedByUnit": [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "RegionBonuses": [
+        "Mineral Vein",
+        "Crystal Deposits",
+        "High-Class Timber"
+      ],
+      "RegionBonusRegions": [
+        -1,
+        5,
+        0,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        2,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "Status": 1,
+      "Food": 0,
+      "Mat": 0,
+      "Energy": 0,
+      "TextureId": 2,
+      "TintColor": {
+        "B": 82,
+        "G": 28,
+        "R": 5,
+        "A": 255,
+        "PackedValue": 4283571205
+      }
+    }
+  ],
+  "TurnActions": [],
+  "RegionDatas": [
+    {
+      "XC": 800,
+      "YC": 500
+    },
+    {
+      "XC": 910,
+      "YC": 500
+    },
+    {
+      "XC": 855,
+      "YC": 595.2628
+    },
+    {
+      "XC": 745,
+      "YC": 595.2628
+    },
+    {
+      "XC": 690,
+      "YC": 500
+    },
+    {
+      "XC": 745,
+      "YC": 404.7372
+    },
+    {
+      "XC": 855,
+      "YC": 404.7372
+    },
+    {
+      "XC": 1020,
+      "YC": 500
+    },
+    {
+      "XC": 965,
+      "YC": 595.2628
+    },
+    {
+      "XC": 910,
+      "YC": 690.5256
+    },
+    {
+      "XC": 800,
+      "YC": 690.5256
+    },
+    {
+      "XC": 690,
+      "YC": 690.5256
+    },
+    {
+      "XC": 635,
+      "YC": 595.2628
+    },
+    {
+      "XC": 580,
+      "YC": 500
+    },
+    {
+      "XC": 635,
+      "YC": 404.7372
+    },
+    {
+      "XC": 690,
+      "YC": 309.47443
+    },
+    {
+      "XC": 800,
+      "YC": 309.47443
+    },
+    {
+      "XC": 910,
+      "YC": 309.47443
+    },
+    {
+      "XC": 965,
+      "YC": 404.7372
+    },
+    {
+      "XC": 1130,
+      "YC": 500
+    },
+    {
+      "XC": 1075,
+      "YC": 595.2628
+    },
+    {
+      "XC": 1020,
+      "YC": 690.5256
+    },
+    {
+      "XC": 965,
+      "YC": 785.7883
+    },
+    {
+      "XC": 855,
+      "YC": 785.7883
+    },
+    {
+      "XC": 745,
+      "YC": 785.7883
+    },
+    {
+      "XC": 635,
+      "YC": 785.7883
+    },
+    {
+      "XC": 580,
+      "YC": 690.5256
+    },
+    {
+      "XC": 525,
+      "YC": 595.2628
+    },
+    {
+      "XC": 470,
+      "YC": 500
+    },
+    {
+      "XC": 525,
+      "YC": 404.7372
+    },
+    {
+      "XC": 580,
+      "YC": 309.47443
+    },
+    {
+      "XC": 635,
+      "YC": 214.21164
+    },
+    {
+      "XC": 745,
+      "YC": 214.21164
+    },
+    {
+      "XC": 855,
+      "YC": 214.21164
+    },
+    {
+      "XC": 965,
+      "YC": 214.21164
+    },
+    {
+      "XC": 1020,
+      "YC": 309.47443
+    },
+    {
+      "XC": 1075,
+      "YC": 404.7372
+    }
+  ],
+  "PlanetRegionBonuses": [
+    "Mineral Vein",
+    "Fertile Soil",
+    "Crystal Deposits",
+    "Iron Ore",
+    "Ancient Settlement",
+    "High-Class Timber",
+    "Gold Vein",
+    "Exotic Flora",
+    "Quantum Crystals",
+    "Geothermal Vents"
+  ],
+  "RegionBonusTypes": [
+    {
+      "Name": "Mineral Vein",
+      "AllowedHabitats": [
+        "Mountains",
+        "Valley"
+      ],
+      "BonusType": "Materials",
+      "BaseBonus": 1,
+      "RarityWeight": 80,
+      "TextureId": 40
+    },
+    {
+      "Name": "Fertile Soil",
+      "AllowedHabitats": [
+        "Prairie",
+        "Valley",
+        "Forest"
+      ],
+      "BonusType": "Food",
+      "BaseBonus": 1,
+      "RarityWeight": 75,
+      "TextureId": 41
+    },
+    {
+      "Name": "Crystal Deposits",
+      "AllowedHabitats": [
+        "Mountains",
+        "Desert"
+      ],
+      "BonusType": "Science",
+      "BaseBonus": 1,
+      "RarityWeight": 70,
+      "TextureId": 42
+    },
+    {
+      "Name": "Iron Ore",
+      "AllowedHabitats": [
+        "Mountains",
+        "Volcano"
+      ],
+      "BonusType": "Materials",
+      "BaseBonus": 2,
+      "RarityWeight": 50,
+      "TextureId": 43
+    },
+    {
+      "Name": "Ancient Settlement",
+      "AllowedHabitats": [
+        "Ruins"
+      ],
+      "BonusType": "Science",
+      "BaseBonus": 2,
+      "RarityWeight": 45,
+      "TextureId": 44
+    },
+    {
+      "Name": "High-Class Timber",
+      "AllowedHabitats": [
+        "Forest",
+        "Valley"
+      ],
+      "BonusType": "Materials",
+      "BaseBonus": 2,
+      "RarityWeight": 60,
+      "TextureId": 45
+    },
+    {
+      "Name": "Gold Vein",
+      "AllowedHabitats": [
+        "Mountains",
+        "Desert"
+      ],
+      "BonusType": "Materials",
+      "BaseBonus": 3,
+      "RarityWeight": 20,
+      "TextureId": 46
+    },
+    {
+      "Name": "Exotic Flora",
+      "AllowedHabitats": [
+        "Forest",
+        "Valley"
+      ],
+      "BonusType": "Food",
+      "BaseBonus": 2,
+      "RarityWeight": 30,
+      "TextureId": 47
+    },
+    {
+      "Name": "Quantum Crystals",
+      "AllowedHabitats": [
+        "Arctic",
+        "Ruins"
+      ],
+      "BonusType": "Science",
+      "BaseBonus": 3,
+      "RarityWeight": 15,
+      "TextureId": 48
+    },
+    {
+      "Name": "Geothermal Vents",
+      "AllowedHabitats": [
+        "Volcano"
+      ],
+      "BonusType": "Energy",
+      "BaseBonus": 2,
+      "RarityWeight": 25,
+      "TextureId": 49
+    }
+  ]
+}

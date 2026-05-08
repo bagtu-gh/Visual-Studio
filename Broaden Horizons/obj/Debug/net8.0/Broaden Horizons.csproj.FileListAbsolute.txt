@@ -1,0 +1,85 @@
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\mgcb.tool.restore
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\Broaden Horizons.csproj.AssemblyReference.cache
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\Broaden Horizons.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\Broaden Horizons.AssemblyInfoInputs.cache
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\Broaden Horizons.AssemblyInfo.cs
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\Broaden Horizons.csproj.CoreCompileInputs.cache
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\Broaden Horizons.dll
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\refint\Broaden Horizons.dll
+c:\Users\Usuario\Visual Studio\BroadenHorizons\obj\Debug\net8.0\Broaden Horizons.pdb
+C:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\mgcb.tool.restore
+C:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.csproj.AssemblyReference.cache
+C:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.AssemblyInfoInputs.cache
+C:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.AssemblyInfo.cs
+C:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.csproj.CoreCompileInputs.cache
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\font.fnt
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\font_0.png
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fontmsg.fnt
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fontmsg_0.png
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fontbig.fnt
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fontbig_0.png
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fonttooltip.fnt
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fonttooltip_0.png
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\font.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fontbig.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fontmsg.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\fonts\fonttooltip.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Arctic.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Builder.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\City.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Colonist.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Cursor.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Desert.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Energy.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Explorer.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Farmer.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Fisher.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Food.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Forest.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Galaxy.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Harvester.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\LogoBH.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Materials.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Miner.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Mountains.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Ocean.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\planet_transp.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Prairie.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Probe.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Ruins.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Science.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Scientist.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Unexplored.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Valley.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Volcano.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\help_text.txt
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Broaden Horizons.exe
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Broaden Horizons.deps.json
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Broaden Horizons.runtimeconfig.json
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Broaden Horizons.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Broaden Horizons.pdb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\MonoGame.Extended.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\MonoGame.Framework.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\NVorbis.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\android-arm\native\libopenal.so
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\android-arm64\native\libopenal.so
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\android-x64\native\libopenal.so
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\android-x86\native\libopenal.so
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\ios-arm64\native\libopenal.a
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\iossimulator-arm64\native\libopenal.a
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\iossimulator-x64\native\libopenal.a
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\linux-arm64\native\libopenal.so
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\linux-x64\native\libopenal.so
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\osx\native\libopenal.dylib
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\win-x64\native\openal.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\linux-x64\native\libSDL2-2.0.so.0
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\osx\native\libSDL2-2.0.0.dylib
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\runtimes\win-x64\native\SDL2.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden .2141A09B.Up2Date
+c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\refint\Broaden Horizons.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.pdb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.genruntimeconfig.cache
+c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\ref\Broaden Horizons.dll
+c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Freighter.xnb

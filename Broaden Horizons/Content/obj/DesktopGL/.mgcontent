@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Arctic.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Builder.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/City.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Colonist.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Desert.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Energy.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Explorer.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Farmer.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Fisher.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Food.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Forest.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Freighter.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/galaxy.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Harvester.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/LogoBH.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Materials.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Miner.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Mountains.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Ocean.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/planet_transp.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Prairie.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Probe.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Ruins.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Science.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Scientist.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Unexplored.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Valley.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Volcano.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File>images/Galaxy.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
