@@ -83,3 +83,4 @@ c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizon
 c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.genruntimeconfig.cache
 c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\ref\Broaden Horizons.dll
 c:\Users\Usuario\Visual Studio\Broaden Horizons\bin\Debug\net8.0\Content\images\Freighter.xnb
+c:\Users\Usuario\Visual Studio\Broaden Horizons\obj\Debug\net8.0\Broaden Horizons.sourcelink.json
