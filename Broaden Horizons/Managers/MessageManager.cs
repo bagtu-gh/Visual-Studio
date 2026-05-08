@@ -61,6 +61,8 @@ namespace BroadenHorizons
         private int dialogHeight;
         private float dialogWidthPercent;
         private float dialogMaxHeightPercent;
+        private int hoveredLineIndex = -1;
+        private readonly List<Rectangle> lineHitRectangles = new();
 
         private List<string> selectionOptions = new List<string>();
         private List<bool> selectionSelectability = new List<bool>();
@@ -109,11 +111,10 @@ namespace BroadenHorizons
             selectionSelectability = selectability ?? Enumerable.Repeat(true, options.Count).ToList();
             int falseCount = selectionSelectability.Count(item => item == false);
             
-            // Build clean message without extra empty lines at the end
             string messageText = $"{title}\n";
             messageText += "Press A-" + 
                           Convert.ToChar('A' + Math.Min(25, options.Count - 1 - falseCount)) + 
-                          " or Escape to cancel\n\n";
+                          " or click an option, Escape to cancel\n\n";
 
             for (int i = 0; i < options.Count; i++)
             {
@@ -168,9 +169,28 @@ namespace BroadenHorizons
                           $"{foodLine}\n" +
                           $"{matLine}\n\n" +
                           $"Total: {usedCapacity}/{cargoCapacity}   Remaining: {availableCapacity}\n\n" +
-                          $"Use Up/Down to select, Left/Right to change, Enter to confirm, Esc to cancel";
+                          $"Use Up/Down or click to select, Left/Right to change, Enter to confirm, Esc to cancel";
 
             needsRecalc = true;
+        }
+
+        private bool IsSelectionLineSelectable(int lineIndex)
+        {
+            if (lines == null || lineIndex < 0 || lineIndex >= lines.Length)
+                return false;
+
+            if (isCargoSelection)
+                return lineIndex == 2 || lineIndex == 3;
+
+            const int optionStart = 3;
+            int optionIndex = lineIndex - optionStart;
+            return optionIndex >= 0 && optionIndex < selectionOptions.Count && selectionSelectability[optionIndex];
+        }
+
+        private int SelectionLineToOptionIndex(int lineIndex)
+        {
+            const int optionStart = 3;
+            return lineIndex - optionStart;
         }
 
         public void Dismiss(bool result = false)
@@ -428,6 +448,28 @@ namespace BroadenHorizons
                 scrollOffset = Math.Max(0, Math.Min(scrollOffset, maxScroll));
             }
 
+            hoveredLineIndex = -1;
+            lineHitRectangles.Clear();
+            if (Type == MessageType.Selection && lines != null)
+            {
+                float baseLineHeight = font.MeasureString("Ay").Height;
+                float lineHeight = baseLineHeight * 1.25f;
+                int hitWidth = contentRect.Width - (maxScroll > 0 ? ScrollbarWidth + ScrollbarPadding * 2 : 0);
+
+                float y = contentRect.Y + TextTopMargin - scrollOffset;
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    float lineY = y + i * lineHeight;
+                    Rectangle lineRect = new Rectangle(contentRect.X, (int)Math.Round(lineY), hitWidth, (int)Math.Round(lineHeight));
+                    lineHitRectangles.Add(lineRect);
+
+                    if (lineRect.Contains(mouse.Position) && IsSelectionLineSelectable(i))
+                    {
+                        hoveredLineIndex = i;
+                    }
+                }
+            }
+
             // Mouse click detection
             bool mouseClicked = mouse.LeftButton == ButtonState.Pressed && _prevMouseLeftButton == ButtonState.Released;
 
@@ -505,6 +547,20 @@ namespace BroadenHorizons
                         }
                     }
 
+                    if (mouseClicked && hoveredLineIndex >= 0)
+                    {
+                        if (hoveredLineIndex == 2 && cargoSelectedRow != 0)
+                        {
+                            cargoSelectedRow = 0;
+                            updated = true;
+                        }
+                        else if (hoveredLineIndex == 3 && cargoSelectedRow != 1)
+                        {
+                            cargoSelectedRow = 1;
+                            updated = true;
+                        }
+                    }
+
                     if (keyboard.IsKeyDown(Keys.Enter) && !_prevKeyboard.IsKeyDown(Keys.Enter))
                     {
                         int selectedFood = cargoFood;
@@ -528,6 +584,18 @@ namespace BroadenHorizons
                 }
                 else
                 {
+                    if (mouseClicked && hoveredLineIndex >= 0)
+                    {
+                        int selectedIndex = SelectionLineToOptionIndex(hoveredLineIndex);
+                        if (selectedIndex >= 0 && selectedIndex < selectionOptions.Count && selectionSelectability[selectedIndex])
+                        {
+                            var callback = onSelection;
+                            Dismiss();
+                            callback?.Invoke(selectedIndex);
+                            return;
+                        }
+                    }
+
                     foreach (var kvp in selectionKeyMap)
                     {
                         if (keyboard.IsKeyDown(kvp.Key) && !_prevKeyboard.IsKeyDown(kvp.Key))
@@ -590,6 +658,16 @@ namespace BroadenHorizons
             );
 
             spriteBatch.Draw(pixel, innerRect, DialogInnerPanel);
+
+            if (Type == MessageType.Selection && hoveredLineIndex >= 0 && hoveredLineIndex < lineHitRectangles.Count)
+            {
+                Rectangle highlightRect = lineHitRectangles[hoveredLineIndex];
+                if (highlightRect.Intersects(contentRect))
+                {
+                    spriteBatch.Draw(pixel, new Rectangle(highlightRect.X, highlightRect.Y, highlightRect.Width, highlightRect.Height),
+                        new Color(10, 100, 45, 100));
+                }
+            }
 
             // Scrollbar
             if (maxScroll > 0)
