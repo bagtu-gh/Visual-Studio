@@ -12,6 +12,7 @@ namespace BroadenHorizons
         public ShipStatus Status { get; set; } = ShipStatus.Docked;
         public Vector2 CurrentPosition { get; set; }
         public int TargetPlanet { get; set; } = -1;
+        public int BeginTurnAction { get; set; }
         public int FinalTurnAction { get; set; }
         public List<int> LoadedUnits { get; set; } = new List<int>();
         public int CargoFood { get; set; } = 0;
@@ -22,7 +23,8 @@ namespace BroadenHorizons
     {
         Probe = 0,
         ColonyShip = 1,
-        Freighter = 2
+        Freighter = 2,
+        Terraformer = 3
     }
 
     public class ShipType
@@ -36,7 +38,7 @@ namespace BroadenHorizons
         public int TurnsToBuild { get; set; }
         public int RequiredTech { get; set; } = -1;
         public int TextureId { get; set; }
-        public int Capacity { get; set; } = 0; // For freighters: max units
+        public int Capacity { get; set; } = 0;
     }
 
     public enum ShipStatus

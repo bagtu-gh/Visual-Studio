@@ -220,8 +220,9 @@ namespace BroadenHorizons
 
             // Load ship textures
             Textures.Add(61, Content.Load<Texture2D>("images/Probe")); // Explorer ship
-            Textures.Add(62, Content.Load<Texture2D>("images/Harvester")); // Colony ship
+            Textures.Add(62, Content.Load<Texture2D>("images/ColonyShip")); // Colony ship
             Textures.Add(63, Content.Load<Texture2D>("images/Freighter")); // Freighter
+            Textures.Add(64, Content.Load<Texture2D>("images/Farmer")); // Terraformer
 
             _topBar = new TopBarRenderer(_bitmapFont, Textures, _pixel);
         }
@@ -491,8 +492,8 @@ namespace BroadenHorizons
                 tooltipLines.Add("No explored regions yet.");
             }
 
-            tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {int.Parse(Functions.GetTemperatureRangeData(planet.Temperature, "Modifier")):P0}");
-            tooltipLines.Add($"Food factor: {1 + int.Parse(CalculateResourceTurn(planetIndex, "Food")) * Constants.POPULATION_FOOD_GROWTH:P0}");
+            tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {double.Parse(Functions.GetTemperatureRangeData(planet.Temperature, "Modifier")):P0}");
+            tooltipLines.Add($"Food factor: {1 + double.Parse(CalculateResourceTurn(planetIndex, "Food")) * Constants.POPULATION_FOOD_GROWTH:P0}");
 
             return string.Join("\n", tooltipLines);
         }

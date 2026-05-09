@@ -38,7 +38,7 @@ namespace BroadenHorizons.Screens
             _game.tooltipText = "";
 
             if (keyboard.IsKeyDown(Keys.Escape) && !_game.WasKeyDown(Keys.Escape) ||
-                keyboard.IsKeyDown(Keys.L) && !_game.WasKeyDown(Keys.L) ||
+                keyboard.IsKeyDown(Keys.P) && !_game.WasKeyDown(Keys.P) ||
                 keyboard.IsKeyDown(Keys.Enter) && !_game.WasKeyDown(Keys.Enter))
             {
                 _game.CurrentState = BH.GameState.GalaxyMap;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Freighter.png</SourceFile>
-  <SourceTime>2026-05-03T10:17:08.7808916+02:00</SourceTime>
+  <SourceTime>2026-05-03T10:28:39.8150836+02:00</SourceTime>
   <DestFile>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/bin/DesktopGL/images/Freighter.xnb</DestFile>
-  <DestTime>2026-05-03T10:25:29.1288747+02:00</DestTime>
+  <DestTime>2026-05-08T22:41:58.7684928+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2025-06-02T12:31:02+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

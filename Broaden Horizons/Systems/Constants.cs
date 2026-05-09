@@ -10,6 +10,7 @@ namespace BroadenHorizons
         public const int SCREEN_HEIGHT = 900;
         public const int MIN_PLANET_DISTANCE = 150;
         public static int NUM_PLANETS = 20;
+        public const int TERRAFORMER_TEMP_CHANGE = 1;
         public const float POPULATION_BASE_GROWTH = 0.1f;
         public const float POPULATION_FOOD_GROWTH = 0.05f;
         public const int SCROLL_SPEED = 20;
@@ -34,13 +35,7 @@ namespace BroadenHorizons
         public const int MENU_BUTTON_SPACING = 40;
         public const int MENU_BUTTON_BOTTOM_MARGIN = 60;
 
-        public const int PREF_BUTTON_WIDTH = 125;
-        public const int PREF_BUTTON_HEIGHT = 50;
-        public const int PREF_BUTTON_SPACING = 40;
-        public const int PREF_BUTTON_LEFT_MARGIN = 120;
-
         public const int TOP_BAR_HEIGHT = 60;
-
         public const int TOP_BAR_BUTTON_WIDTH = 150;
         public const int TOP_BAR_BUTTON_HEIGHT = 40;
         public const int TOP_BAR_BUTTON_SPACING = 20;
@@ -52,8 +47,7 @@ namespace BroadenHorizons
         public const int TECH_TREE_BOX_WIDTH = 175;
         public const int TECH_TREE_BOX_HEIGHT = 80;
         public const int TECH_TREE_HORIZ_MARGIN = 50;
-        public const int TECH_TREE_STARTX = 100; // Starting X position
-        public const int TECH_TREE_XDISTANCE = 300; // Distance between columns
+        public const int TECH_TREE_XDISTANCE = 300;
         public static readonly Color TECH_RESEARCHED = Color.Green;
         public static readonly Color TECH_IN_PROGRESS = Color.Yellow;
         public static readonly Color TECH_CAN_RESEARCH = Color.LightCyan;
@@ -74,7 +68,7 @@ namespace BroadenHorizons
         public static int STARTING_FOOD = 6;
         public const int STARTING_MATERIALS = 2;
         public const int STARTING_SCIENCE = 4;
-        public const int STARTING_ENERGY = 20;
+        public const int STARTING_ENERGY = 200;
         public const int STARTING_POPULATION = 60;
         public const int DEFAULT_PLANET_TEXTURE = 2;
 

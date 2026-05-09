@@ -119,7 +119,7 @@ namespace BroadenHorizons.Screens
                                     {
                                         if(unitsOnPlanet.Exists(u => u.TypeIndex == (int)UnitTypeEnum.Colonist))
                                         {
-                                            _game._shipManager.ShowColonyLaunchMenu(ship, _game.Turn);
+                                            //_game._shipManager.ShowColonyLaunchMenu(ship, _game.Turn);
                                             break;
                                         }
                                         else
@@ -131,6 +131,10 @@ namespace BroadenHorizons.Screens
                                     else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Freighter && ship.Status == ShipStatus.Docked)
                                     {
                                         _game._shipManager.ShowFreighterLaunchMenu(ship, _game.Turn);
+                                    }
+                                    else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Terraformer && ship.Status == ShipStatus.Docked)
+                                    {
+                                        _game._shipManager.ShowTerraformerLaunchMenu(ship, _game.Turn);
                                     }
                                     else if (ship.Status == ShipStatus.InTransit)
                                     {

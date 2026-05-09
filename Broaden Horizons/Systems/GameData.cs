@@ -125,27 +125,29 @@ namespace BroadenHorizons
         [
             new ShipType { Name = "Probe", MatCost = 50, MaintCost = 2, Speed = 150, EnergyperTurn = 1, TurnsToBuild = 3, RequiredTech = 0, TextureId = 61, Type = ShipTypeEnum.Probe, Capacity = 0 },
             new ShipType { Name = "Colony Ship", MatCost = 200, MaintCost = 4, Speed = 100, EnergyperTurn = 4, TurnsToBuild = 5, RequiredTech = 9, TextureId = 62, Type = ShipTypeEnum.ColonyShip, Capacity = 0 },
-            new ShipType { Name = "Freighter", MatCost = 100, MaintCost = 8, Speed = 125, EnergyperTurn = 2, TurnsToBuild = 4, RequiredTech = 15, TextureId = 63, Type = ShipTypeEnum.Freighter, Capacity = 25 } // Capacity for units
+            new ShipType { Name = "Freighter", MatCost = 100, MaintCost = 8, Speed = 125, EnergyperTurn = 2, TurnsToBuild = 4, RequiredTech = 15, TextureId = 63, Type = ShipTypeEnum.Freighter, Capacity = 50 },
+            new ShipType { Name = "Terraformer", MatCost = 150, MaintCost = 6, Speed = 80, EnergyperTurn = 5, TurnsToBuild = 6, RequiredTech = 16, TextureId = 64, Type = ShipTypeEnum.Terraformer, Capacity = 0 },
         ];
 
         public static readonly List<Tech> Technologies =
         [
-            new Tech { ID = 0, Name = "Colonization Basics", Description = "Fundamental settlement knowledge", Cost = 10, MinScience = 0, Prerequisites = [], BonusUnlocks = [], GridPosition = new Vector2(1, 6) },
+            new Tech { ID = 0, Name = "Colonization Basics", Description = "Fundamental settlement knowledge", Cost = 10, MinScience = 0, Prerequisites = [], BonusUnlocks = [], GridPosition = new Vector2(1, 7) },
             new Tech { ID = 1, Name = "Industrial Mining", Description = "Improved resource extraction techniques", Cost = 30, MinScience = 0, Prerequisites = [0], BonusUnlocks = [new() { Habitat = "Mountains", MatProd = 1 }], GridPosition = new Vector2(2, 1) },
             new Tech { ID = 2, Name = "Research Methods", Description = "Foundations of scientific inquiry", Cost = 25, MinScience = 0, Prerequisites = [0], BonusUnlocks = [new() { Habitat = "Desert", SciProd = 1 }, new HabitatBonus { Habitat = "Ruins", SciProd = 1 }], GridPosition = new Vector2(2, 4) },
-            new Tech { ID = 3, Name = "Construction Techniques", Description = "Enhanced building practices", Cost = 35, MinScience = 20, Prerequisites = [0], BonusUnlocks = [], GridPosition = new Vector2(2, 7) },
-            new Tech { ID = 4, Name = "Renewable Energy", Description = "Sustainable power sources", Cost = 40, MinScience = 10, Prerequisites = [0], BonusUnlocks = [new() { Habitat = "Mountains", EnergyProd = 1 }, new HabitatBonus { Habitat = "Desert", EnergyProd = 1 }], GridPosition = new Vector2(2, 9) },
+            new Tech { ID = 3, Name = "Construction Techniques", Description = "Enhanced building practices", Cost = 35, MinScience = 20, Prerequisites = [0], BonusUnlocks = [], GridPosition = new Vector2(2, 8) },
+            new Tech { ID = 4, Name = "Renewable Energy", Description = "Sustainable power sources", Cost = 40, MinScience = 10, Prerequisites = [0], BonusUnlocks = [new() { Habitat = "Mountains", EnergyProd = 1 }, new HabitatBonus { Habitat = "Desert", EnergyProd = 1 }], GridPosition = new Vector2(2, 11) },
             new Tech { ID = 5, Name = "Advanced Mining", Description = "Advanced mining operations", Cost = 60, MinScience = 30, Prerequisites = [1], BonusUnlocks = [new() { Habitat = "Volcano", MatProd = 1 }], GridPosition = new Vector2(3, 1) },
             new Tech { ID = 6, Name = "Polar Research", Description = "Studies in extreme environments", Cost = 50, MinScience = 25, Prerequisites = [2], BonusUnlocks = [new() { Habitat = "Arctic", SciProd = 1 }], GridPosition = new Vector2(3, 3) },
             new Tech { ID = 7, Name = "Advanced Genetics", Description = "Genetic manipulation for production", Cost = 80, MinScience = 50, Prerequisites = [2], BonusUnlocks = [new() { Habitat = "Forest", FoodProd = 1 }, new HabitatBonus { Habitat = "Prairie", FoodProd = 1 }], GridPosition = new Vector2(3, 5) },
-            new Tech { ID = 8, Name = "Geothermal Energy", Description = "Harnessing planetary heat", Cost = 70, MinScience = 40, Prerequisites = [4], BonusUnlocks = [new() { Habitat = "Volcano", EnergyProd = 2 }], GridPosition = new Vector2(3, 9) },
-            new Tech { ID = 9, Name = "Colonization Technology", Description = "Nanoscale building enhancements", Cost = 100, MinScience = 70, Prerequisites = [3], BonusUnlocks = [new() { Habitat = "Valley", MatProd = 1 }], GridPosition = new Vector2(3, 7) },
+            new Tech { ID = 8, Name = "Geothermal Energy", Description = "Harnessing planetary heat", Cost = 70, MinScience = 40, Prerequisites = [4], BonusUnlocks = [new() { Habitat = "Volcano", EnergyProd = 2 }], GridPosition = new Vector2(3, 11) },
+            new Tech { ID = 9, Name = "Colonization Technology", Description = "Nanoscale building enhancements", Cost = 100, MinScience = 70, Prerequisites = [3], BonusUnlocks = [new() { Habitat = "Valley", MatProd = 1 }], GridPosition = new Vector2(3, 8) },
             new Tech { ID = 10, Name = "Quantum Materials", Description = "Exotic material processing", Cost = 120, MinScience = 90, Prerequisites = [5], BonusUnlocks = [new() { Habitat = "Mountains", MatProd = 2 }], GridPosition = new Vector2(4, 1) },
             new Tech { ID = 11, Name = "Alien Xenology", Description = "Deep study of alien life", Cost = 110, MinScience = 80, Prerequisites = [6], BonusUnlocks = [new() { Habitat = "Ruins", SciProd = 2 }], GridPosition = new Vector2(4, 3) },
-            new Tech { ID = 12, Name = "Fusion Power", Description = "Advanced energy fusion", Cost = 150, MinScience = 120, Prerequisites = [8], BonusUnlocks = [new() { Habitat = "City", EnergyProd = 2 }], GridPosition = new Vector2(4, 9) },
-            new Tech { ID = 13, Name = "Farming Techniques", Description = "New techniques of farming", Cost = 25, MinScience = 0, Prerequisites = [0], BonusUnlocks = [], GridPosition = new Vector2(2, 11) },
-            new Tech { ID = 14, Name = "Aquaculture Development", Description = "Deep research about water resources", Cost = 60, MinScience = 15, Prerequisites = [13], BonusUnlocks = [], GridPosition = new Vector2(3, 11) },
-            new Tech { ID = 15, Name = "Freight Logistics", Description = "Enables basic probe ships", Cost = 50, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 7) }
+            new Tech { ID = 12, Name = "Fusion Power", Description = "Advanced energy fusion", Cost = 150, MinScience = 120, Prerequisites = [8], BonusUnlocks = [new() { Habitat = "City", EnergyProd = 2 }], GridPosition = new Vector2(4, 11) },
+            new Tech { ID = 13, Name = "Farming Techniques", Description = "New techniques of farming", Cost = 25, MinScience = 0, Prerequisites = [0], BonusUnlocks = [], GridPosition = new Vector2(2, 13) },
+            new Tech { ID = 14, Name = "Aquaculture Development", Description = "Deep research about water resources", Cost = 60, MinScience = 15, Prerequisites = [13], BonusUnlocks = [], GridPosition = new Vector2(3, 13) },
+            new Tech { ID = 15, Name = "Freight Logistics", Description = "Enables basic freighter ships", Cost = 50, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 7) },
+            new Tech { ID = 16, Name = "Terraformation", Description = "Technology to modify temperature", Cost = 50, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 9) },
         ];
 
         public static void AssignTechPositions()

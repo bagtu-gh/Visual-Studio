@@ -47,14 +47,14 @@ namespace BroadenHorizons
             var startingShip2 = new Ship
             {
                 Id = nextShipId++,
-                Name = "Probe 2",
-                TypeIndex = ShipTypeEnum.Probe.GetHashCode(),
+                Name = "Terraformer 2",
+                TypeIndex = ShipTypeEnum.Terraformer.GetHashCode(),
                 AssignedPlanet = planetId,
                 Status = ShipStatus.Docked,
                 CurrentPosition = new Vector2(_planets[planetId].XPos, _planets[planetId].YPos)
             };
             _ships.Add(startingShip2);
-            var startingShip3 = new Ship
+            /*var startingShip3 = new Ship
             {
                 Id = nextShipId++,
                 Name = "Freighter 1",
@@ -63,7 +63,7 @@ namespace BroadenHorizons
                 Status = ShipStatus.Docked,
                 CurrentPosition = new Vector2(_planets[planetId].XPos, _planets[planetId].YPos)
             };
-            _ships.Add(startingShip3);
+            _ships.Add(startingShip3);*/
         }
 
         public List<int> GetAvailableShipTypes()
@@ -120,36 +120,24 @@ namespace BroadenHorizons
 
             // Update in-transit ships
             var inTransitShips = _ships.Where(s => s.Status == ShipStatus.InTransit).ToList();
-            foreach (var ship in inTransitShips)
+            var DockedTerraformerShips = _ships.Where(s => s.TypeIndex == (int)ShipTypeEnum.Terraformer && s.Status == ShipStatus.Docked).ToList();
+            var combinedShips = inTransitShips.Concat(DockedTerraformerShips).ToList();
+            foreach (var ship in combinedShips)
             {
                 if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Probe)
                 {
-                    if (ship.TargetPlanet < 0 || ship.AssignedPlanet < 0 || ship.AssignedPlanet >= _planets.Length || ship.TargetPlanet >= _planets.Length)
-                        continue;
-
                     var originPos = new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos);
                     var targetPos = new Vector2(_planets[ship.TargetPlanet].XPos, _planets[ship.TargetPlanet].YPos);
-                    float distance = Vector2.Distance(originPos, targetPos);
-                    int speed = Math.Max(1, GameData.ShipTypes[ship.TypeIndex].Speed);
-                    int oneWayTurns = (int)Math.Ceiling(distance / speed);
-                    oneWayTurns = Math.Max(1, oneWayTurns); // ensure at least 1 turn for one-way
-
-                    int midArrivalTurn = ship.FinalTurnAction - oneWayTurns;
-                    int returnDockTurn = ship.FinalTurnAction;
-
-                    // Update position interpolation along round-trip path:
-                    // We will interpolate from origin -> target for the first half of the trip,
-                    // and target -> origin for the second half. Use currentTurn relative to launch.
-                    int totalTripTurns = 2 * oneWayTurns;
+                    int midArrivalTurn = (ship.FinalTurnAction + ship.BeginTurnAction) / 2;
+                    int totalTripTurns = ship.FinalTurnAction - ship.BeginTurnAction;
 
                     // Simpler interpolation: compute progress ratio based on remaining turns to return.
                     // When FinalTurnAction == currentTurn => progress = 1 (back at origin).
                     // When currentTurn == midArrivalTurn => progress ~ 0.5 (at target).
-                    int launchTurn = ship.FinalTurnAction - totalTripTurns;
                     float progress;
-                    if (currentTurn <= launchTurn) progress = 0f;
-                    else if (currentTurn >= returnDockTurn) progress = 1f;
-                    else progress = (currentTurn - launchTurn) / (float)totalTripTurns;
+                    if (currentTurn <= ship.BeginTurnAction) progress = 0f;
+                    else if (currentTurn >= ship.FinalTurnAction) progress = 1f;
+                    else progress = (currentTurn - ship.BeginTurnAction) / (float)totalTripTurns;
 
                     // Move along origin->target->origin path using progress in [0,1].
                     Vector2 currentPos;
@@ -176,7 +164,7 @@ namespace BroadenHorizons
                     }
 
                     // Return docking handling (probe back at origin)
-                    if (currentTurn == returnDockTurn)
+                    if (currentTurn == ship.FinalTurnAction)
                     {
                         // Finalize return: dock at origin
                         ship.Status = ShipStatus.Docked;
@@ -186,23 +174,16 @@ namespace BroadenHorizons
                         // Clear target as the mission is complete
                         ship.TargetPlanet = -1;
                     }
-                } else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Freighter)
+                }
+                else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Freighter)
                 {
-                    if (ship.TargetPlanet < 0 || ship.AssignedPlanet < 0 || ship.AssignedPlanet >= _planets.Length || ship.TargetPlanet >= _planets.Length)
-                        continue;
-
                     var originPos = new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos);
                     var targetPos = new Vector2(_planets[ship.TargetPlanet].XPos, _planets[ship.TargetPlanet].YPos);
-                    float distance = Vector2.Distance(originPos, targetPos);
-                    int speed = Math.Max(1, GameData.ShipTypes[ship.TypeIndex].Speed);
-                    int oneWayTurns = (int)Math.Ceiling(distance / speed);
-                    oneWayTurns = Math.Max(1, oneWayTurns);
-
-                    int launchTurn = ship.FinalTurnAction - oneWayTurns;
+                    int totalTripTurns = ship.FinalTurnAction - ship.BeginTurnAction;
                     float progress;
-                    if (currentTurn <= launchTurn) progress = 0f;
+                    if (currentTurn <= ship.BeginTurnAction) progress = 0f;
                     else if (currentTurn >= ship.FinalTurnAction) progress = 1f;
-                    else progress = (currentTurn - launchTurn) / (float)oneWayTurns;
+                    else progress = (currentTurn - ship.BeginTurnAction) / (float)totalTripTurns;
 
                     Vector2 currentPos = Vector2.Lerp(originPos, targetPos, progress);
                     ship.CurrentPosition = currentPos;
@@ -224,8 +205,56 @@ namespace BroadenHorizons
                         ship.CargoMat = 0;
                     }
                 }
-            }
+                else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Terraformer)
+                {
+                    // Adjust temperature
+                    var planet = _planets[ship.AssignedPlanet];
 
+                    if (planet.Status == PlanetStatus.Owned || planet.Status == PlanetStatus.Explored)
+                    {
+                        int oldTemp = planet.Temperature;
+                        int difTemp = 0;
+                        if (planet.Temperature > GameData.TemperatureRanges[2].MaxTemp)
+                        {
+                            difTemp = -Constants.TERRAFORMER_TEMP_CHANGE;
+                        }
+                        else if (planet.Temperature < GameData.TemperatureRanges[2].MinTemp)
+                        {
+                            difTemp = Constants.TERRAFORMER_TEMP_CHANGE;
+                        }
+                        if (difTemp != 0)
+                        {
+                            planet.Temperature += difTemp;
+                            messages.Add($"{ship.Name} adjusted temperature on {planet.Name} (From {oldTemp} to {planet.Temperature})");
+                        }
+                    }
+                    //Update position
+                    if (ship.Status == ShipStatus.InTransit)
+                    {
+                        var originPos = new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos);
+                        var targetPos = new Vector2(_planets[ship.TargetPlanet].XPos, _planets[ship.TargetPlanet].YPos);
+                        int totalTripTurns = ship.FinalTurnAction - ship.BeginTurnAction;
+                        float progress;
+                        if (currentTurn <= ship.BeginTurnAction) progress = 0f;
+                        else if (currentTurn >= ship.FinalTurnAction) progress = 1f;
+                        else progress = (currentTurn - ship.BeginTurnAction) / (float)totalTripTurns;
+
+                        Vector2 currentPos = Vector2.Lerp(originPos, targetPos, progress);
+                        ship.CurrentPosition = currentPos;
+
+                        if (currentTurn >= ship.FinalTurnAction)
+                        {
+                            var targetPlanet = _planets[ship.TargetPlanet];
+                            messages.Add($"Terraformer arrived at {targetPlanet.Name}");
+
+                            ship.AssignedPlanet = ship.TargetPlanet;
+                            ship.Status = ShipStatus.Docked;
+                            ship.CurrentPosition = targetPos;
+                            ship.TargetPlanet = -1;
+                        }
+                    }
+                }
+            }
             return messages;
         }
 
@@ -269,7 +298,7 @@ namespace BroadenHorizons
                         EnergyNeeded = energies[selectedIndex],
                         TargetPlanet = selectedPlanetIndex
                     };
-                    LaunchShip(ship, launchData);
+                    LaunchProbeShip(ship, launchData);
                 }
             }, planetData.Select(data => data.HasEnoughEnergy).ToList());
         }
@@ -312,6 +341,51 @@ namespace BroadenHorizons
             }, planetData.Select(data => data.HasEnoughEnergy).ToList());
         }
 
+        public void ShowTerraformerLaunchMenu(Ship ship, int turn)
+        {
+            var planetData = new List<(int PlanetIndex, string name, float Distance, int TurnsNeeded, int EnergyNeeded, bool HasEnoughEnergy, string OptionString)>();
+
+            for (int i = 0; i < _planets.Length; i++)
+            {
+                if (i != ship.AssignedPlanet && (_planets[i].Status == PlanetStatus.Explored || _planets[i].Status == PlanetStatus.Owned))
+                {
+                    float distance = Vector2.Distance(
+                        new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos),
+                        new Vector2(_planets[i].XPos, _planets[i].YPos)
+                    );
+                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex].Speed);
+                    turnsNeeded = Math.Max(1, turnsNeeded);
+                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex].EnergyperTurn;
+                    string optionString = $"{_planets[i].Name} ({distance:0} units) Temp: {_planets[i].Temperature} Turns: {turnsNeeded} Energy: {energyNeeded}";
+
+                    planetData.Add((i, _planets[i].Name, distance, turnsNeeded, energyNeeded, energyNeeded <= _planets[ship.AssignedPlanet].Energy, optionString));
+                }
+            }
+
+            planetData.Sort((a, b) => a.Distance.CompareTo(b.Distance));
+
+            var optionStrings = planetData.Select(data => data.OptionString).ToList();
+            var targetPlanets = planetData.Select(data => data.PlanetIndex).ToList();
+            var turns = planetData.Select(data => data.TurnsNeeded).ToList();
+            var energies = planetData.Select(data => data.EnergyNeeded).ToList();
+
+            _messageManager.ShowSelection($"Choose planet to travel to", optionStrings, selectedIndex =>
+            {
+                if (selectedIndex >= 0)
+                {
+                    int selectedPlanetIndex = targetPlanets[selectedIndex];
+                    LaunchData launchData = new LaunchData
+                    {
+                        Turn = turn,
+                        TurnsNeeded = turns[selectedIndex],
+                        EnergyNeeded = energies[selectedIndex],
+                        TargetPlanet = selectedPlanetIndex
+                    };
+                    LaunchTerraformerShip(ship, selectedPlanetIndex, turn, energies[selectedIndex], turns[selectedIndex]);
+                }
+            }, planetData.Select(data => data.HasEnoughEnergy).ToList());
+        }
+
         private void StartFreighterCargoSelection(Ship ship, int targetPlanet, int turn, int energyCost, int turnsNeeded)
         {
             var originPlanet = _planets[ship.AssignedPlanet];
@@ -319,7 +393,7 @@ namespace BroadenHorizons
             int maxMat = originPlanet.Mat;
             int capacity = GameData.ShipTypes[ship.TypeIndex].Capacity;
 
-            _messageManager.ShowFreighterCargoSelection($"Select cargo for freighter to { _planets[targetPlanet].Name} (Capacity: {capacity})", maxFood, maxMat, capacity, (foodAmount, matAmount) =>
+            _messageManager.ShowFreighterCargoSelection($"Select cargo for freighter to {_planets[targetPlanet].Name} (Capacity: {capacity})", maxFood, maxMat, capacity, (foodAmount, matAmount) =>
             {
                 LaunchFreighter(ship, targetPlanet, foodAmount, matAmount, turn, energyCost, turnsNeeded);
             });
@@ -335,6 +409,7 @@ namespace BroadenHorizons
             origin.Energy -= energyCost;
 
             // Setup ship
+            ship.BeginTurnAction = turn;
             ship.TargetPlanet = targetPlanet;
             ship.Status = ShipStatus.InTransit;
             ship.FinalTurnAction = turn + turnsNeeded;
@@ -345,7 +420,21 @@ namespace BroadenHorizons
                                 $"It will arrive in {turnsNeeded} turns.", MessageType.Info);
         }
 
-        public void ShowColonyLaunchMenu(Ship ship, int turn)
+        public void LaunchTerraformerShip(Ship ship, int targetPlanet, int turn, int energyCost, int turnsNeeded)
+        {
+            var origin = _planets[ship.AssignedPlanet];
+
+            // Setup ship
+            ship.BeginTurnAction = turn;
+            ship.TargetPlanet = targetPlanet;
+            ship.Status = ShipStatus.InTransit;
+            ship.FinalTurnAction = turn + turnsNeeded;
+            origin.Energy -= energyCost;
+            _messageManager.Show($"Terraformer launched to {_planets[targetPlanet].Name}.\n" +
+                                $"It will arrive in {turnsNeeded} turns.", MessageType.Info);
+        }
+
+        /*public void ShowColonyLaunchMenu(Ship ship, int turn)
         {
             var planetData = new List<(int PlanetIndex, float Distance, int TurnsNeeded, int EnergyNeeded, string OptionString)>();
 
@@ -388,9 +477,9 @@ namespace BroadenHorizons
                     LaunchShip(ship, launchData);
                 }
             });
-        }
+        }*/
 
-        public void LaunchShip(Ship ship, LaunchData data, List<int> loadUnits = null)
+        public void LaunchProbeShip(Ship ship, LaunchData data, List<int> loadUnits = null)
         {
             // Compute round-trip values (one-way from data)
             int oneWayTurns = Math.Max(1, data.TurnsNeeded);
@@ -407,6 +496,7 @@ namespace BroadenHorizons
 
             _planets[ship.AssignedPlanet].Energy -= roundTripEnergy;
 
+            ship.BeginTurnAction = data.Turn;
             ship.TargetPlanet = data.TargetPlanet;
             ship.Status = ShipStatus.InTransit;
             ship.FinalTurnAction = data.Turn + roundTripTurns;
@@ -415,15 +505,7 @@ namespace BroadenHorizons
             {
                 _planets[ship.TargetPlanet].Status = PlanetStatus.ProbeEnRoute;
             }
-
             _messageManager.Show($"Probe launched to {_planets[ship.TargetPlanet].Name}.\nIt will arrive there in {oneWayTurns} turns and come back at turn {ship.FinalTurnAction}", MessageType.Info);
-
-            // Load units when relevant (freighter)
-            if (loadUnits != null && GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Freighter)
-            {
-                ship.LoadedUnits = new List<int>(loadUnits);
-                // caller must remove units from origin planet if needed
-            }
         }
     }
 }

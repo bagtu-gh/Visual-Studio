@@ -8,6 +8,7 @@
     <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Builder.png</File>
     <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/City.png</File>
     <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Colonist.png</File>
+    <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/ColonyShip.png</File>
     <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Desert.png</File>
     <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Energy.png</File>
     <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Explorer.png</File>
@@ -34,6 +35,7 @@
     <File>c:/Users/Usuario/Visual Studio/Broaden Horizons/Content/images/Volcano.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

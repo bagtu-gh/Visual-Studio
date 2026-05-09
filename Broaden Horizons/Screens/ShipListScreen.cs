@@ -119,12 +119,6 @@ namespace BroadenHorizons.Screens
 
             // Restart normal spritebatch for footer
             _game._spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
-
-            // Footer help
-            string help = "ESC / S  —  Back";
-            Vector2 helpSize = _game._bitmapFont.MeasureString(help);
-            _game._spriteBatch.DrawString(_game._bitmapFont, help,
-                new Vector2((Constants.SCREEN_WIDTH - helpSize.X) / 2, Constants.SCREEN_HEIGHT - 35), Color.Gray);
         }
 
         private void DrawTableHeader(float x, float y)
