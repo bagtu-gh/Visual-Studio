@@ -11,8 +11,8 @@ namespace BroadenHorizons.Screens
     {
         private readonly BH _game;
         private Vector2 _scrollOffset = Vector2.Zero;
-        private const float RowHeight = 48f;
-        private const float HeaderHeight = 48f;
+        private const float RowHeight = Constants.LIST_ROW_HEIGHT;
+        private const float HeaderHeight = Constants.LIST_HEADER_HEIGHT;
         private readonly float[] colWidths = [250, 140, 200, 130, 200, 200, 110, 110];
         private readonly int UnderlinePadding = 15;
 

@@ -51,15 +51,24 @@ namespace BroadenHorizons
             // Add a starting explorer to the home planet
             var startingUnit = new Unit
             {
-                ID = nextUnitId,
+                ID = nextUnitId++,
                 Name = "Explorer",
                 TypeIndex = UnitTypeEnum.Explorer.GetHashCode(),
                 Planet = PlanetId,
                 Region = 0,
-                Action = 0
+                Status = UnitStatus.Idle
             };
             _units.Add(startingUnit);
-            nextUnitId++;
+            var startingUnit2 = new Unit
+            {
+                ID = nextUnitId++,
+                Name = "Builder",
+                TypeIndex = UnitTypeEnum.Builder.GetHashCode(),
+                Planet = PlanetId,
+                Region = 0,
+                Status = UnitStatus.Idle
+            };
+            _units.Add(startingUnit2);
         }
 
         public static List<int> GetAvailableDestinations(Unit unit, Planet planet, int[] neighbors, List<HabitatType> habitatTypes, List<PlanetImprovement> improvements)
@@ -121,7 +130,7 @@ namespace BroadenHorizons
                 TypeIndex = unitTypeIndex,
                 Planet = planetId,
                 Region = 0,
-                Action = 1
+                Status = UnitStatus.Busy
             };
 
             _units.Add(unit);
@@ -149,7 +158,7 @@ namespace BroadenHorizons
             ref List<int> possibleDestinations,
             MessageManager messageManager)
         {
-            if (unit.Action == 1) // Busy unit
+            if (unit.Status == UnitStatus.Busy)
             {
                 var ta = turnActions.FirstOrDefault(t => t.PlanetCode == currentPlanetIndex && t.UnitID == unit.ID);
                 if (ta != null)
@@ -176,7 +185,7 @@ namespace BroadenHorizons
             }
             else // Free unit
             {
-                selectedUnitIndex = unit.ID; // or keep index in list if preferred
+                selectedUnitIndex = unit.ID;
                 possibleDestinations = GetAvailableDestinations(unit, planet, neighbors, habitatTypes, improvements);
 
                 if (possibleDestinations.Count == 0)

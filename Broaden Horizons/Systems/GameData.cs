@@ -155,7 +155,7 @@ namespace BroadenHorizons
             int boxDistance = (Constants.SCREEN_HEIGHT - Constants.TOP_BAR_HEIGHT) / ((int)Technologies.Max(tech => tech.GridPosition.Y) + 2); // Distance between boxes
             int startX = Constants.TECH_TREE_HORIZ_MARGIN;
             int xdistance = Constants.TECH_TREE_XDISTANCE;
-            int startY = Constants.TOP_BAR_HEIGHT; // Starting Y position
+            int startY = Constants.TOP_BAR_HEIGHT;
             // Define a list of Vector2 positions for each technology
             for (int i = 0; i < Technologies.Count; i++)
             {

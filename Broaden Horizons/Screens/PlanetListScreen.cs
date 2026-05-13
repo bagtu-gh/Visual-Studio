@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.BitmapFonts;
 using System;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace BroadenHorizons.Screens
 {
@@ -12,19 +13,19 @@ namespace BroadenHorizons.Screens
         private readonly BH _game;
         private Vector2 _scrollOffset = Vector2.Zero;
 
-        private const float RowHeight = 48f;
-        private const float HeaderHeight = 48f;
+        private const float RowHeight = Constants.LIST_ROW_HEIGHT;
+        private const float HeaderHeight = Constants.LIST_HEADER_HEIGHT;
         private readonly float[] colWidths = [200, 80, 150, 70, 80, 325, 70, 70];
         private readonly bool[] isCentered = [false, true, false, true, true, false, true, true];
-        private readonly string[] headers = { 
-            "Planet", 
-            "Size", 
+        private readonly string[] headers = {
+            "Planet",
+            "Size",
             "Status",
             "Res",
-            "Temp", 
-            "Production", 
-            "Pop", 
-            "Units" 
+            "Temp",
+            "Production",
+            "Pop",
+            "Units"
         };
         private readonly int UnderlinePadding = 15;
 
@@ -45,6 +46,36 @@ namespace BroadenHorizons.Screens
                 return;
             }
 
+            // Clicking on a planet row goes to that planet's screen (only if explored/owned)
+            if (mouse.LeftButton == ButtonState.Pressed && _game._prevMouse.LeftButton == ButtonState.Released)
+            {
+                float rowY = Constants.TOP_BAR_HEIGHT + 20 + 75 + HeaderHeight - _scrollOffset.Y; // headerY + HeaderHeight
+                float startX = 50f;
+                float totalRowWidth = colWidths.Sum();
+
+                for (int i = 0; i < Constants.NUM_PLANETS; i++)
+                {
+                    if (mouse.Y >= rowY && mouse.Y <= rowY + RowHeight &&
+                        mouse.X >= startX && mouse.X <= startX + totalRowWidth)
+                    {
+                        var planet = _game.Planets[i];
+                        if (planet.Status == PlanetStatus.Owned || planet.Status == PlanetStatus.Explored)
+                        {
+                            _game.CurrentPlanet = i;
+                            _game.CurrentState = BH.GameState.PlanetScreen;
+                            _game.requireMouseRelease = true;
+                            return;
+                        }
+                        else if (planet.Status == PlanetStatus.Unexplored)
+                        {
+                            _game.messageManager.Show($"{planet.Name} is not explored yet", MessageType.Info);
+                            return;
+                        }
+                    }
+                    rowY += RowHeight;
+                }
+            }
+
             // Scroll handling
             if (mouse.ScrollWheelValue != _game._prevMouse.ScrollWheelValue)
             {
@@ -59,7 +90,7 @@ namespace BroadenHorizons.Screens
 
         private float GetMaxScroll()
         {
-            float totalContent = Constants.NUM_PLANETS * RowHeight + HeaderHeight + 150;
+            float totalContent = Constants.NUM_PLANETS * RowHeight + HeaderHeight + RowHeight;
             return Math.Max(0, totalContent - (Constants.SCREEN_HEIGHT - Constants.TOP_BAR_HEIGHT - 60));
         }
 
@@ -209,21 +240,31 @@ namespace BroadenHorizons.Screens
             Color tempColor = planet.Temperature switch
             {
                 <= -21 => new Color(100, 180, 255),   // Frigid
-                <= 15  => new Color(135, 206, 250),   // Cold
-                <= 40  => new Color(144, 238, 144),   // Temperate (ideal)
-                <= 65  => new Color(255, 165, 0),     // Hot
-                _      => new Color(220, 50, 50)      // Scorching
+                <= 15 => new Color(135, 206, 250),   // Cold
+                <= 40 => new Color(144, 238, 144),   // Temperate (ideal)
+                <= 65 => new Color(255, 165, 0),     // Hot
+                _ => new Color(220, 50, 50)      // Scorching
             };
-            sizeText = planet.Temperature.ToString();
-            sizeMeasure = _game._bitmapFont.MeasureString(sizeText);
-            sizeCenterX = currentX + (colWidths[4] - sizeMeasure.X) / 2f;
-            _game._spriteBatch.DrawString(_game._bitmapFont, planet.Temperature.ToString(),
-                new Vector2(sizeCenterX, textY), tempColor);
+            if (planet.Status == PlanetStatus.Owned || planet.Status == PlanetStatus.Explored)
+            {
+                sizeText = planet.Temperature.ToString();
+                sizeMeasure = _game._bitmapFont.MeasureString(sizeText);
+                sizeCenterX = currentX + (colWidths[4] - sizeMeasure.X) / 2f;
+                _game._spriteBatch.DrawString(_game._bitmapFont, planet.Temperature.ToString(),
+                    new Vector2(sizeCenterX, textY), tempColor);
+            }
+            else
+            {
+                sizeText = "---";
+                sizeMeasure = _game._bitmapFont.MeasureString(sizeText);
+                sizeCenterX = currentX + (colWidths[4] - sizeMeasure.X) / 2f;
+                _game._spriteBatch.DrawString(_game._bitmapFont, "---", new Vector2(sizeCenterX, textY), Color.Gray);
+            }
             currentX += colWidths[4];
 
             // 6. Production
             var production = _game._productionManager.CalculateProduction(planetIndex);
-            string prod = $"F:{planet.Food} {Functions.GetSignedValue(production.Food)} M:{planet.Mat} {Functions.GetSignedValue(production.Materials)} S+{production.Science} E:{planet.Energy} {Functions.GetSignedValue(production.Energy)}";
+            string prod = $"F:{planet.Food}({Functions.GetSignedValue(production.Food)}) M:{planet.Mat}({Functions.GetSignedValue(production.Materials)}) S+{production.Science} E:{planet.Energy}({Functions.GetSignedValue(production.Energy)})";
             if (planet.Status == PlanetStatus.Owned)
             {
                 _game._spriteBatch.DrawString(_game._bitmapFont, prod, new Vector2(currentX, textY), Color.LightGreen);

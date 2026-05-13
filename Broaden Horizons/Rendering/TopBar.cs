@@ -17,11 +17,11 @@ namespace BroadenHorizons
         private readonly Texture2D _pixel;
         private readonly Dictionary<int, Texture2D> _textures;
 
-        // Texture IDs used in BH.cs
         private const int TEX_FOOD = 6;
         private const int TEX_MAT = 7;
         private const int TEX_SCI = 8;
         private const int TEX_ENE = 9;
+        private const float resourceSpacing = 130f;
 
         public enum TopBarMode
         {
@@ -62,7 +62,6 @@ namespace BroadenHorizons
             float startX = _font.MeasureString($"TURN: {turn}").Width
                             + Constants.PLANET_TOP_BAR_LEFT_PAD
                             + Constants.PLANET_TOP_BAR_TEXT_DIST;
-            float resourceSpacing = 150f;
             float currentX = startX;
 
             // Resources
@@ -228,7 +227,7 @@ namespace BroadenHorizons
                             + Constants.PLANET_TOP_BAR_LEFT_PAD
                             + Constants.PLANET_TOP_BAR_TEXT_DIST;
 
-            float resourceSpacing = 150f;
+            //float resourceSpacing = 150f;
             float currentX = startX;
 
             // resources in the exact order required

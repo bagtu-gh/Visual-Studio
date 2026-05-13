@@ -16,10 +16,36 @@ namespace BroadenHorizons
             public Action OnClick { get; set; }
         }
 
-        private static List<Button> InitializeGalaxyMapButtons(MessageManager messageManager, Action<GameTime> endTurnAction, Action switchToTechTree, List<Tech> techs, int globalScience, GameTime gameTime)
+        private static List<Button> InitializeGalaxyMapButtons(MessageManager messageManager, Action<GameTime> endTurnAction, Action switchToTechTree, Action switchToPlanetList, Action switchToShipsList, List<Tech> techs, int globalScience, GameTime gameTime)
         {
             var buttons = new List<Button>();
             int buttonY = (Constants.TOP_BAR_HEIGHT - Constants.TOP_BAR_BUTTON_HEIGHT) / 2;
+
+            // Ships Screen Button
+            buttons.Add(new Button
+            {
+                Rect = new Rectangle(
+                    Constants.SCREEN_WIDTH - 15 - Constants.TOP_BAR_BUTTON_WIDTH * 5 - Constants.TOP_BAR_BUTTON_SPACING * 4,
+                    buttonY,
+                    Constants.TOP_BAR_BUTTON_WIDTH,
+                    Constants.TOP_BAR_BUTTON_HEIGHT
+                ),
+                Label = "(S)hips",
+                OnClick = switchToShipsList
+            });
+
+            // Planet Screen Button
+            buttons.Add(new Button
+            {
+                Rect = new Rectangle(
+                    Constants.SCREEN_WIDTH - 15 - Constants.TOP_BAR_BUTTON_WIDTH * 4 - Constants.TOP_BAR_BUTTON_SPACING * 3,
+                    buttonY,
+                    Constants.TOP_BAR_BUTTON_WIDTH,
+                    Constants.TOP_BAR_BUTTON_HEIGHT
+                ),
+                Label = "(P)lanets",
+                OnClick = switchToPlanetList
+            });
 
             // Tech Tree Button
             buttons.Add(new Button
@@ -82,7 +108,7 @@ namespace BroadenHorizons
 
         public static void DrawGalaxyMapButtons(SpriteBatch spriteBatch, Texture2D pixel, BitmapFont font, Vector2 mousePos, bool highlightTechTreeButton, List<Tech> techs, int globalScience, GameTime gameTime)
         {
-            foreach (var button in InitializeGalaxyMapButtons(null, null, null, techs, globalScience, gameTime)) // Pass null for actions as they aren't needed for drawing
+            foreach (var button in InitializeGalaxyMapButtons(null, null, null, null, null, techs, globalScience, gameTime)) // Pass null for actions as they aren't needed for drawing
             {
                 var Color = Constants.TOP_BAR_BUTTON_COLOR;
                 var ColorHighlight = Constants.TOP_BAR_BUTTON_HIGHLIGHT_COLOR;
@@ -110,12 +136,12 @@ namespace BroadenHorizons
             }
         }
 
-        public static void UpdateGalaxyMapButtons(GameTime gameTime, MouseState mouse, MouseState prevMouse, MessageManager messageManager, Action<GameTime> endTurnAction, Action switchToTechTree, List<Tech> techs, int globalScience)
+        public static void UpdateGalaxyMapButtons(GameTime gameTime, MouseState mouse, MouseState prevMouse, MessageManager messageManager, Action<GameTime> endTurnAction, Action switchToTechTree, Action switchToPlanetList, Action switchToShipsList, List<Tech> techs, int globalScience)
         {
             if (mouse.LeftButton == ButtonState.Pressed && prevMouse.LeftButton == ButtonState.Released)
             {
                 Vector2 mousePos = mouse.Position.ToVector2();
-                foreach (var button in InitializeGalaxyMapButtons(messageManager, endTurnAction, switchToTechTree, techs, globalScience, gameTime))
+                foreach (var button in InitializeGalaxyMapButtons(messageManager, endTurnAction, switchToTechTree, switchToPlanetList, switchToShipsList, techs, globalScience, gameTime))
                 {
                     if (button.Rect.Contains(mousePos))
                     {

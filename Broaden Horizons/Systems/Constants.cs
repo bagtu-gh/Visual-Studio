@@ -9,7 +9,7 @@ namespace BroadenHorizons
         public const int SCREEN_WIDTH = 1600;
         public const int SCREEN_HEIGHT = 900;
         public const int MIN_PLANET_DISTANCE = 150;
-        public static int NUM_PLANETS = 20;
+        public static int NUM_PLANETS { get; set; } = 20;
         public const int TERRAFORMER_TEMP_CHANGE = 1;
         public const float POPULATION_BASE_GROWTH = 0.1f;
         public const float POPULATION_FOOD_GROWTH = 0.05f;
@@ -23,6 +23,7 @@ namespace BroadenHorizons
         public const int UNIT_MENU_MAX_X = 115;
         public const int UNIT_MENU_MIN_Y = 100;
         public const int UNIT_MENU_MAX_Y = 190;
+        public const int UNIT_MENU_ROW_HEIGHT = 90;
         public const float UNEXPLORED_SCALE = 0.08f;
         public const float UNIT_SCALE = 0.05f;
         public const float MENU_UNIT_SCALE = 0.11f;
@@ -60,16 +61,19 @@ namespace BroadenHorizons
         public const int RECRUIT_MENU_Y = 100;
         public const int RECRUIT_HEIGHT = 90;
 
+        public const float LIST_ROW_HEIGHT = 48f;
+        public const float LIST_HEADER_HEIGHT = 48f;
+
         public const int PLANET_TOP_BAR_IMGTEXT_PAD = 10;
         public const int PLANET_TOP_BAR_LEFT_PAD = 15;
         public const int PLANET_TOP_BAR_TEXT_DIST = 20;
 
         // Defaults for planet production
-        public static int STARTING_FOOD = 6;
+        public static int STARTING_FOOD { get; set; } = 6;
         public const int STARTING_MATERIALS = 2;
-        public const int STARTING_SCIENCE = 4;
-        public const int STARTING_ENERGY = 200;
-        public const int STARTING_POPULATION = 60;
+        public const int STARTING_SCIENCE = 2;
+        public const int STARTING_ENERGY = 20;
+        public const int STARTING_POPULATION = 70;
         public const int DEFAULT_PLANET_TEXTURE = 2;
 
         public static readonly int REGION_BONUS_MAX_PER_PLANET = 6; // Divisor for planet dimensions to get max region bonuses

@@ -51,7 +51,7 @@ namespace BroadenHorizons
             float minDist = float.MaxValue;
             int closest = -1;
             float threshold = Constants.HEX_SIZE / 2f;
-            for (int t = 0; t <= 36; t++)
+            for (int t = 0; t <= Constants.MAX_PLANET_DIMENS; t++)
             {
                 float dx = mx - regionDatas[t].XC;
                 float dy = my - regionDatas[t].YC;

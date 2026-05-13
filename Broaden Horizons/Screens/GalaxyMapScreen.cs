@@ -72,11 +72,30 @@ namespace BroadenHorizons.Screens
 
             if (mouse.LeftButton == ButtonState.Pressed && _game._prevMouse.LeftButton == ButtonState.Released)
             {
-                UIHelpers.UpdateGalaxyMapButtons(gameTime, mouse, _game._prevMouse, _game.messageManager, _game.EndTurn, () =>
-                {
-                    _game.PrevState = _game.CurrentState;
-                    _game.CurrentState = BH.GameState.TechTree;
-                }, _game.Techs, _game.GlobalScience);
+                UIHelpers.UpdateGalaxyMapButtons(
+                    gameTime,
+                    mouse,
+                    _game._prevMouse,
+                    _game.messageManager,
+                    _game.EndTurn,
+                    () =>
+                    {  // Ships List
+                        _game.PrevState = _game.CurrentState;
+                        _game.CurrentState = BH.GameState.ShipList;
+                    },
+                    () =>
+                    {  // Tech Tree
+                        _game.PrevState = _game.CurrentState;
+                        _game.CurrentState = BH.GameState.TechTree;
+                    },
+                    () =>
+                    {  // Planets List
+                        _game.PrevState = _game.CurrentState;
+                        _game.CurrentState = BH.GameState.PlanetList;
+                    },
+                    _game.Techs,
+                    _game.GlobalScience
+                );
 
                 for (int i = 0; i < Constants.NUM_PLANETS; i++)
                 {

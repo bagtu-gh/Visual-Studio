@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace BroadenHorizons
 {
     public class Unit
@@ -10,7 +7,7 @@ namespace BroadenHorizons
         public int TypeIndex { get; set; }
         public int Planet { get; set; }
         public int Region { get; set; }
-        public int Action { get; set; }
+        public UnitStatus Status { get; set; }
     }
 
     public class UnitType
@@ -41,10 +38,19 @@ namespace BroadenHorizons
         Colonist = 7
     }
 	
-	public enum UnitActionState
+	public enum UnitStatus
 	{
 	    Occupied = -1,
 	    Idle = 0,
 	    Busy = 1
 	}
+
+    public enum UnitActionType
+    {
+        None = 0,
+        Building = 1,
+        Recruiting = 2,
+        MovingOrExploring = 3
+    }
+
 }

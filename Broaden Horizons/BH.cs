@@ -28,14 +28,6 @@ namespace BroadenHorizons
         public int ImprovementIndex { get; set; } = -1;
     }
 
-    public enum UnitActionType
-    {
-        None = 0,
-        Building = 1,
-        Recruiting = 2,
-        MovingOrExploring = 3
-    }
-
     public partial class BH : Game
     {
         internal GraphicsDeviceManager _graphics;
@@ -101,20 +93,20 @@ namespace BroadenHorizons
         private int _globalScience = Constants.STARTING_SCIENCE;
         private int _currentResearch = -1;
         private List<HabitatBonus> _globalHabitatBonuses = new List<HabitatBonus>();
-        
+
         // Properties for tech state
         internal int GlobalScience
         {
             get => _techManager?.GlobalScience ?? _globalScience;
             set { if (_techManager != null) _techManager.GlobalScience = value; else _globalScience = value; }
         }
-        
+
         internal int CurrentResearch
         {
             get => _techManager?.CurrentResearch ?? _currentResearch;
             set { if (_techManager != null) _techManager.CurrentResearch = value; else _currentResearch = value; }
         }
-        
+
         internal List<HabitatBonus> GlobalHabitatBonuses
         {
             get => _techManager?.GlobalHabitatBonuses ?? _globalHabitatBonuses;
@@ -244,22 +236,28 @@ namespace BroadenHorizons
             Techs = [.. GameData.Technologies];
             GameData.AssignTechPositions();
 
-            // Initialize Planets and RegionDatas if not loaded from save
-            if (Planets == null || Planets.Length == 0 || Planets[0] == null)
+            // === RESIZE PLANETS ARRAY IF NECESSARY ===
+            if (Planets == null || Planets.Length != Constants.NUM_PLANETS)
             {
                 Planets = new Planet[Constants.NUM_PLANETS];
-                for (int i = 0; i < Planets.Length; i++)
-                {
-                    Planets[i] = new Planet();
-                    for (int j = 0; j < 37; j++)
-                    {
-                        Planets[i].Habitat[j] = Constants.NON_EXISTING_HABTITAT;
-                        Planets[i].RegionBonusRegions[j] = -1;
-                    }
-                }
             }
 
-            for (int i = 0; i < RegionDatas.Length; i++) RegionDatas[i] = new RegionData();
+            for (int i = 0; i < Constants.NUM_PLANETS; i++)
+            {
+                if (Planets[i] == null)
+                    Planets[i] = new Planet();
+
+                // Reset lists/arrays that depend on planet size
+                Planets[i].Habitat = [.. Enumerable.Repeat(Constants.NON_EXISTING_HABTITAT, 37)];
+                Planets[i].HabitatPopulated = [.. Enumerable.Repeat(false, 37)];
+                Planets[i].Improvements = [.. Enumerable.Repeat(-1, 37)];
+                Planets[i].OccupiedByUnit = [.. Enumerable.Repeat(-1, 37)];
+                Planets[i].RegionBonusRegions = [.. Enumerable.Repeat(-1, 37)];
+                Planets[i].RegionBonuses = [];
+            }
+
+            for (int i = 0; i < RegionDatas.Length; i++)
+                RegionDatas[i] = new RegionData();
 
             _regionBonusManager.UpdateHabitats(HabitatTypes);
             _unitManager = new UnitManager(this, UnitTypes, messageManager);
@@ -289,16 +287,16 @@ namespace BroadenHorizons
 
             Functions.GenHex(RegionDatas);
         }
-		
-		private void ResetGameData()
-		{
-			HabitatTypes.Clear();
-			UnitTypes.Clear();
-			PlanetImprovements.Clear();
-			PlanetRegionBonuses.Clear();
-			TurnActions.Clear();
-			PlanetNames.Clear();
-		}
+
+        private void ResetGameData()
+        {
+            HabitatTypes.Clear();
+            UnitTypes.Clear();
+            PlanetImprovements.Clear();
+            PlanetRegionBonuses.Clear();
+            TurnActions.Clear();
+            PlanetNames.Clear();
+        }
 
         internal void NewGame()
         {
@@ -321,13 +319,19 @@ namespace BroadenHorizons
             for (int i = 0; i < Constants.NUM_PLANETS; i++)
             {
                 hasRecruitedThisTurn[i] = false;
-                Planets[i].Improvements = [.. Enumerable.Repeat(-1, Constants.MAX_PLANET_DIMENS + 1)];
-                Planets[i].OccupiedByUnit = [.. Enumerable.Repeat(-1, Constants.MAX_PLANET_DIMENS + 1)];
-                //if (i != 0) Planets[i].Status = PlanetStatus.Unexplored; TEMPORARY: all planets start as owned for testing
-                if (i >= 4) 
+                //if (i != 0) Planets[i].Status = PlanetStatus.Unexplored; TEMPORARY
+                if (i >= 4)
                     Planets[i].Status = PlanetStatus.Unexplored;
                 else
                     Planets[i].Status = PlanetStatus.Explored;
+                if (i == 1)
+                    Planets[i].Status = PlanetStatus.Owned;
+                Planets[i].Habitat[0] = 0;
+                Planets[i].Food = Constants.STARTING_FOOD;
+                Planets[i].Mat = Constants.STARTING_MATERIALS;
+                Planets[i].Energy = Constants.STARTING_ENERGY;
+                Planets[i].Population = Constants.STARTING_POPULATION;
+                Planets[i].HabitatPopulated[0] = true;
             }
 
             // Stars
@@ -390,7 +394,7 @@ namespace BroadenHorizons
 
             CurrentState = GameState.GalaxyMap;
         }
-        
+
         protected override void Update(GameTime gameTime)
         {
             if (IsActive)
@@ -466,7 +470,7 @@ namespace BroadenHorizons
         {
             var planet = Planets[planetIndex];
             var tooltipLines = new List<string>{
-                "Summary:" 
+                "Summary:"
             };
 
             bool hasExplored = false;
@@ -546,7 +550,7 @@ namespace BroadenHorizons
                         Planets[ta.PlanetCode].Improvements[ta.TargetReg] = ta.ImprovementIndex;
                         var improvement = PlanetImprovements[ta.ImprovementIndex];
                         string planetName = Planets[ta.PlanetCode].Name;
-                        string msg = $"Your builder has finished {improvement.Name} at {planetName},\nit will produce {improvement.FoodProd} food, {improvement.MatProd} materials, {improvement.SciProd} science,\na {improvement.AllowedUnit} can occupy the building to increase even more the production.";
+                        string msg = $"Your builder has finished {improvement.Name} at {planetName},\nit will produce {improvement.FoodProd} food, {improvement.MatProd} materials, {improvement.SciProd} science,\na {improvement.AllowedUnit} can occupy the building to increase production.";
                         summary.Add(msg);
                     }
                     else if (ta.UnitActionType == UnitActionType.Recruiting)
@@ -573,7 +577,9 @@ namespace BroadenHorizons
                             {
                                 summary.Add($"A new habitat {habitat.Name} has been discovered at {planetName},\nit will yield {habitat.FoodProd} food, {habitat.MatProd} materials, and {habitat.SciProd} science.\nIt has been automatically populated with {habitat.PopNeeded} colonists\nYour explorer is now free to explore more!");
                                 Planets[ta.PlanetCode].HabitatPopulated[targetRegion] = true;
-                            } else {
+                            }
+                            else
+                            {
                                 summary.Add($"A new habitat {habitat.Name} has been discovered at {planetName},\nit would yield {habitat.FoodProd} food, {habitat.MatProd} materials, and {habitat.SciProd} science\nif populated with {habitat.PopNeeded} colonists that are not currently available.\nYour explorer is now free to explore more!");
                             }
 
@@ -595,7 +601,7 @@ namespace BroadenHorizons
                             summary.Add(msg);
                         }
                     }
-                    SelectedUnit.Action = 0;
+                    SelectedUnit.Status = UnitStatus.Idle;
                     TurnActions.RemoveAt(i);
                 }
             }
@@ -612,7 +618,7 @@ namespace BroadenHorizons
             {
                 summary.Add("Warning! No research in progress.\nVisit the Tech Tree to start a new research project.");
             }
-            
+
             // Always show a message to confirm the turn has ended
             if (summary.Count > 0)
             {

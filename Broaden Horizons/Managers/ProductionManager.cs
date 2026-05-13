@@ -105,7 +105,7 @@ namespace BroadenHorizons
             // Unit maintenance: active units consume maintenance
             foreach (var unit in _unitManager.GetUnitsOnPlanet(planetIndex))
             {
-                if (unit.Action != -1) // only active units count toward maintenance here
+                if (unit.Status != UnitStatus.Occupied) // only active units count toward maintenance here
                 {
                     int unitType = unit.TypeIndex;
                     int foodMaint = _unitTypes[unitType].FoodMaint;

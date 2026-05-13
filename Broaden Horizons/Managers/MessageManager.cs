@@ -52,6 +52,7 @@ namespace BroadenHorizons
 
         private KeyboardState _prevKeyboard;
         private ButtonState _prevMouseLeftButton = ButtonState.Released;
+        private bool _requireMouseRelease = false;
         private int prevScrollWheelValue = 0;
         private int scrollOffset = 0;
         private int maxScroll = 0;
@@ -98,6 +99,7 @@ namespace BroadenHorizons
             _textureNeedsUpdate = true;
             dialogWidthPercent = type == MessageType.Help ? HelpDialogWidthPercent : DialogWidthPercent;
             dialogMaxHeightPercent = type == MessageType.Help ? HelpDialogMaxHeightPercent : DialogMaxHeightPercent;
+            _requireMouseRelease = true;
         }
 
         public void ShowSelection(string title, List<string> options, Action<int> onSelection, List<bool> selectability = null)
@@ -471,7 +473,15 @@ namespace BroadenHorizons
             }
 
             // Mouse click detection
-            bool mouseClicked = mouse.LeftButton == ButtonState.Pressed && _prevMouseLeftButton == ButtonState.Released;
+            if (_requireMouseRelease)
+            {
+                if (mouse.LeftButton == ButtonState.Released)
+                {
+                    _requireMouseRelease = false;
+                }
+            }
+
+            bool mouseClicked = !_requireMouseRelease && mouse.LeftButton == ButtonState.Pressed && _prevMouseLeftButton == ButtonState.Released;
 
             if (Type == MessageType.Info)
             {

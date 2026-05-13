@@ -49,7 +49,7 @@ namespace BroadenHorizons
                 Id = nextShipId++,
                 Name = "Terraformer 2",
                 TypeIndex = ShipTypeEnum.Terraformer.GetHashCode(),
-                AssignedPlanet = planetId,
+                AssignedPlanet = 1,
                 Status = ShipStatus.Docked,
                 CurrentPosition = new Vector2(_planets[planetId].XPos, _planets[planetId].YPos)
             };
@@ -109,153 +109,211 @@ namespace BroadenHorizons
         {
             var messages = new List<string>();
 
-            // Process completed builds
-            var completedBuilds = _ships.Where(s => s.Status == ShipStatus.Building && s.FinalTurnAction == currentTurn).ToList();
+            ProcessCompletedBuilds(currentTurn, messages);
+
+            foreach (var ship in GetActiveShips())
+            {
+                ProcessShip(ship, currentTurn, messages);
+            }
+
+            return messages;
+        }
+
+        private void ProcessCompletedBuilds(int currentTurn, List<string> messages)
+        {
+            var completedBuilds = _ships.Where(s =>
+                s.Status == ShipStatus.Building &&
+                s.FinalTurnAction == currentTurn);
+
             foreach (var ship in completedBuilds)
             {
                 ship.Status = ShipStatus.Docked;
-                ship.CurrentPosition = new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos);
+                ship.CurrentPosition = GetPlanetPosition(ship.AssignedPlanet);
+
                 messages.Add($"{ship.Name} built on {_planets[ship.AssignedPlanet].Name}.");
             }
+        }
 
-            // Update in-transit ships
-            var inTransitShips = _ships.Where(s => s.Status == ShipStatus.InTransit).ToList();
-            var DockedTerraformerShips = _ships.Where(s => s.TypeIndex == (int)ShipTypeEnum.Terraformer && s.Status == ShipStatus.Docked).ToList();
-            var combinedShips = inTransitShips.Concat(DockedTerraformerShips).ToList();
-            foreach (var ship in combinedShips)
+        private IEnumerable<Ship> GetActiveShips()
+        {
+            return _ships.Where(s =>
+                s.Status == ShipStatus.InTransit ||
+                (GameData.ShipTypes[s.TypeIndex].Type == ShipTypeEnum.Terraformer &&
+                 s.Status == ShipStatus.Docked));
+        }
+
+        private void ProcessShip(Ship ship, int currentTurn, List<string> messages)
+        {
+            switch (GameData.ShipTypes[ship.TypeIndex].Type)
             {
-                if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Probe)
-                {
-                    var originPos = new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos);
-                    var targetPos = new Vector2(_planets[ship.TargetPlanet].XPos, _planets[ship.TargetPlanet].YPos);
-                    int midArrivalTurn = (ship.FinalTurnAction + ship.BeginTurnAction) / 2;
-                    int totalTripTurns = ship.FinalTurnAction - ship.BeginTurnAction;
+                case ShipTypeEnum.Probe:
+                    ProcessProbe(ship, currentTurn, messages);
+                    break;
 
-                    // Simpler interpolation: compute progress ratio based on remaining turns to return.
-                    // When FinalTurnAction == currentTurn => progress = 1 (back at origin).
-                    // When currentTurn == midArrivalTurn => progress ~ 0.5 (at target).
-                    float progress;
-                    if (currentTurn <= ship.BeginTurnAction) progress = 0f;
-                    else if (currentTurn >= ship.FinalTurnAction) progress = 1f;
-                    else progress = (currentTurn - ship.BeginTurnAction) / (float)totalTripTurns;
+                case ShipTypeEnum.Freighter:
+                    ProcessFreighter(ship, currentTurn, messages);
+                    break;
 
-                    // Move along origin->target->origin path using progress in [0,1].
-                    Vector2 currentPos;
-                    if (progress <= 0.5f)
-                    {
-                        float p = progress / 0.5f; // 0..1 origin->target
-                        currentPos = Vector2.Lerp(originPos, targetPos, p);
-                    }
-                    else
-                    {
-                        float p = (progress - 0.5f) / 0.5f; // 0..1 target->origin
-                        currentPos = Vector2.Lerp(targetPos, originPos, p);
-                    }
-                    ship.CurrentPosition = currentPos;
-
-                    // Mid-arrival handling (probe reaches the target)
-                    if (currentTurn == midArrivalTurn)
-                    {
-                        if (_planets[ship.TargetPlanet].Status == PlanetStatus.ProbeEnRoute)
-                        {
-                            _planets[ship.TargetPlanet].Status = PlanetStatus.Explored;
-                        }
-                        messages.Add($"You have explored {_planets[ship.TargetPlanet].Name}.");
-                    }
-
-                    // Return docking handling (probe back at origin)
-                    if (currentTurn == ship.FinalTurnAction)
-                    {
-                        // Finalize return: dock at origin
-                        ship.Status = ShipStatus.Docked;
-                        ship.CurrentPosition = originPos;
-                        // Keep AssignedPlanet as origin; do not set AssignedPlanet = TargetPlanet
-                        messages.Add($"{ship.Name} is back to {_planets[ship.AssignedPlanet].Name}.");
-                        // Clear target as the mission is complete
-                        ship.TargetPlanet = -1;
-                    }
-                }
-                else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Freighter)
-                {
-                    var originPos = new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos);
-                    var targetPos = new Vector2(_planets[ship.TargetPlanet].XPos, _planets[ship.TargetPlanet].YPos);
-                    int totalTripTurns = ship.FinalTurnAction - ship.BeginTurnAction;
-                    float progress;
-                    if (currentTurn <= ship.BeginTurnAction) progress = 0f;
-                    else if (currentTurn >= ship.FinalTurnAction) progress = 1f;
-                    else progress = (currentTurn - ship.BeginTurnAction) / (float)totalTripTurns;
-
-                    Vector2 currentPos = Vector2.Lerp(originPos, targetPos, progress);
-                    ship.CurrentPosition = currentPos;
-
-                    if (currentTurn >= ship.FinalTurnAction)
-                    {
-                        var targetPlanet = _planets[ship.TargetPlanet];
-                        targetPlanet.Food += ship.CargoFood;
-                        targetPlanet.Mat += ship.CargoMat;
-
-                        string msg = $"Freighter arrived at {targetPlanet.Name}. Delivered {ship.CargoFood} Food and {ship.CargoMat} Materials.";
-                        messages.Add(msg);
-
-                        ship.AssignedPlanet = ship.TargetPlanet;
-                        ship.Status = ShipStatus.Docked;
-                        ship.CurrentPosition = targetPos;
-                        ship.TargetPlanet = -1;
-                        ship.CargoFood = 0;
-                        ship.CargoMat = 0;
-                    }
-                }
-                else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Terraformer)
-                {
-                    // Adjust temperature
-                    var planet = _planets[ship.AssignedPlanet];
-
-                    if (planet.Status == PlanetStatus.Owned || planet.Status == PlanetStatus.Explored)
-                    {
-                        int oldTemp = planet.Temperature;
-                        int difTemp = 0;
-                        if (planet.Temperature > GameData.TemperatureRanges[2].MaxTemp)
-                        {
-                            difTemp = -Constants.TERRAFORMER_TEMP_CHANGE;
-                        }
-                        else if (planet.Temperature < GameData.TemperatureRanges[2].MinTemp)
-                        {
-                            difTemp = Constants.TERRAFORMER_TEMP_CHANGE;
-                        }
-                        if (difTemp != 0)
-                        {
-                            planet.Temperature += difTemp;
-                            messages.Add($"{ship.Name} adjusted temperature on {planet.Name} (From {oldTemp} to {planet.Temperature})");
-                        }
-                    }
-                    //Update position
-                    if (ship.Status == ShipStatus.InTransit)
-                    {
-                        var originPos = new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos);
-                        var targetPos = new Vector2(_planets[ship.TargetPlanet].XPos, _planets[ship.TargetPlanet].YPos);
-                        int totalTripTurns = ship.FinalTurnAction - ship.BeginTurnAction;
-                        float progress;
-                        if (currentTurn <= ship.BeginTurnAction) progress = 0f;
-                        else if (currentTurn >= ship.FinalTurnAction) progress = 1f;
-                        else progress = (currentTurn - ship.BeginTurnAction) / (float)totalTripTurns;
-
-                        Vector2 currentPos = Vector2.Lerp(originPos, targetPos, progress);
-                        ship.CurrentPosition = currentPos;
-
-                        if (currentTurn >= ship.FinalTurnAction)
-                        {
-                            var targetPlanet = _planets[ship.TargetPlanet];
-                            messages.Add($"Terraformer arrived at {targetPlanet.Name}");
-
-                            ship.AssignedPlanet = ship.TargetPlanet;
-                            ship.Status = ShipStatus.Docked;
-                            ship.CurrentPosition = targetPos;
-                            ship.TargetPlanet = -1;
-                        }
-                    }
-                }
+                case ShipTypeEnum.Terraformer:
+                    ProcessTerraformer(ship, currentTurn, messages);
+                    break;
             }
-            return messages;
+        }
+
+        private void ProcessProbe(Ship ship, int currentTurn, List<string> messages)
+        {
+            UpdateProbeMovement(ship, currentTurn);
+
+            int midArrivalTurn = (ship.BeginTurnAction + ship.FinalTurnAction) / 2;
+
+            // Reached target
+            if (currentTurn == midArrivalTurn)
+            {
+                var targetPlanet = _planets[ship.TargetPlanet];
+
+                if (targetPlanet.Status == PlanetStatus.ProbeEnRoute)
+                {
+                    targetPlanet.Status = PlanetStatus.Explored;
+                }
+
+                messages.Add($"You have explored {targetPlanet.Name}.");
+            }
+
+            // Returned home
+            if (currentTurn == ship.FinalTurnAction)
+            {
+                var originPlanet = _planets[ship.AssignedPlanet];
+
+                ship.Status = ShipStatus.Docked;
+                ship.CurrentPosition = GetPlanetPosition(ship.AssignedPlanet);
+                ship.TargetPlanet = -1;
+
+                messages.Add($"{ship.Name} is back to {originPlanet.Name}.");
+            }
+        }
+
+        private void UpdateProbeMovement(Ship ship, int currentTurn)
+        {
+            var origin = GetPlanetPosition(ship.AssignedPlanet);
+            var target = GetPlanetPosition(ship.TargetPlanet);
+
+            float progress = GetProgress(ship, currentTurn);
+
+            ship.CurrentPosition =
+                progress <= 0.5f
+                    ? Vector2.Lerp(origin, target, progress * 2f)
+                    : Vector2.Lerp(target, origin, (progress - 0.5f) * 2f);
+        }
+
+        private void ProcessFreighter(Ship ship, int currentTurn, List<string> messages)
+        {
+            UpdateLinearMovement(ship, currentTurn);
+
+            if (currentTurn < ship.FinalTurnAction)
+                return;
+
+            var targetPlanet = _planets[ship.TargetPlanet];
+
+            targetPlanet.Food += ship.CargoFood;
+            targetPlanet.Mat += ship.CargoMat;
+
+            messages.Add(
+                $"Freighter arrived at {targetPlanet.Name}. " +
+                $"Delivered {ship.CargoFood} Food and {ship.CargoMat} Materials.");
+
+            DockShip(ship, ship.TargetPlanet);
+
+            ship.CargoFood = 0;
+            ship.CargoMat = 0;
+        }
+
+        private void ProcessTerraformer(Ship ship, int currentTurn, List<string> messages)
+        {
+            if (ship.Status != ShipStatus.InTransit)
+            {
+                ProcessTerraforming(ship, messages);
+                return;
+            }
+
+            UpdateLinearMovement(ship, currentTurn);
+
+            if (currentTurn < ship.FinalTurnAction)
+                return;
+
+            var targetPlanet = _planets[ship.TargetPlanet];
+
+            messages.Add($"Terraformer arrived at {targetPlanet.Name}");
+
+            DockShip(ship, ship.TargetPlanet);
+        }
+
+        private void ProcessTerraforming(Ship ship, List<string> messages)
+        {
+            var planet = _planets[ship.AssignedPlanet];
+
+            if (planet.Status != PlanetStatus.Owned &&
+                planet.Status != PlanetStatus.Explored)
+            {
+                return;
+            }
+
+            int oldTemp = planet.Temperature;
+            int delta = 0;
+            var range = GameData.TemperatureRanges.FirstOrDefault(tr => tr.Name.Equals("Temperate", StringComparison.OrdinalIgnoreCase));
+
+            if (planet.Temperature > range.MaxTemp)
+            {
+                delta = -Constants.TERRAFORMER_TEMP_CHANGE;
+            }
+            else if (planet.Temperature < range.MinTemp)
+            {
+                delta = Constants.TERRAFORMER_TEMP_CHANGE;
+            }
+
+            if (delta == 0)
+                return;
+
+            planet.Temperature += delta;
+
+            messages.Add(
+                $"{ship.Name} adjusted temperature on {planet.Name} " +
+                $"(From {oldTemp} to {planet.Temperature})");
+        }
+
+        private Vector2 GetPlanetPosition(int planetId)
+        {
+            var planet = _planets[planetId];
+            return new Vector2(planet.XPos, planet.YPos);
+        }
+
+        private static float GetProgress(Ship ship, int currentTurn)
+        {
+            if (currentTurn <= ship.BeginTurnAction)
+                return 0f;
+
+            if (currentTurn >= ship.FinalTurnAction)
+                return 1f;
+
+            int totalTurns = ship.FinalTurnAction - ship.BeginTurnAction;
+
+            return (currentTurn - ship.BeginTurnAction) / (float)totalTurns;
+        }
+
+        private void UpdateLinearMovement(Ship ship, int currentTurn)
+        {
+            var origin = GetPlanetPosition(ship.AssignedPlanet);
+            var target = GetPlanetPosition(ship.TargetPlanet);
+
+            ship.CurrentPosition =
+                Vector2.Lerp(origin, target, GetProgress(ship, currentTurn));
+        }
+
+        private void DockShip(Ship ship, int planetId)
+        {
+            ship.AssignedPlanet = planetId;
+            ship.Status = ShipStatus.Docked;
+            ship.CurrentPosition = GetPlanetPosition(planetId);
+            ship.TargetPlanet = -1;
         }
 
         public void ShowProbeLaunchMenu(Ship ship, int turn)
