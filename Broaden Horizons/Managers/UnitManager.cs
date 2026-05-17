@@ -114,14 +114,10 @@ namespace BroadenHorizons
         public void RecruitUnit(int planetId, int unitTypeIndex, int currentTurn)
         {
             var unitType = _unitTypes[unitTypeIndex];
-            if (_planets[planetId].Food < unitType.FoodCost || _planets[planetId].Mat < unitType.MatCost)
-            {
-                _messageManager.Show("Not enough resources!", MessageType.Info);
-                return;
-            }
 
             _planets[planetId].Food -= unitType.FoodCost;
             _planets[planetId].Mat -= unitType.MatCost;
+            _planets[planetId].Population -= unitType.PopCost;
 
             var unit = new Unit
             {

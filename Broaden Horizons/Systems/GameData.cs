@@ -92,22 +92,22 @@ namespace BroadenHorizons
 
         public static readonly List<UnitType> UnitTypes =
         [
-            new UnitType { Name = "Explorers", Type = UnitTypeEnum.Explorer, FoodCost = 12, MatCost = 2, FoodMaint = 2, MatMaint = 0, TextureId = 30, RecruitTurns = 2, RequiredTech = 0 },
-            new UnitType { Name = "Farmers", Type = UnitTypeEnum.Farmer, FoodCost = 15, MatCost = 2, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 1, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 31, RecruitTurns = 2, RequiredTech = 13 },
-            new UnitType { Name = "Miners", Type = UnitTypeEnum.Miner, FoodCost = 18, MatCost = 3, FoodMaint = 3, MatMaint = 1, ExtraFoodProd = 0, ExtraMatProd = 1, ExtraSciProd = 0, TextureId = 32, RecruitTurns = 2, RequiredTech = 1 },
-            new UnitType { Name = "Scientists", Type = UnitTypeEnum.Scientist, FoodCost = 15, MatCost = 0, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 0, ExtraSciProd = 1, TextureId = 33, RecruitTurns = 2, RequiredTech = 2 },
-            new UnitType { Name = "Builders", Type = UnitTypeEnum.Builder, FoodCost = 15, MatCost = 3, FoodMaint = 3, MatMaint = 1, TextureId = 34, RecruitTurns = 2, RequiredTech = 3 },
-            new UnitType { Name = "Harvesters", Type = UnitTypeEnum.Harvester, FoodCost = 12, MatCost = 2, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 1, ExtraSciProd = 0, TextureId = 35, RecruitTurns = 2, RequiredTech = 13 },
-            new UnitType { Name = "Fishermen", Type = UnitTypeEnum.Fisher, FoodCost = 12, MatCost = 0, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 1, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 36, RecruitTurns = 2, RequiredTech = 14 },
-            new UnitType { Name = "Colonists", Type = UnitTypeEnum.Colonist, FoodCost = 25, MatCost = 5, FoodMaint = 3, MatMaint = 0, TextureId = 37, RecruitTurns = 4, RequiredTech = 9 }
+            new UnitType { Name = "Explorers", Type = UnitTypeEnum.Explorer, FoodCost = 12, MatCost = 2, PopCost = 25, FoodMaint = 2, MatMaint = 0, TextureId = 30, RecruitTurns = 2, RequiredTech = 0 },
+            new UnitType { Name = "Farmers", Type = UnitTypeEnum.Farmer, FoodCost = 15, MatCost = 2, PopCost = 50, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 2, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 31, RecruitTurns = 2, RequiredTech = 13 },
+            new UnitType { Name = "Miners", Type = UnitTypeEnum.Miner, FoodCost = 18, MatCost = 3, PopCost = 50, FoodMaint = 3, MatMaint = 1, ExtraFoodProd = 0, ExtraMatProd = 2, ExtraSciProd = 0, TextureId = 32, RecruitTurns = 2, RequiredTech = 1 },
+            new UnitType { Name = "Scientists", Type = UnitTypeEnum.Scientist, FoodCost = 15, MatCost = 0, PopCost = 50, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 0, ExtraSciProd = 2, TextureId = 33, RecruitTurns = 2, RequiredTech = 2 },
+            new UnitType { Name = "Builders", Type = UnitTypeEnum.Builder, FoodCost = 20, MatCost = 5, PopCost = 50, FoodMaint = 3, MatMaint = 1, TextureId = 34, RecruitTurns = 3, RequiredTech = 3 },
+            new UnitType { Name = "Harvesters", Type = UnitTypeEnum.Harvester, FoodCost = 12, MatCost = 2, PopCost = 50, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 2, ExtraSciProd = 0, TextureId = 35, RecruitTurns = 2, RequiredTech = 13 },
+            new UnitType { Name = "Fishermen", Type = UnitTypeEnum.Fisher, FoodCost = 12, MatCost = 0, PopCost = 50, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 2, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 36, RecruitTurns = 2, RequiredTech = 14 },
+            new UnitType { Name = "Colonists", Type = UnitTypeEnum.Colonist, FoodCost = 25, MatCost = 5, PopCost = 100, FoodMaint = 3, MatMaint = 0, TextureId = 37, RecruitTurns = 4, RequiredTech = 9 }
         ];
 
         public static readonly List<PlanetImprovement> PlanetImprovements =
         [
-            new PlanetImprovement { Name = "Urban Development", FoodProd = 1, MatProd = 1, SciProd = 1, EnergyProd = 1, AllowedHabitat = "City", AllowedUnit = "Scientists", TextureId = 24, TurnsToBuild = 2, MatCost = 3, RequiredTech = 0 },
-            new PlanetImprovement { Name = "Woodcutter Camp", FoodProd = -1, MatProd = 2, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Forest", AllowedUnit = "Harvesters", TextureId = 24, TurnsToBuild = 3, MatCost = 3, RequiredTech = 3 },
-            new PlanetImprovement { Name = "Hunting Camp", FoodProd = 2, MatProd = -1, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Forest", AllowedUnit = "Harvesters", TextureId = 25, TurnsToBuild = 3, MatCost = 3, RequiredTech = 3 },
-            new PlanetImprovement { Name = "Aquaculture Farm", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Ocean", AllowedUnit = "Fishermen", TextureId = 25, TurnsToBuild = 3, MatCost = 3, RequiredTech = 14 },
+            new PlanetImprovement { Name = "Urban Development", FoodProd = 1, MatProd = 1, SciProd = 1, EnergyProd = 1, AllowedHabitat = "City", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 2, MatCost = 3, RequiredTech = 0 },
+            new PlanetImprovement { Name = "Woodcutter Camp", FoodProd = -1, MatProd = 2, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Forest", AllowedUnit = "Harvesters", TextureId = 11, TurnsToBuild = 3, MatCost = 3, RequiredTech = 3 },
+            new PlanetImprovement { Name = "Hunting Camp", FoodProd = 2, MatProd = -1, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Forest", AllowedUnit = "Harvesters", TextureId = 11, TurnsToBuild = 3, MatCost = 3, RequiredTech = 3 },
+            new PlanetImprovement { Name = "Aquaculture Farm", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Ocean", AllowedUnit = "Fishermen", TextureId = 11, TurnsToBuild = 3, MatCost = 3, RequiredTech = 14 },
             new PlanetImprovement { Name = "Mines", FoodProd = 0, MatProd = 2, SciProd = 0, EnergyProd = -1, AllowedHabitat = "Mountains", AllowedUnit = "Miners", TextureId = 11, TurnsToBuild = 3, MatCost = 3, RequiredTech = 1 },
             new PlanetImprovement { Name = "Crop Intensification", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Prairie", AllowedUnit = "Farmers", TextureId = 11, TurnsToBuild = 3, MatCost = 3, RequiredTech = 13 },
             new PlanetImprovement { Name = "Irrigation Systems", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Valley", AllowedUnit = "Farmers", TextureId = 11, TurnsToBuild = 3, MatCost = 3, RequiredTech = 3 },

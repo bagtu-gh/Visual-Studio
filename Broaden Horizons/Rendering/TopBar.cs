@@ -21,7 +21,6 @@ namespace BroadenHorizons
         private const int TEX_MAT = 7;
         private const int TEX_SCI = 8;
         private const int TEX_ENE = 9;
-        private const float resourceSpacing = 130f;
 
         public enum TopBarMode
         {
@@ -120,13 +119,13 @@ namespace BroadenHorizons
                 }
 
                 string labelText = $"{value} ({delta})";
+                float labelSize = _font.MeasureString(labelText).Width;
 
                 // Draw text to the right of the icon
                 float textX = currentX + iconWidth + Constants.PLANET_TOP_BAR_IMGTEXT_PAD;
                 sb.DrawString(_font, labelText, new Vector2(textX, textTopPad), Color.White);
 
-                // Advance
-                currentX += resourceSpacing;
+                currentX += iconWidth + Constants.PLANET_TOP_BAR_IMGTEXT_PAD + labelSize + Constants.PLANET_TOP_BAR_IMGTEXT_PAD;
             }
 
             // For Planet mode, add population and temperature
@@ -283,12 +282,12 @@ namespace BroadenHorizons
                 }
 
                 string labelText = $"{value} ({delta})";
+                float labelSize = _font.MeasureString(labelText).Width;
 
-                int rectW = (int)(iconWidth + Constants.PLANET_TOP_BAR_IMGTEXT_PAD + _font.MeasureString(labelText).Width);
+                int rectW = (int)(iconWidth + Constants.PLANET_TOP_BAR_IMGTEXT_PAD + labelSize);
                 rects[name] = new Rectangle((int)currentX, 0, rectW, Constants.TOP_BAR_HEIGHT);
 
-                // advance for the next resource
-                currentX += resourceSpacing;
+                currentX += iconWidth + Constants.PLANET_TOP_BAR_IMGTEXT_PAD + labelSize + Constants.PLANET_TOP_BAR_IMGTEXT_PAD;
             }
 
             if (mode == TopBarMode.Planet)

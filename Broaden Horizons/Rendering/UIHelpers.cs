@@ -16,6 +16,8 @@ namespace BroadenHorizons
             public Action OnClick { get; set; }
         }
 
+        private static readonly Dictionary<(int width, int height), Texture2D> roundedButtonTextureCache = new();
+
         private static List<Button> InitializeGalaxyMapButtons(MessageManager messageManager, Action<GameTime> endTurnAction, Action switchToTechTree, Action switchToPlanetList, Action switchToShipsList, List<Tech> techs, int globalScience, GameTime gameTime)
         {
             var buttons = new List<Button>();
@@ -158,8 +160,8 @@ namespace BroadenHorizons
             Color fillColor = isHighlighted ? Color.Lerp(baseColor, Color.White, 0.25f) : baseColor;
             Color borderColor = isHighlighted ? Color.White : Color.Lerp(baseColor, Color.Black, 0.3f);
 
-            // Draw rounded background
-            Texture2D roundedTex = CreateRoundedButtonTexture(spriteBatch.GraphicsDevice, rect.Width, rect.Height);
+            // Draw rounded background using cached texture
+            Texture2D roundedTex = GetOrCreateRoundedButtonTexture(spriteBatch.GraphicsDevice, rect.Width, rect.Height);
             spriteBatch.Draw(roundedTex, rect, fillColor);
 
             // Optional subtle border
@@ -176,6 +178,19 @@ namespace BroadenHorizons
             );
 
             spriteBatch.DrawString(font, text, textPos, textColor ?? Color.White);
+        }
+
+        private static Texture2D GetOrCreateRoundedButtonTexture(GraphicsDevice graphics, int width, int height)
+        {
+            var key = (width, height);
+            if (roundedButtonTextureCache.TryGetValue(key, out Texture2D cachedTexture) && cachedTexture != null)
+            {
+                return cachedTexture;
+            }
+
+            Texture2D tex = CreateRoundedButtonTexture(graphics, width, height);
+            roundedButtonTextureCache[key] = tex;
+            return tex;
         }
 
         private static Texture2D CreateRoundedButtonTexture(GraphicsDevice graphics, int width, int height)

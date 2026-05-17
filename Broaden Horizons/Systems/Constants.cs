@@ -11,7 +11,7 @@ namespace BroadenHorizons
         public const int MIN_PLANET_DISTANCE = 150;
         public static int NUM_PLANETS { get; set; } = 20;
         public const int TERRAFORMER_TEMP_CHANGE = 1;
-        public const float POPULATION_BASE_GROWTH = 0.1f;
+        public const float POPULATION_BASE_GROWTH = 0.05f;
         public const float POPULATION_FOOD_GROWTH = 0.05f;
         public const int SCROLL_SPEED = 20;
         public const int MIN_PLANET_DIMENS = 12;
@@ -57,7 +57,7 @@ namespace BroadenHorizons
         public static readonly Color MenuSelectedColor = Color.Green;
         public static readonly Color MenuNonSelectedColor = Color.OrangeRed;
 
-        public const int RECRUIT_MENU_X = 1250;
+        public const int RECRUIT_MENU_X = 1200;
         public const int RECRUIT_MENU_Y = 100;
         public const int RECRUIT_HEIGHT = 90;
 

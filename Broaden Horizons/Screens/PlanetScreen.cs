@@ -159,11 +159,13 @@ namespace BroadenHorizons.Screens
                             var unit = _game.UnitTypes[unitIndex];
                             if (_game.hasRecruitedThisTurn[_game.CurrentPlanet])
                             {
-                                _game.messageManager.Show("Only one unit can be recruited per turn on this planet", MessageType.Info);
+                                _game.messageManager.Show("Only one unit can be recruited per turn on each planet", MessageType.Info);
                             }
-                            else if (_game.Planets[_game.CurrentPlanet].Food >= unit.FoodCost && _game.Planets[_game.CurrentPlanet].Mat >= unit.MatCost)
+                            else if (_game.Planets[_game.CurrentPlanet].Food >= unit.FoodCost &&
+                                     _game.Planets[_game.CurrentPlanet].Mat >= unit.MatCost &&
+                                     Functions.GetPlanetPopulation(_game.Planets[_game.CurrentPlanet], "Unassigned") >= unit.PopCost)
                             {
-                                _game.messageManager.Show($"Recruit {unit.Name}?\nIt will cost {unit.FoodCost} food and {unit.MatCost} materials\nand take {unit.RecruitTurns} turns to be available", MessageType.Confirm, result =>
+                                _game.messageManager.Show($"Recruit {unit.Name}?\nIt will cost {unit.FoodCost} food, {unit.MatCost} materials\nand {unit.PopCost} population and take {unit.RecruitTurns} turns to be available", MessageType.Confirm, result =>
                                 {
                                     if (result)
                                     {
@@ -236,6 +238,7 @@ namespace BroadenHorizons.Screens
                                     {
                                         var improvement = _game.PlanetImprovements[j];
                                         if (improvement.RequiredTech != -1 && !_game.Techs[improvement.RequiredTech].IsResearched) continue;
+                                        if (improvement.AllowedHabitat != habitatName) continue;
                                         _game.availableImprovementIndices.Add(j);
                                     }
 
@@ -249,14 +252,14 @@ namespace BroadenHorizons.Screens
                                         var improvement = _game.PlanetImprovements[_game.availableImprovementIndices[0]];
                                         if (_game.Planets[n].Mat >= improvement.MatCost)
                                         {
-                                            _game.messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete.", MessageType.Confirm, result =>
+                                            _game.messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete\nand it will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Confirm, result =>
                                             {
                                                 if (result)
                                                 {
                                                     _game.Planets[n].Mat -= improvement.MatCost;
                                                     unitsOnPlanet[u].Status = UnitStatus.Busy;
                                                     _game.TurnActions.Add(new TurnAction { ActionTurn = _game.Turn, TurnFinal = _game.Turn + improvement.TurnsToBuild, PlanetCode = n, UnitID = _game.SelectedUnit, UnitActionType = UnitActionType.Building, TargetReg = clickedReg, ImprovementIndex = _game.availableImprovementIndices[0] });
-                                                    _game.messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name},\nit will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Info);
+                                                    _game.messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name}\n it will available on turn {_game.Turn + improvement.TurnsToBuild}.", MessageType.Info);
                                                     _game.SelectedUnit = -1;
                                                     _game.PossibleDestinations.Clear();
                                                 }
@@ -324,7 +327,7 @@ namespace BroadenHorizons.Screens
                                 else if (clickedReg == currentReg && imp >= 0 && _game.Planets[n].OccupiedByUnit[clickedReg] == -1 && _game.UnitTypes[unitCode].Name == _game.PlanetImprovements[imp].AllowedUnit)
                                 {
                                     var improvement = _game.PlanetImprovements[imp];
-                                    _game.messageManager.Show($"Occupy {improvement.Name}?\nIt will provide extra {_game.UnitTypes[unitCode].ExtraFoodProd} food, {_game.UnitTypes[unitCode].ExtraMatProd} materials, {_game.UnitTypes[unitCode].ExtraSciProd} science.\nThe unit will remain on the improvement and continue to consume resources.", MessageType.Confirm, result =>
+                                    _game.messageManager.Show($"Occupy {improvement.Name}?\nIt will provide extra {_game.UnitTypes[unitCode].ExtraFoodProd} food, {_game.UnitTypes[unitCode].ExtraMatProd} materials, {_game.UnitTypes[unitCode].ExtraSciProd} science.\nThe unit will remain here without consuming resources.", MessageType.Confirm, result =>
                                     {
                                         if (result)
                                         {
@@ -338,7 +341,7 @@ namespace BroadenHorizons.Screens
                                                 }
                                             }
                                             _game.PossibleDestinations.Clear();
-                                            _game.messageManager.Show($"Occupied {improvement.Name} with {_game.UnitTypes[unitCode].Name},\ngaining extra {_game.UnitTypes[unitCode].ExtraFoodProd} food, {_game.UnitTypes[unitCode].ExtraMatProd} materials, {_game.UnitTypes[unitCode].ExtraSciProd} science.\nThe unit will remain on the improvement and continue to consume resources.", MessageType.Info);
+                                            _game.messageManager.Show($"Occupied {improvement.Name} with {_game.UnitTypes[unitCode].Name},\ngaining extra {_game.UnitTypes[unitCode].ExtraFoodProd} food, {_game.UnitTypes[unitCode].ExtraMatProd} materials, {_game.UnitTypes[unitCode].ExtraSciProd} science.\nThe unit will remain here without consuming resources.", MessageType.Info);
                                         }
                                     });
                                     _game.requireMouseRelease = true;
@@ -554,7 +557,7 @@ namespace BroadenHorizons.Screens
                     Vector2 pos = new Vector2(Constants.RECRUIT_MENU_X, Constants.RECRUIT_MENU_Y + unitPos * Constants.RECRUIT_HEIGHT);
                     _game._spriteBatch.Draw(_game.Textures[unit.TextureId], pos, null, Color.White, 0f, Vector2.Zero, Constants.MENU_UNIT_SCALE, SpriteEffects.None, 0f);
                     _game._spriteBatch.DrawString(_game._bitmapFont, unit.Name, pos + new Vector2(100, 10), Color.White);
-                    _game._spriteBatch.DrawString(_game._bitmapFont, $"Food: {unit.FoodCost} Material: {unit.MatCost}", pos + new Vector2(100, 30), Color.White);
+                    _game._spriteBatch.DrawString(_game._bitmapFont, $"Food: {unit.FoodCost} Mat: {unit.MatCost} Pop: {unit.PopCost}", pos + new Vector2(100, 35), Color.White);
                     unitPos++;
                 }
                 //Draw recruit ships menu
@@ -563,7 +566,7 @@ namespace BroadenHorizons.Screens
                     Vector2 pos = new Vector2(Constants.RECRUIT_MENU_X, Constants.RECRUIT_MENU_Y + unitPos * Constants.RECRUIT_HEIGHT);
                     _game._spriteBatch.Draw(_game.Textures[_game.Ships[ship].TextureId], pos, null, Color.White, 0f, Vector2.Zero, Constants.MENU_UNIT_SCALE, SpriteEffects.None, 0f);
                     _game._spriteBatch.DrawString(_game._bitmapFont, _game.Ships[ship].Name, pos + new Vector2(100, 10), Color.White);
-                    _game._spriteBatch.DrawString(_game._bitmapFont, $"Material: {_game.Ships[ship].MatCost}", pos + new Vector2(100, 30), Color.White);
+                    _game._spriteBatch.DrawString(_game._bitmapFont, $"Material: {_game.Ships[ship].MatCost}", pos + new Vector2(100, 35), Color.White);
                 }
             }
             // Draw tooltip

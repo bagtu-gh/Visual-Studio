@@ -16,6 +16,7 @@ namespace BroadenHorizons
 		public UnitTypeEnum Type { get; set; }
         public int FoodCost { get; set; }
         public int MatCost { get; set; }
+        public int PopCost { get; set; }
         public int FoodMaint { get; set; }
         public int MatMaint { get; set; }
         public int ExtraFoodProd { get; set; } = 0;

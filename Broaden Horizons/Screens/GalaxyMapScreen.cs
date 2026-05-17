@@ -79,11 +79,6 @@ namespace BroadenHorizons.Screens
                     _game.messageManager,
                     _game.EndTurn,
                     () =>
-                    {  // Ships List
-                        _game.PrevState = _game.CurrentState;
-                        _game.CurrentState = BH.GameState.ShipList;
-                    },
-                    () =>
                     {  // Tech Tree
                         _game.PrevState = _game.CurrentState;
                         _game.CurrentState = BH.GameState.TechTree;
@@ -92,6 +87,11 @@ namespace BroadenHorizons.Screens
                     {  // Planets List
                         _game.PrevState = _game.CurrentState;
                         _game.CurrentState = BH.GameState.PlanetList;
+                    },
+                    () =>
+                    {  // Ships List
+                        _game.PrevState = _game.CurrentState;
+                        _game.CurrentState = BH.GameState.ShipList;
                     },
                     _game.Techs,
                     _game.GlobalScience
