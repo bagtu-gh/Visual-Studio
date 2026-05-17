@@ -97,23 +97,26 @@ namespace BroadenHorizons.Screens
                     _game.GlobalScience
                 );
 
-                for (int i = 0; i < Constants.NUM_PLANETS; i++)
+                if (mouse.Y >= Constants.TOP_BAR_HEIGHT)
                 {
-                    float dist = Vector2.Distance(new Vector2(_game.MouseMapX, _game.MouseMapY), new Vector2(_game.Planets[i].XPos, _game.Planets[i].YPos));
-                    float size = _game.Planets[i].Dimens * Constants.PLANET_GALAXY_SCALE / Constants.MAX_PLANET_DIMENS;
-                    if (dist <= size / 2)
+                    for (int i = 0; i < Constants.NUM_PLANETS; i++)
                     {
-                        if (_game.Planets[i].Status == PlanetStatus.Owned || _game.Planets[i].Status == PlanetStatus.Explored)
+                        float dist = Vector2.Distance(new Vector2(_game.MouseMapX, _game.MouseMapY), new Vector2(_game.Planets[i].XPos, _game.Planets[i].YPos));
+                        float size = _game.Planets[i].Dimens * Constants.PLANET_GALAXY_SCALE / Constants.MAX_PLANET_DIMENS;
+                        if (dist <= size / 2)
                         {
-                            _game.CurrentPlanet = i;
-                            _game.CurrentState = BH.GameState.PlanetScreen;
-                            _game.requireMouseRelease = true;
-                            break;
-                        }
-                        if (_game.Planets[i].Status == PlanetStatus.Unexplored)
-                        {
-                            _game.messageManager.Show($"{_game.Planets[i].Name} is not explored yet", MessageType.Info);
-                            break;
+                            if (_game.Planets[i].Status == PlanetStatus.Owned || _game.Planets[i].Status == PlanetStatus.Explored)
+                            {
+                                _game.CurrentPlanet = i;
+                                _game.CurrentState = BH.GameState.PlanetScreen;
+                                _game.requireMouseRelease = true;
+                                break;
+                            }
+                            if (_game.Planets[i].Status == PlanetStatus.Unexplored)
+                            {
+                                _game.messageManager.Show($"{_game.Planets[i].Name} is not explored yet", MessageType.Info);
+                                break;
+                            }
                         }
                     }
                 }
