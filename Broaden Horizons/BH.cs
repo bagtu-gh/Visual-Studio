@@ -325,13 +325,15 @@ namespace BroadenHorizons
                 else
                     Planets[i].Status = PlanetStatus.Explored;
                 if (i == 1)
+                {
                     Planets[i].Status = PlanetStatus.Owned;
-                Planets[i].Habitat[0] = 0;
-                Planets[i].Food = Constants.STARTING_FOOD;
-                Planets[i].Mat = Constants.STARTING_MATERIALS;
-                Planets[i].Energy = Constants.STARTING_ENERGY;
-                Planets[i].Population = Constants.STARTING_POPULATION;
-                Planets[i].HabitatPopulated[0] = true;
+                    Planets[i].Habitat[0] = 0;
+                    Planets[i].Food = Constants.STARTING_FOOD;
+                    Planets[i].Mat = Constants.STARTING_MATERIALS;
+                    Planets[i].Energy = Constants.STARTING_ENERGY;
+                    Planets[i].Population = Constants.STARTING_POPULATION;
+                    Planets[i].HabitatPopulated[0] = true;
+                }
             }
 
             // Stars
@@ -495,8 +497,8 @@ namespace BroadenHorizons
             {
                 tooltipLines.Add("No explored regions yet.");
             }
-
-            tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {double.Parse(Functions.GetTemperatureRangeData(planet.Temperature, "Modifier")):P0}");
+            var dataList = Functions.GetTemperatureRangeData(planet.Temperature);
+            tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {(float)dataList["Modifier"]:P0}");
             tooltipLines.Add($"Food factor: {1 + double.Parse(CalculateResourceTurn(planetIndex, "Food")) * Constants.POPULATION_FOOD_GROWTH:P0}");
 
             return string.Join("\n", tooltipLines);

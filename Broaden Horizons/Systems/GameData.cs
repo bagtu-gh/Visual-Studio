@@ -28,11 +28,11 @@ namespace BroadenHorizons
 
         public static readonly List<TemperatureRange> TemperatureRanges =
         [
-            new TemperatureRange { Name = "Frigid", MinTemp = -50, MaxTemp = -21, PopulationModifier = 0.3f },
-            new TemperatureRange { Name = "Cold", MinTemp = -20, MaxTemp = 15, PopulationModifier = 0.6f },
-            new TemperatureRange { Name = "Temperate", MinTemp = 16, MaxTemp = 40, PopulationModifier = 1.0f },
-            new TemperatureRange { Name = "Hot", MinTemp = 41, MaxTemp = 65, PopulationModifier = 0.7f },
-            new TemperatureRange { Name = "Scorching", MinTemp = 66, MaxTemp = 100, PopulationModifier = 0.4f }
+            new TemperatureRange { Name = "Frigid", MinTemp = -50, MaxTemp = -21, PopulationModifier = 0.3f, TintColor = new Color(100, 180, 255) },
+            new TemperatureRange { Name = "Cold", MinTemp = -20, MaxTemp = 15, PopulationModifier = 0.6f, TintColor = new Color(135, 206, 250) },
+            new TemperatureRange { Name = "Temperate", MinTemp = 16, MaxTemp = 40, PopulationModifier = 1.0f, TintColor = new Color(144, 238, 144) },
+            new TemperatureRange { Name = "Hot", MinTemp = 41, MaxTemp = 65, PopulationModifier = 0.7f, TintColor = new Color(255, 165, 0) },
+            new TemperatureRange { Name = "Scorching", MinTemp = 66, MaxTemp = 100, PopulationModifier = 0.4f, TintColor = new Color(220, 50, 50) }
         ];
 
         public static readonly int[] NeighborsData = new int[]

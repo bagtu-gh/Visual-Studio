@@ -31,6 +31,7 @@ namespace BroadenHorizons
         public int MinTemp { get; set; }
         public int MaxTemp { get; set; }
         public float PopulationModifier { get; set; }
+        public Color TintColor { get; set; }
     }
 
     public enum PlanetStatus

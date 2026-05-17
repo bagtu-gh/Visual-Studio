@@ -133,7 +133,8 @@ namespace BroadenHorizons
             {
                 var currentPlanet = planets[planetIndex];
                 // Prepare and draw the temperature text
-                string tempText = $"TEMP: {currentPlanet.Temperature} ({Functions.GetTemperatureRangeData(currentPlanet.Temperature, "Name")})";
+                var dataList = Functions.GetTemperatureRangeData(currentPlanet.Temperature);
+                string tempText = $"TEMP: {currentPlanet.Temperature} ({dataList["Name"]})";
                 float tempTextWidth = _font.MeasureString(tempText).Width;
                 float tempX = Constants.SCREEN_WIDTH - Constants.PLANET_TOP_BAR_TEXT_DIST - tempTextWidth;
                 float tempY = (Constants.TOP_BAR_HEIGHT - _font.MeasureString(tempText).Height) / 2f;
@@ -294,9 +295,10 @@ namespace BroadenHorizons
             {
                 if (planetIndex < 0 || planetIndex >= planets.Count) throw new ArgumentException("Invalid planet index for Planet mode");
                 var currentPlanet = planets[planetIndex];
+                var dataList = Functions.GetTemperatureRangeData(currentPlanet.Temperature);
 
                 string popText = $"POP: {Functions.GetPlanetPopulation(currentPlanet, "Assigned")}/{currentPlanet.Population} ({Functions.GetPopModifier(currentPlanet, int.Parse(calcResourceTurn(planetIndex, "Food")))})";
-                string tempText = $"TEMP: {currentPlanet.Temperature} ({Functions.GetTemperatureRangeData(currentPlanet.Temperature, "Name")})";
+                string tempText = $"TEMP: {currentPlanet.Temperature} ({dataList["Name"]})";
                 float tempTextWidth = _font.MeasureString(tempText).Width;
                 float tempX = Constants.SCREEN_WIDTH - Constants.PLANET_TOP_BAR_TEXT_DIST - tempTextWidth;
                 float popTextWidth = _font.MeasureString(popText).Width;

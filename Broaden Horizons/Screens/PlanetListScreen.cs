@@ -27,6 +27,7 @@ namespace BroadenHorizons.Screens
             "Pop",
             "Units"
         };
+        private const float SPACING = 15f;
         private readonly int UnderlinePadding = 15;
 
         public PlanetListScreen(BH game)
@@ -49,7 +50,9 @@ namespace BroadenHorizons.Screens
             // Clicking on a planet row goes to that planet's screen (only if explored/owned)
             if (mouse.LeftButton == ButtonState.Pressed && _game._prevMouse.LeftButton == ButtonState.Released)
             {
-                float rowY = Constants.TOP_BAR_HEIGHT + 20 + 75 + HeaderHeight - _scrollOffset.Y; // headerY + HeaderHeight
+                float titleSizeY = _game._bitmapFontBig.MeasureString("A").Height;
+                float summarySizeY = _game._bitmapFont.MeasureString("A").Height;
+                float rowY = Constants.TOP_BAR_HEIGHT + SPACING + titleSizeY + SPACING + summarySizeY + SPACING + HeaderHeight - _scrollOffset.Y;
                 float startX = 50f;
                 float totalRowWidth = colWidths.Sum();
 
@@ -90,15 +93,17 @@ namespace BroadenHorizons.Screens
 
         private float GetMaxScroll()
         {
-            float totalContent = Constants.NUM_PLANETS * RowHeight + HeaderHeight + RowHeight;
-            return Math.Max(0, totalContent - (Constants.SCREEN_HEIGHT - Constants.TOP_BAR_HEIGHT - 60));
+            float totalContentHeight = HeaderHeight + (Constants.NUM_PLANETS * RowHeight);
+            float visibleHeight = Constants.SCREEN_HEIGHT - (Constants.TOP_BAR_HEIGHT + SPACING + 75 + HeaderHeight) - 35; // matches top layout + bottom margin
+
+            return Math.Max(0, totalContentHeight - visibleHeight);
         }
 
         public void Draw(GameTime gameTime)
         {
             _game.GraphicsDevice.Clear(Color.DarkSlateBlue);
 
-            float startY = Constants.TOP_BAR_HEIGHT + 20;
+            float startY = Constants.TOP_BAR_HEIGHT + SPACING;
             float startX = 50f;
 
             // Top Bar
@@ -109,26 +114,28 @@ namespace BroadenHorizons.Screens
             string title = "PLANET LIST";
             Vector2 titleSize = _game._bitmapFontBig.MeasureString(title);
             _game._spriteBatch.DrawString(_game._bitmapFontBig, title,
-                new Vector2((Constants.SCREEN_WIDTH - titleSize.X) / 2, startY - 5), Color.White);
+                new Vector2((Constants.SCREEN_WIDTH - titleSize.X) / 2, startY), Color.White);
 
             // Summary
+            float summaryY = startY + titleSize.Y + SPACING;
             int owned = _game.Planets.Count(p => p.Status == PlanetStatus.Owned);
             int explored = _game.Planets.Count(p => p.Status == PlanetStatus.Explored);
             string summary = $"Total Planets: {Constants.NUM_PLANETS}   •   Owned: {owned}   •   Explored: {explored}";
-            _game._spriteBatch.DrawString(_game._bitmapFont, summary, new Vector2(startX, startY + 48), Color.LightGray);
+            Vector2 summarySize = _game._bitmapFont.MeasureString(summary);
+            _game._spriteBatch.DrawString(_game._bitmapFont, summary, new Vector2(startX, summaryY), Color.LightGray);
 
             // Headers
-            float headerY = startY + 75;
+            float headerY = summaryY + summarySize.Y + SPACING;
             DrawTableHeader(startX, headerY);
 
             // === Scissor Area for scrolling content ===
             float contentStartY = headerY + HeaderHeight;
-            float contentHeight = Constants.SCREEN_HEIGHT - contentStartY - 50;
+            float contentHeight = Constants.SCREEN_HEIGHT - contentStartY - 35;
 
             Rectangle scissorRect = new Rectangle(
                 (int)startX - 20,
                 (int)contentStartY,
-                Constants.SCREEN_WIDTH - (int)startX + 20,
+                Constants.SCREEN_WIDTH - (int)startX + 40,
                 (int)contentHeight
             );
 
@@ -237,14 +244,8 @@ namespace BroadenHorizons.Screens
             currentX += colWidths[3];
 
             // 5. Temperature
-            Color tempColor = planet.Temperature switch
-            {
-                <= -21 => new Color(100, 180, 255),   // Frigid
-                <= 15 => new Color(135, 206, 250),   // Cold
-                <= 40 => new Color(144, 238, 144),   // Temperate (ideal)
-                <= 65 => new Color(255, 165, 0),     // Hot
-                _ => new Color(220, 50, 50)      // Scorching
-            };
+            var dataList = Functions.GetTemperatureRangeData(planet.Temperature);
+            Color tempColor = (Color)dataList["Color"];
             if (planet.Status == PlanetStatus.Owned || planet.Status == PlanetStatus.Explored)
             {
                 sizeText = planet.Temperature.ToString();

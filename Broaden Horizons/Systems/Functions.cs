@@ -89,25 +89,31 @@ namespace BroadenHorizons
             );
         }
 
-        public static string GetTemperatureRangeData(int temperature, string dataType)
+        public static Dictionary<string, object> GetTemperatureRangeData(int temperature)
         {
             foreach (var range in GameData.TemperatureRanges)
             {
                 if (temperature >= range.MinTemp && temperature <= range.MaxTemp)
                 {
-                    return dataType switch
+                    return new Dictionary<string, object>
                     {
-                        "Name" => range.Name,
-                        "Modifier" => range.PopulationModifier.ToString(),
-                        _ => "Unknown",
+                        ["Name"] = range.Name,
+                        ["Modifier"] = range.PopulationModifier,
+                        ["Color"] = range.TintColor
                     };
                 }
             }
-            return "Unknown";
+            return new Dictionary<string, object>
+            {
+                ["Name"] = "Unknown",
+                ["Modifier"] = 0,
+                ["Color"] = GetRandomColor()
+            }; // default values
         }
         public static string GetPopModifier(Planet planet, int DeltaFood)
         {
-            return GetSignedValue((int)(planet.Population * Constants.POPULATION_BASE_GROWTH * float.Parse(GetTemperatureRangeData(planet.Temperature, "Modifier")) * (1 + DeltaFood * Constants.POPULATION_FOOD_GROWTH)));
+            var dataList = GetTemperatureRangeData(planet.Temperature);
+            return GetSignedValue((int)(planet.Population * Constants.POPULATION_BASE_GROWTH * (float)dataList["Modifier"] * (1 + DeltaFood * Constants.POPULATION_FOOD_GROWTH)));
         }
 
         public static int GetPlanetPopulation(Planet planet, string Type)
