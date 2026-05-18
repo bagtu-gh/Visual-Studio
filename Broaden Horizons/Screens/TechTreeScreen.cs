@@ -134,10 +134,7 @@ namespace BroadenHorizons.Screens
                 tt += t.Prerequisites.Count != 0 ? "\nPrerequisites: " + string.Join(", ", t.Prerequisites.Select(p => _game.Techs[p].Name)) : "";
                 tt += "\nUnlocks: " + Tech.GetItemsUnlockedByTech(t.ID);
                 tt += Tech.GetBonusesUnlockedByTech(t.ID);
-                Vector2 ttSize = _game._bitmapFontTooltip.MeasureString(tt);
-                Vector2 ttPos = new Vector2(_game.mousePos.X + 20, _game.mousePos.Y);
-                _game._spriteBatch.Draw(_game._pixel, ttPos, null, new Color(0, 0, 0, 200), 0f, Vector2.Zero, ttSize + new Vector2(20, 20), SpriteEffects.None, 0f);
-                _game._spriteBatch.DrawString(_game._bitmapFontTooltip, tt, ttPos + new Vector2(10, 10), Color.White);
+                UIHelpers.DrawTooltip(_game._spriteBatch, tt, _game.mousePos, _game._bitmapFontTooltip, _game._pixel);
             }
 
             // Draw top bar tooltip

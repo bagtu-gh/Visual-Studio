@@ -40,6 +40,8 @@ namespace BroadenHorizons
         public const int TOP_BAR_BUTTON_WIDTH = 150;
         public const int TOP_BAR_BUTTON_HEIGHT = 40;
         public const int TOP_BAR_BUTTON_SPACING = 20;
+        public const int TOOLTIP_EDGE_THRESHOLD_RIGHT = 150;
+        public const int TOOLTIP_EDGE_THRESHOLD_BOTTOM = 120;
         public static readonly Color TOP_BAR_BUTTON_COLOR = Color.Blue;
         public static readonly Color TOP_BAR_BUTTON_HIGHLIGHT_COLOR = Color.DarkOrchid;
         public static readonly Color TOP_BAR_BUTTON_COLOR_MSG = Color.Red;

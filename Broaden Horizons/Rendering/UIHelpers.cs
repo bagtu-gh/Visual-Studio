@@ -284,9 +284,29 @@ namespace BroadenHorizons
             if (string.IsNullOrEmpty(text)) return;
 
             Vector2 size = font.MeasureString(text);
-            Rectangle bg = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X + 20, (int)size.Y + 20);
+            Vector2 offset = new Vector2(10, 10);
+            Vector2 tooltipSize = size + new Vector2(20, 20);
+
+            Vector2 drawPos = pos + offset;
+            bool nearRight = pos.X > Constants.SCREEN_WIDTH - Constants.TOOLTIP_EDGE_THRESHOLD_RIGHT;
+            bool nearBottom = pos.Y > Constants.SCREEN_HEIGHT - Constants.TOOLTIP_EDGE_THRESHOLD_BOTTOM;
+
+            if (nearRight)
+            {
+                drawPos.X = pos.X - tooltipSize.X - offset.X;
+            }
+
+            if (nearBottom)
+            {
+                drawPos.Y = pos.Y - tooltipSize.Y - offset.Y;
+            }
+
+            drawPos.X = MathHelper.Clamp(drawPos.X, 0, Constants.SCREEN_WIDTH - tooltipSize.X);
+            drawPos.Y = MathHelper.Clamp(drawPos.Y, 0, Constants.SCREEN_HEIGHT - tooltipSize.Y);
+
+            Rectangle bg = new Rectangle((int)drawPos.X, (int)drawPos.Y, (int)tooltipSize.X, (int)tooltipSize.Y);
             sb.Draw(pixel, bg, new Color(0, 0, 0, 200));
-            sb.DrawString(font, text, pos + new Vector2(10, 10), Color.White);
+            sb.DrawString(font, text, drawPos + offset, Color.White);
         }
     }
 }
