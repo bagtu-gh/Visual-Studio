@@ -211,7 +211,9 @@ namespace BroadenHorizons.Screens
             currentX += colWidths[0];
 
             // 2. Size
-            string sizeText = planet.Dimens.ToString();
+            string sizeText = (planet.Status == PlanetStatus.Owned || planet.Status == PlanetStatus.Explored)
+                ? planet.Dimens.ToString()
+                : "??";
             Vector2 sizeMeasure = _game._bitmapFont.MeasureString(sizeText);
             float sizeCenterX = currentX + (colWidths[1] - sizeMeasure.X) / 2f;
             _game._spriteBatch.DrawString(_game._bitmapFont, sizeText,
