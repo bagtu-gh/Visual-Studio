@@ -34,7 +34,7 @@ namespace BroadenHorizons
 
         public void StartingShips(int planetId)
         {
-            var startingShip = new Ship
+            /*var startingShip = new Ship
             {
                 Id = nextShipId++,
                 Name = "Probe 1",
@@ -44,7 +44,7 @@ namespace BroadenHorizons
                 CurrentPosition = new Vector2(_planets[planetId].XPos, _planets[planetId].YPos)
             };
             _ships.Add(startingShip);
-            var startingShip2 = new Ship
+            /*var startingShip2 = new Ship
             {
                 Id = nextShipId++,
                 Name = "Terraformer 2",

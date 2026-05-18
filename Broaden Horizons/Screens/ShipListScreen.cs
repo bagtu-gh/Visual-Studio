@@ -14,6 +14,7 @@ namespace BroadenHorizons.Screens
         private const float RowHeight = Constants.LIST_ROW_HEIGHT;
         private const float HeaderHeight = Constants.LIST_HEADER_HEIGHT;
         private readonly float[] colWidths = [250, 140, 200, 130, 200, 200, 110, 110];
+        private const float SPACING = 15f;
         private readonly int UnderlinePadding = 15;
 
         public ShipListScreen(BH game)
@@ -57,7 +58,7 @@ namespace BroadenHorizons.Screens
         {
             _game.GraphicsDevice.Clear(Color.DarkSlateBlue);
 
-            float startY = Constants.TOP_BAR_HEIGHT + 20;
+            float startY = Constants.TOP_BAR_HEIGHT + SPACING;
             float startX = 50f;
 
             // Top Bar
@@ -71,20 +72,22 @@ namespace BroadenHorizons.Screens
                 new Vector2((Constants.SCREEN_WIDTH - titleSize.X) / 2, startY - 5), Color.White);
 
             // Summary
+            float summaryY = startY + titleSize.Y + SPACING;
             var ships = _game._shipManager.Ships;
             int docked = ships.Count(s => s.Status == ShipStatus.Docked);
             int building = ships.Count(s => s.Status == ShipStatus.Building);
             int transit = ships.Count(s => s.Status == ShipStatus.InTransit);
             string summary = $"Total Ships: {ships.Count}   •   Docked: {docked}   •   Building: {building}   •   In Transit: {transit}";
-            _game._spriteBatch.DrawString(_game._bitmapFont, summary, new Vector2(startX, startY + 48), Color.LightGray);
+            Vector2 summarySize = _game._bitmapFont.MeasureString(summary);
+            _game._spriteBatch.DrawString(_game._bitmapFont, summary, new Vector2(startX, summaryY), Color.LightGray);
 
             // Headers
-            float headerY = startY + 75;
+            float headerY = summaryY + summarySize.Y + SPACING;
             DrawTableHeader(startX, headerY);
 
             // === Scissor Area for scrolling rows ===
             float contentStartY = headerY + HeaderHeight;
-            float contentHeight = Constants.SCREEN_HEIGHT - contentStartY - 50;
+            float contentHeight = Constants.SCREEN_HEIGHT - contentStartY - 35;
 
             Rectangle scissorRect = new Rectangle(
                 (int)startX - 20,
