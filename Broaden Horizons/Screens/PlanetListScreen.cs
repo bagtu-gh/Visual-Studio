@@ -71,7 +71,7 @@ namespace BroadenHorizons.Screens
                         }
                         else if (planet.Status == PlanetStatus.Unexplored)
                         {
-                            _game.messageManager.Show($"{planet.Name} is not explored yet", MessageType.Info);
+                            _game._messageManager.Show($"{planet.Name} is not explored yet", MessageType.Info);
                             return;
                         }
                     }

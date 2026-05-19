@@ -30,7 +30,7 @@ namespace BroadenHorizons.Screens
 
             if (keyboard.IsKeyDown(Keys.P) && !_game.WasKeyDown(Keys.P)) _game.CurrentState = BH.GameState.PlanetList;
 
-            if (keyboard.IsKeyDown(Keys.L) && !_game.WasKeyDown(Keys.L)) _game.CurrentState = BH.GameState.ShipList;
+            if (keyboard.IsKeyDown(Keys.I) && !_game.WasKeyDown(Keys.I)) _game.CurrentState = BH.GameState.ShipList;
 
             if (keyboard.IsKeyDown(Keys.T) && !_game.WasKeyDown(Keys.T))
             {
@@ -40,7 +40,12 @@ namespace BroadenHorizons.Screens
 
             if (keyboard.IsKeyDown(Keys.H) && !_game.WasKeyDown(Keys.H))
             {
-                _game.messageManager.Show(Constants.HELP_TEXT, MessageType.Help);
+                _game._messageManager.Show(Constants.HELP_TEXT, MessageType.Help);
+            }
+
+            if (keyboard.IsKeyDown(Keys.L) && !_game.WasKeyDown(Keys.L))
+            {
+                _game._endTurnManager.ShowTurnLog();
             }
 
             if (keyboard.IsKeyDown(Keys.E) && !_game.WasKeyDown(Keys.E))
@@ -48,14 +53,14 @@ namespace BroadenHorizons.Screens
                 bool hasTechTreeActions = Tech.HasTechTreeActions(_game.Techs, _game.GlobalScience);
                 if (hasTechTreeActions)
                 {
-                    _game.messageManager.Show("Research actions are available. End turn anyway?", MessageType.Confirm, result =>
+                    _game._messageManager.Show("Research actions are available. End turn anyway?", MessageType.Confirm, result =>
                     {
                         if (result) _game.EndTurn(gameTime);
                     });
                 }
                 else
                 {
-                    _game.messageManager.Show("End turn?", MessageType.Confirm, result =>
+                    _game._messageManager.Show("End turn?", MessageType.Confirm, result =>
                     {
                         if (result) _game.EndTurn(gameTime);
                     });
@@ -76,7 +81,7 @@ namespace BroadenHorizons.Screens
                     gameTime,
                     mouse,
                     _game._prevMouse,
-                    _game.messageManager,
+                    _game._messageManager,
                     _game.EndTurn,
                     () =>
                     {  // Tech Tree
@@ -114,7 +119,7 @@ namespace BroadenHorizons.Screens
                             }
                             if (_game.Planets[i].Status == PlanetStatus.Unexplored)
                             {
-                                _game.messageManager.Show($"{_game.Planets[i].Name} is not explored yet", MessageType.Info);
+                                _game._messageManager.Show($"{_game.Planets[i].Name} is not explored yet", MessageType.Info);
                                 break;
                             }
                         }

@@ -101,7 +101,7 @@ namespace BroadenHorizons.Screens
                                         _game.HabitatTypes,
                                         ref _game.SelectedUnit,
                                         ref _game.PossibleDestinations,
-                                        _game.messageManager
+                                        _game._messageManager
                                     );
                                     break;
                                 }
@@ -124,7 +124,7 @@ namespace BroadenHorizons.Screens
                                         }
                                         else
                                         {
-                                            _game.messageManager.Show("You don't have a colonist on this planet", MessageType.Info);
+                                            _game._messageManager.Show("You don't have a colonist on this planet", MessageType.Info);
                                             break;
                                         }
                                     }
@@ -138,7 +138,7 @@ namespace BroadenHorizons.Screens
                                     }
                                     else if (ship.Status == ShipStatus.InTransit)
                                     {
-                                        _game.messageManager.Show($"Your {ship.Name} is travelling to {_game.Planets[ship.TargetPlanet].Name}", MessageType.Info);
+                                        _game._messageManager.Show($"Your {ship.Name} is travelling to {_game.Planets[ship.TargetPlanet].Name}", MessageType.Info);
                                         break;
                                     }
                                 }
@@ -159,13 +159,13 @@ namespace BroadenHorizons.Screens
                             var unit = _game.UnitTypes[unitIndex];
                             if (_game.hasRecruitedThisTurn[_game.CurrentPlanet])
                             {
-                                _game.messageManager.Show("Only one unit can be recruited per turn on each planet", MessageType.Info);
+                                _game._messageManager.Show("Only one unit can be recruited per turn on each planet", MessageType.Info);
                             }
                             else if (_game.Planets[_game.CurrentPlanet].Food >= unit.FoodCost &&
                                      _game.Planets[_game.CurrentPlanet].Mat >= unit.MatCost &&
                                      Functions.GetPlanetPopulation(_game.Planets[_game.CurrentPlanet], "Unassigned") >= unit.PopCost)
                             {
-                                _game.messageManager.Show($"Recruit {unit.Name}?\nIt will cost {unit.FoodCost} food, {unit.MatCost} materials\nand {unit.PopCost} population and take {unit.RecruitTurns} turns to be available", MessageType.Confirm, result =>
+                                _game._messageManager.Show($"Recruit {unit.Name}?\nIt will cost {unit.FoodCost} food, {unit.MatCost} materials\nand {unit.PopCost} population and take {unit.RecruitTurns} turns to be available", MessageType.Confirm, result =>
                                 {
                                     if (result)
                                     {
@@ -177,7 +177,7 @@ namespace BroadenHorizons.Screens
                             }
                             else
                             {
-                                _game.messageManager.Show("The planet does not have enough resources", MessageType.Info);
+                                _game._messageManager.Show("The planet does not have enough resources", MessageType.Info);
                             }
                             return;
                         }
@@ -193,12 +193,12 @@ namespace BroadenHorizons.Screens
 
                             if (_game.hasRecruitedThisTurn[_game.CurrentPlanet])
                             {
-                                _game.messageManager.Show("Only one unit can be recruited per turn on this planet", MessageType.Info);
+                                _game._messageManager.Show("Only one unit can be recruited per turn on this planet", MessageType.Info);
                                 _game.requireMouseRelease = true;
                             }
                             else if (_game.Planets[_game.CurrentPlanet].Mat >= shipType.MatCost)
                             {
-                                _game.messageManager.Show($"Recruit {shipType.Name}?\nIt will cost {shipType.MatCost} materials\nand take {shipType.TurnsToBuild} turns to be available", MessageType.Confirm, result =>
+                                _game._messageManager.Show($"Recruit {shipType.Name}?\nIt will cost {shipType.MatCost} materials\nand take {shipType.TurnsToBuild} turns to be available", MessageType.Confirm, result =>
                                 {
                                     if (result)
                                     {
@@ -210,7 +210,7 @@ namespace BroadenHorizons.Screens
                             }
                             else
                             {
-                                _game.messageManager.Show("There are not enough resources", MessageType.Info);
+                                _game._messageManager.Show("There are not enough resources", MessageType.Info);
                                 _game.requireMouseRelease = true;
                             }
                         }
@@ -244,7 +244,7 @@ namespace BroadenHorizons.Screens
 
                                     if (_game.availableImprovementIndices.Count == 0)
                                     {
-                                        _game.messageManager.Show($"No improvement available for {habitatName}", MessageType.Info);
+                                        _game._messageManager.Show($"No improvement available for {habitatName}", MessageType.Info);
                                         _game.requireMouseRelease = true;
                                     }
                                     else if (_game.availableImprovementIndices.Count == 1)
@@ -252,14 +252,14 @@ namespace BroadenHorizons.Screens
                                         var improvement = _game.PlanetImprovements[_game.availableImprovementIndices[0]];
                                         if (_game.Planets[n].Mat >= improvement.MatCost)
                                         {
-                                            _game.messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete\nand it will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Confirm, result =>
+                                            _game._messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete\nand it will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Confirm, result =>
                                             {
                                                 if (result)
                                                 {
                                                     _game.Planets[n].Mat -= improvement.MatCost;
                                                     unitsOnPlanet[u].Status = UnitStatus.Busy;
                                                     _game.TurnActions.Add(new TurnAction { ActionTurn = _game.Turn, TurnFinal = _game.Turn + improvement.TurnsToBuild, PlanetCode = n, UnitID = _game.SelectedUnit, UnitActionType = UnitActionType.Building, TargetReg = clickedReg, ImprovementIndex = _game.availableImprovementIndices[0] });
-                                                    _game.messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name}\n it will available on turn {_game.Turn + improvement.TurnsToBuild}.", MessageType.Info);
+                                                    _game._messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name}\n it will available on turn {_game.Turn + improvement.TurnsToBuild}.", MessageType.Info);
                                                     _game.SelectedUnit = -1;
                                                     _game.PossibleDestinations.Clear();
                                                 }
@@ -268,7 +268,7 @@ namespace BroadenHorizons.Screens
                                         }
                                         else
                                         {
-                                            _game.messageManager.Show($"Not enough materials for building a {improvement.Name}, {improvement.MatCost} are needed", MessageType.Info);
+                                            _game._messageManager.Show($"Not enough materials for building a {improvement.Name}, {improvement.MatCost} are needed", MessageType.Info);
                                             _game.requireMouseRelease = true;
                                         }
                                     }
@@ -279,7 +279,7 @@ namespace BroadenHorizons.Screens
                                             $"{_game.PlanetImprovements[idx].Name} (Cost: {_game.PlanetImprovements[idx].MatCost} mat, Turns: {_game.PlanetImprovements[idx].TurnsToBuild})"
                                         ).ToList();
 
-                                        _game.messageManager.ShowSelection($"Choose improvement to build on {habitatName}:", optionStrings, selectedIndex =>
+                                        _game._messageManager.ShowSelection($"Choose improvement to build on {habitatName}:", optionStrings, selectedIndex =>
                                         {
                                             if (selectedIndex >= 0) // Valid selection (not cancel)
                                             {
@@ -287,7 +287,7 @@ namespace BroadenHorizons.Screens
                                                 var improvement = _game.PlanetImprovements[improvementIdx];
                                                 if (_game.Planets[n].Mat >= improvement.MatCost)
                                                 {
-                                                    _game.messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete.", MessageType.Confirm, confirmResult =>
+                                                    _game._messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete.", MessageType.Confirm, confirmResult =>
                                                     {
                                                         if (confirmResult)
                                                         {
@@ -303,7 +303,7 @@ namespace BroadenHorizons.Screens
                                                                 TargetReg = clickedReg,
                                                                 ImprovementIndex = improvementIdx
                                                             });
-                                                            _game.messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name},\nit will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Info);
+                                                            _game._messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name},\nit will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Info);
                                                             _game.SelectedUnit = -1;
                                                             _game.PossibleDestinations.Clear();
                                                         }
@@ -312,7 +312,7 @@ namespace BroadenHorizons.Screens
                                                 }
                                                 else
                                                 {
-                                                    _game.messageManager.Show($"Not enough materials for building a {improvement.Name}, {improvement.MatCost} are needed", MessageType.Info);
+                                                    _game._messageManager.Show($"Not enough materials for building a {improvement.Name}, {improvement.MatCost} are needed", MessageType.Info);
                                                     _game.requireMouseRelease = true;
                                                 }
                                             }
@@ -327,7 +327,7 @@ namespace BroadenHorizons.Screens
                                 else if (clickedReg == currentReg && imp >= 0 && _game.Planets[n].OccupiedByUnit[clickedReg] == -1 && _game.UnitTypes[unitCode].Name == _game.PlanetImprovements[imp].AllowedUnit)
                                 {
                                     var improvement = _game.PlanetImprovements[imp];
-                                    _game.messageManager.Show($"Occupy {improvement.Name}?\nIt will provide extra {_game.UnitTypes[unitCode].ExtraFoodProd} food, {_game.UnitTypes[unitCode].ExtraMatProd} materials, {_game.UnitTypes[unitCode].ExtraSciProd} science.\nThe unit will remain here without consuming resources.", MessageType.Confirm, result =>
+                                    _game._messageManager.Show($"Occupy {improvement.Name}?\nIt will provide extra {_game.UnitTypes[unitCode].ExtraFoodProd} food, {_game.UnitTypes[unitCode].ExtraMatProd} materials, {_game.UnitTypes[unitCode].ExtraSciProd} science.\nThe unit will remain here without consuming resources.", MessageType.Confirm, result =>
                                     {
                                         if (result)
                                         {
@@ -341,21 +341,21 @@ namespace BroadenHorizons.Screens
                                                 }
                                             }
                                             _game.PossibleDestinations.Clear();
-                                            _game.messageManager.Show($"Occupied {improvement.Name} with {_game.UnitTypes[unitCode].Name},\ngaining extra {_game.UnitTypes[unitCode].ExtraFoodProd} food, {_game.UnitTypes[unitCode].ExtraMatProd} materials, {_game.UnitTypes[unitCode].ExtraSciProd} science.\nThe unit will remain here without consuming resources.", MessageType.Info);
+                                            _game._messageManager.Show($"Occupied {improvement.Name} with {_game.UnitTypes[unitCode].Name},\ngaining extra {_game.UnitTypes[unitCode].ExtraFoodProd} food, {_game.UnitTypes[unitCode].ExtraMatProd} materials, {_game.UnitTypes[unitCode].ExtraSciProd} science.\nThe unit will remain here without consuming resources.", MessageType.Info);
                                         }
                                     });
                                     _game.requireMouseRelease = true;
                                 }
                                 else if (unitCode == (int)UnitTypeEnum.Explorer && hab < 0) // Explorer moving to unexplored region
                                 {
-                                    _game.messageManager.Show($"Do you want to explore region {clickedReg}? It will take {Functions.GetTurnsToExplore(clickedReg)} turns.", MessageType.Confirm, result =>
+                                    _game._messageManager.Show($"Do you want to explore region {clickedReg}? It will take {Functions.GetTurnsToExplore(clickedReg)} turns.", MessageType.Confirm, result =>
                                     {
                                         if (result)
                                         {
                                             unitsOnPlanet[u].Region = clickedReg;
                                             unitsOnPlanet[u].Status = UnitStatus.Busy;
                                             _game.TurnActions.Add(new TurnAction { ActionTurn = _game.Turn, TurnFinal = _game.Turn + Functions.GetTurnsToExplore(clickedReg), PlanetCode = n, UnitID = u, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
-                                            _game.messageManager.Show($"Exploring a new region, it will be finished on turn {Functions.GetTurnsToExplore(clickedReg) + _game.Turn}", MessageType.Info);
+                                            _game._messageManager.Show($"Exploring a new region, it will be finished on turn {Functions.GetTurnsToExplore(clickedReg) + _game.Turn}", MessageType.Info);
                                             _game.SelectedUnit = -1;
                                             _game.PossibleDestinations.Clear();
                                         }
@@ -364,7 +364,7 @@ namespace BroadenHorizons.Screens
                                 }
                                 else // Regular movement to a explored region
                                 {
-                                    _game.messageManager.Show($"Move to region {clickedReg}?", MessageType.Confirm, result =>
+                                    _game._messageManager.Show($"Move to region {clickedReg}?", MessageType.Confirm, result =>
                                     {
                                         if (result)
                                         {
@@ -393,7 +393,7 @@ namespace BroadenHorizons.Screens
                                 _game.tooltipText = "";
                                 if (_game.Planets[_game.CurrentPlanet].HabitatPopulated[clickedReg])
                                 {
-                                    _game.messageManager.Show($"Do you want to stop production in region {clickedReg}?\nThis will free up {GameData.HabitatTypes[_game.Planets[_game.CurrentPlanet].Habitat[clickedReg]].PopNeeded} colonists.", MessageType.Confirm, result =>
+                                    _game._messageManager.Show($"Do you want to stop production in region {clickedReg}?\nThis will free up {GameData.HabitatTypes[_game.Planets[_game.CurrentPlanet].Habitat[clickedReg]].PopNeeded} colonists.", MessageType.Confirm, result =>
                                     {
                                         if (result)
                                         {
@@ -407,7 +407,7 @@ namespace BroadenHorizons.Screens
                                 {
                                     if (Functions.GetPlanetPopulation(_game.Planets[_game.CurrentPlanet], "Unassigned") >= GameData.HabitatTypes[_game.Planets[_game.CurrentPlanet].Habitat[clickedReg]].PopNeeded)
                                     {
-                                        _game.messageManager.Show($"Do you want to start production in region {clickedReg}?\nThis will assign {GameData.HabitatTypes[_game.Planets[_game.CurrentPlanet].Habitat[clickedReg]].PopNeeded} colonists to this region.", MessageType.Confirm, result =>
+                                        _game._messageManager.Show($"Do you want to start production in region {clickedReg}?\nThis will assign {GameData.HabitatTypes[_game.Planets[_game.CurrentPlanet].Habitat[clickedReg]].PopNeeded} colonists to this region.", MessageType.Confirm, result =>
                                         {
                                             if (result)
                                             {
@@ -419,7 +419,7 @@ namespace BroadenHorizons.Screens
                                     }
                                     else
                                     {
-                                        _game.messageManager.Show($"Not enough free colonists to populate this region,\nit requires {GameData.HabitatTypes[_game.Planets[_game.CurrentPlanet].Habitat[clickedReg]].PopNeeded} colonists but only {Functions.GetPlanetPopulation(_game.Planets[_game.CurrentPlanet], "Unassigned")} are available.", MessageType.Info);
+                                        _game._messageManager.Show($"Not enough free colonists to populate this region,\nit requires {GameData.HabitatTypes[_game.Planets[_game.CurrentPlanet].Habitat[clickedReg]].PopNeeded} colonists but only {Functions.GetPlanetPopulation(_game.Planets[_game.CurrentPlanet], "Unassigned")} are available.", MessageType.Info);
                                         _game.requireMouseRelease = true;
                                     }
                                 }

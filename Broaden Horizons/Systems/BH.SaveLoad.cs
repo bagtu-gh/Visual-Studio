@@ -91,11 +91,11 @@ namespace BroadenHorizons
                 string json = JsonSerializer.Serialize(state, _saveOptions);
                 AtomicWrite(DefaultSavePath, json);
 
-                messageManager.Show("Game saved successfully!", MessageType.Info);
+                _messageManager.Show("Game saved successfully!", MessageType.Info);
             }
             catch (Exception ex)
             {
-                messageManager.Show($"Failed to save game: {ex.Message}", MessageType.Info);
+                _messageManager.Show($"Failed to save game: {ex.Message}", MessageType.Info);
             }
         }
 
@@ -108,7 +108,7 @@ namespace BroadenHorizons
             {
                 if (!File.Exists(DefaultSavePath))
                 {
-                    messageManager.Show("No saved game found", MessageType.Info);
+                    _messageManager.Show("No saved game found", MessageType.Info);
                     return;
                 }
 
@@ -117,18 +117,18 @@ namespace BroadenHorizons
 
                 if (state == null)
                 {
-                    messageManager.Show("Save file is empty or invalid.", MessageType.Info);
+                    _messageManager.Show("Save file is empty or invalid.", MessageType.Info);
                     return;
                 }
 
                 RestoreFromSaveState(state);
 
                 CurrentState = GameState.GalaxyMap;
-                messageManager.Show("Game loaded successfully!", MessageType.Info);
+                _messageManager.Show("Game loaded successfully!", MessageType.Info);
             }
             catch (Exception ex)
             {
-                messageManager.Show($"Failed to load game: {ex.Message}", MessageType.Info);
+                _messageManager.Show($"Failed to load game: {ex.Message}", MessageType.Info);
             }
         }
 

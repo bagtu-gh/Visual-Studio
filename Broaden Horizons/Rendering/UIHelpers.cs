@@ -32,7 +32,7 @@ namespace BroadenHorizons
                     Constants.TOP_BAR_BUTTON_WIDTH,
                     Constants.TOP_BAR_BUTTON_HEIGHT
                 ),
-                Label = "(S)hips",
+                Label = "Sh(i)ps",
                 OnClick = switchToShipsList
             });
 

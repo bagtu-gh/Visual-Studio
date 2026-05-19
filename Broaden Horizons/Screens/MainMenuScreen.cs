@@ -42,7 +42,7 @@ namespace BroadenHorizons.Screens
                 }
                 else if (exitGameButton.Contains(mouse.Position))
                 {
-                    _game.messageManager.Show("Are you sure you want to quit?", MessageType.Confirm, result =>
+                    _game._messageManager.Show("Are you sure you want to quit?", MessageType.Confirm, result =>
                     {
                         if (result) _game.Exit();
                     });

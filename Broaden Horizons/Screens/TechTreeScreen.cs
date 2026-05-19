@@ -21,9 +21,9 @@ namespace BroadenHorizons.Screens
                 _initialized = true;
             }
 
-            if (_game.messageManager.IsActive)
+            if (_game._messageManager.IsActive)
             {
-                _game.messageManager.Update(gameTime, keyboard, mouse, _game._bitmapFontMessages, new Rectangle(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
+                _game._messageManager.Update(gameTime, keyboard, mouse, _game._bitmapFontMessages, new Rectangle(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
                 return;
             }
 
