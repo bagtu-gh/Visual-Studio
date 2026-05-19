@@ -51,6 +51,8 @@ namespace BroadenHorizons
         internal UnitManager _unitManager;
         internal ProductionManager _productionManager;
         internal TechManager _techManager;
+        internal MessageManager _messageManager;
+        internal EndTurnManager _endTurnManager;
         internal Vector2 ScrollOffset = Vector2.Zero;
         internal enum GameState { MainMenu, Preferences, GalaxyMap, PlanetScreen, PlanetList, TechTree, ShipList }
         internal GameState CurrentState = GameState.MainMenu;
@@ -80,7 +82,6 @@ namespace BroadenHorizons
         internal int chooseReg = -1;
         public List<int> availableImprovementIndices = new List<int>();
         public List<int> availableUnitIndices = new List<int>();
-        internal Dictionary<float, Vector2[]> hexPointCache = new Dictionary<float, Vector2[]>();
         internal KeyboardState _prevKeyboard;
         internal MouseState _prevMouse;
         public Vector2 mousePos;
@@ -88,7 +89,6 @@ namespace BroadenHorizons
         public bool requireMouseRelease = false;
         public string tooltipText = "";
         public Vector2 tooltipPos = Vector2.Zero;
-        internal MessageManager messageManager;
         internal List<Tech> Techs;
         private int _globalScience = Constants.STARTING_SCIENCE;
         private int _currentResearch = -1;
@@ -148,7 +148,8 @@ namespace BroadenHorizons
             _planetListScreen = new PlanetListScreen(this);
             _shipListScreen = new ShipListScreen(this);
             _preferencesScreen = new PreferencesScreen(this);
-            messageManager = new MessageManager(this);
+            _messageManager = new MessageManager(this);
+            _endTurnManager = new EndTurnManager(this);
         }
 
         protected override void Initialize()
@@ -236,7 +237,6 @@ namespace BroadenHorizons
             Techs = [.. GameData.Technologies];
             GameData.AssignTechPositions();
 
-            // === RESIZE PLANETS ARRAY IF NECESSARY ===
             if (Planets == null || Planets.Length != Constants.NUM_PLANETS)
             {
                 Planets = new Planet[Constants.NUM_PLANETS];
@@ -260,10 +260,10 @@ namespace BroadenHorizons
                 RegionDatas[i] = new RegionData();
 
             _regionBonusManager.UpdateHabitats(HabitatTypes);
-            _unitManager = new UnitManager(this, UnitTypes, messageManager);
-            _shipManager = new ShipManager(Planets, Techs, messageManager, TurnActions);
+            _unitManager = new UnitManager(this, UnitTypes, _messageManager);
+            _shipManager = new ShipManager(Planets, Techs, _messageManager, TurnActions);
             _productionManager = new ProductionManager(Planets, HabitatTypes, UnitTypes, PlanetImprovements, _regionBonusManager, _unitManager, _shipManager);
-            _techManager = new TechManager(Techs, Constants.STARTING_SCIENCE, messageManager, HabitatTypes);
+            _techManager = new TechManager(Techs, Constants.STARTING_SCIENCE, _messageManager, HabitatTypes);
         }
 
         private void InitializeData()
@@ -319,7 +319,7 @@ namespace BroadenHorizons
             for (int i = 0; i < Constants.NUM_PLANETS; i++)
             {
                 hasRecruitedThisTurn[i] = false;
-                //if (i != 0) Planets[i].Status = PlanetStatus.Unexplored; TEMPORARY
+                if (i != 0) Planets[i].Status = PlanetStatus.Unexplored; /*TEMPORARY
                 if (i >= 4)
                     Planets[i].Status = PlanetStatus.Unexplored;
                 else
@@ -333,7 +333,7 @@ namespace BroadenHorizons
                     Planets[i].Energy = Constants.STARTING_ENERGY;
                     Planets[i].Population = Constants.STARTING_POPULATION;
                     Planets[i].HabitatPopulated[0] = true;
-                }
+                }*/
             }
 
             // Stars
@@ -407,9 +407,9 @@ namespace BroadenHorizons
                 MouseMapX = (int)(mouse.X + ScrollOffset.X);
                 MouseMapY = (int)(mouse.Y + ScrollOffset.Y);
 
-                if (messageManager.IsActive)
+                if (_messageManager.IsActive)
                 {
-                    messageManager.Update(gameTime, keyboard, mouse, _bitmapFont, new Rectangle(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
+                    _messageManager.Update(gameTime, keyboard, mouse, _bitmapFont, new Rectangle(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
                 }
                 else
                 {
@@ -522,114 +522,7 @@ namespace BroadenHorizons
 
         internal void EndTurn(GameTime gameTime)
         {
-            Turn++;
-            for (int i = 0; i < Constants.NUM_PLANETS; i++)
-            {
-                hasRecruitedThisTurn[i] = false;
-            }
-
-            for (int p = 0; p < Constants.NUM_PLANETS; p++)
-            {
-                var production = _productionManager.CalculateProduction(p);
-                Planets[p].Food += production.Food;
-                Planets[p].Mat += production.Materials;
-                Planets[p].Energy += production.Energy;
-                Planets[p].Population += int.Parse(Functions.GetPopModifier(Planets[p], int.Parse(CalculateResourceTurn(p, "Food"))));
-            }
-
-            List<string> summary = new List<string>();
-            int scienceProduced = int.Parse(_productionManager.CalculateProductionTurn(-1, "Science"));
-            _techManager.ProcessTurnResearch(scienceProduced, summary, out var TechResearchedThisTurn);
-
-            for (int i = TurnActions.Count - 1; i >= 0; i--)
-            {
-                var ta = TurnActions[i];
-                var SelectedUnit = _unitManager.GetUnitById(ta.UnitID);
-                if (Turn >= ta.TurnFinal)
-                {
-                    if (ta.UnitActionType == UnitActionType.Building)
-                    {
-                        Planets[ta.PlanetCode].Improvements[ta.TargetReg] = ta.ImprovementIndex;
-                        var improvement = PlanetImprovements[ta.ImprovementIndex];
-                        string planetName = Planets[ta.PlanetCode].Name;
-                        string msg = $"Your builder has finished {improvement.Name} at {planetName},\nit will produce {improvement.FoodProd} food, {improvement.MatProd} materials, {improvement.SciProd} science,\na {improvement.AllowedUnit} can occupy the building to increase production.";
-                        summary.Add(msg);
-                    }
-                    else if (ta.UnitActionType == UnitActionType.Recruiting)
-                    {
-                        string unitName = SelectedUnit.Name;
-                        string planetName = Planets[ta.PlanetCode].Name;
-                        string msg = $"A new unit of {unitName} has been recruited\nat {planetName} and is now ready for action!";
-                        summary.Add(msg);
-                    }
-                    else if (ta.UnitActionType == UnitActionType.MovingOrExploring)
-                    {
-                        int unitCode = SelectedUnit.TypeIndex;
-                        string unitName = UnitTypes[unitCode].Name;
-                        string planetName = Planets[ta.PlanetCode].Name;
-                        int targetRegion = ta.TargetReg;
-
-                        if (unitCode == (int)UnitTypeEnum.Explorer && Planets[ta.PlanetCode].Habitat[targetRegion] < 0)
-                        {
-                            // Explorer discovering new habitat
-                            int hab = Planets[ta.PlanetCode].Habitat[targetRegion];
-                            Planets[ta.PlanetCode].Habitat[targetRegion] = Math.Abs(hab);
-                            var habitat = HabitatTypes[Math.Abs(hab)];
-                            if (Functions.GetPlanetPopulation(Planets[ta.PlanetCode], "Unassigned") >= habitat.PopNeeded)
-                            {
-                                summary.Add($"A new habitat {habitat.Name} has been discovered at {planetName},\nit will yield {habitat.FoodProd} food, {habitat.MatProd} materials, and {habitat.SciProd} science.\nIt has been automatically populated with {habitat.PopNeeded} colonists\nYour explorer is now free to explore more!");
-                                Planets[ta.PlanetCode].HabitatPopulated[targetRegion] = true;
-                            }
-                            else
-                            {
-                                summary.Add($"A new habitat {habitat.Name} has been discovered at {planetName},\nit would yield {habitat.FoodProd} food, {habitat.MatProd} materials, and {habitat.SciProd} science\nif populated with {habitat.PopNeeded} colonists that are not currently available.\nYour explorer is now free to explore more!");
-                            }
-
-                            int regionBonusIndex = Planets[ta.PlanetCode].RegionBonusRegions[targetRegion];
-                            if (regionBonusIndex >= 0)
-                            {
-                                var regionBonus = _regionBonusManager.RegionBonusTypes[regionBonusIndex];
-                                string regionBonusMsg = $"A {regionBonus.Name} was discovered in the {habitat.Name} at {planetName}!\n" +
-                                                    $"It will provide +{regionBonus.BaseBonus} {regionBonus.BonusType} per turn.";
-                                summary.Add(regionBonusMsg);
-                            }
-                        }
-                        else
-                        {
-                            int habitatIndex = Planets[ta.PlanetCode].Habitat[targetRegion];
-                            var habitat = HabitatTypes[habitatIndex];
-                            string habitatName = habitat.Name;
-                            string msg = $"{unitName} has arrived at {habitatName} (Region {targetRegion}) on {planetName}!\nThey are now ready to work or move again.";
-                            summary.Add(msg);
-                        }
-                    }
-                    SelectedUnit.Status = UnitStatus.Idle;
-                    TurnActions.RemoveAt(i);
-                }
-            }
-
-            var shipMessages = _shipManager.ProcessEndTurn(Turn);
-
-            foreach (var msg in shipMessages)
-            {
-                summary.Add(msg);
-            }
-
-            // Check for tech tree actions
-            if (_techManager?.HasAvailableTechs() ?? false && _techManager.CurrentResearch == -1)
-            {
-                summary.Add("Warning! No research in progress.\nVisit the Tech Tree to start a new research project.");
-            }
-
-            // Always show a message to confirm the turn has ended
-            if (summary.Count > 0)
-            {
-                messageManager.Show($"Turn {Turn} Summary:\n\n{string.Join("\n\n", summary)}", MessageType.Info);
-            }
-            else
-            {
-                messageManager.Show($"Turn {Turn} completed. No actions finished this turn.", MessageType.Info);
-            }
+            _endTurnManager.EndTurn(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -667,7 +560,7 @@ namespace BroadenHorizons
             {
                 drawHandlers[CurrentState](gameTime);
             }
-            messageManager.Draw(_spriteBatch, _pixel, _bitmapFontMessages, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, graphicsDevice: GraphicsDevice);
+            _messageManager.Draw(_spriteBatch, _pixel, _bitmapFontMessages, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, graphicsDevice: GraphicsDevice);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
