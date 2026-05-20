@@ -185,17 +185,12 @@ namespace BroadenHorizons
             if (Functions.GetPlanetPopulation(planet, "Unassigned")
                 >= habitat.PopNeeded)
             {
-                summary.Add(
-                    $"A new habitat {habitat.Name} has been discovered at {planetName}..."
-                );
-
+                summary.Add($"A new habitat {habitat.Name} has been discovered at {planetName},\nit will yield {habitat.FoodProd} food, {habitat.MatProd} materials, and {habitat.SciProd} science.\nIt has been automatically populated with {habitat.PopNeeded} colonists\nYour explorer is now free to explore more!");
                 planet.HabitatPopulated[targetRegion] = true;
             }
             else
             {
-                summary.Add(
-                    $"A new habitat {habitat.Name} has been discovered at {planetName}..."
-                );
+                summary.Add($"A new habitat {habitat.Name} has been discovered at {planetName},\nit would yield {habitat.FoodProd} food, {habitat.MatProd} materials, and {habitat.SciProd} science\nif populated with {habitat.PopNeeded} colonists that are not currently available.\nYour explorer is now free to explore more!");
             }
 
             int regionBonusIndex =
