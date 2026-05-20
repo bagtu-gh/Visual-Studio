@@ -19,14 +19,15 @@ namespace BroadenHorizons
         public const int NON_EXISTING_HABTITAT = -99;
         public const float PLANET_GALAXY_SCALE = 75f;
         public const int HEX_SIZE = 115;
-        public const int UNIT_MENU_MIN_X = 25;
-        public const int UNIT_MENU_MAX_X = 115;
-        public const int UNIT_MENU_MIN_Y = 100;
-        public const int UNIT_MENU_MAX_Y = 190;
-        public const int UNIT_MENU_ROW_HEIGHT = 90;
+
+        public const int UNIT_MENU_X = 25;
+        public const int UNIT_MENU_START_Y = 110;
+        public const int UNIT_MENU_ROW_HEIGHT = 100;
+        public const int UNIT_MENU_PADDING = 10;
         public const float UNEXPLORED_SCALE = 0.08f;
         public const float UNIT_GRID_SCALE = 0.45f;
-        public const float MENU_UNIT_SCALE = 0.11f;
+        public const int RECRUIT_MENU_X = 1225;
+
         public const int NUM_STARS = 300;
         public const int TURNS_TO_EXPLORE1 = 2;
         public const int TURNS_TO_EXPLORE2 = 4;
@@ -58,10 +59,6 @@ namespace BroadenHorizons
 
         public static readonly Color MenuSelectedColor = Color.Green;
         public static readonly Color MenuNonSelectedColor = Color.OrangeRed;
-
-        public const int RECRUIT_MENU_X = 1200;
-        public const int RECRUIT_MENU_Y = 100;
-        public const int RECRUIT_HEIGHT = 90;
 
         public const float LIST_ROW_HEIGHT = 48f;
         public const float LIST_HEADER_HEIGHT = 48f;
