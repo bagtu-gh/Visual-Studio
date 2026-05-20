@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Gi3djWXxVbc=",
+  "dgSpecHash": "etfREBthQWo=",
   "success": true,
-  "projectFilePath": "c:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj",
+  "projectFilePath": "C:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\monogame.content.builder.task\\3.8.4.1\\monogame.content.builder.task.3.8.4.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\monogame.extended\\5.5.1\\monogame.extended.5.5.1.nupkg.sha512",

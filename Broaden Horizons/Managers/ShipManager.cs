@@ -34,7 +34,7 @@ namespace BroadenHorizons
 
         public void StartingShips(int planetId)
         {
-            /*var startingShip = new Ship
+            var startingShip = new Ship
             {
                 Id = nextShipId++,
                 Name = "Probe 1",

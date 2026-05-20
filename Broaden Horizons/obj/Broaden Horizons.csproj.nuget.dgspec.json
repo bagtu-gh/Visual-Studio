@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj": {}
+    "C:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj": {
+    "C:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj",
+        "projectUniqueName": "C:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj",
         "projectName": "Broaden Horizons",
-        "projectPath": "c:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj",
+        "projectPath": "C:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\Broaden Horizons.csproj",
         "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\obj\\",
+        "outputPath": "C:\\Users\\Usuario\\Visual Studio\\Broaden Horizons\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config"

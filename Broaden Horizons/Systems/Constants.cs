@@ -18,14 +18,14 @@ namespace BroadenHorizons
         public const int MAX_PLANET_DIMENS = 36;
         public const int NON_EXISTING_HABTITAT = -99;
         public const float PLANET_GALAXY_SCALE = 75f;
-        public const int HEX_SIZE = 110;
+        public const int HEX_SIZE = 115;
         public const int UNIT_MENU_MIN_X = 25;
         public const int UNIT_MENU_MAX_X = 115;
         public const int UNIT_MENU_MIN_Y = 100;
         public const int UNIT_MENU_MAX_Y = 190;
         public const int UNIT_MENU_ROW_HEIGHT = 90;
         public const float UNEXPLORED_SCALE = 0.08f;
-        public const float UNIT_SCALE = 0.05f;
+        public const float UNIT_GRID_SCALE = 0.45f;
         public const float MENU_UNIT_SCALE = 0.11f;
         public const int NUM_STARS = 300;
         public const int TURNS_TO_EXPLORE1 = 2;
@@ -37,9 +37,9 @@ namespace BroadenHorizons
         public const int MENU_BUTTON_BOTTOM_MARGIN = 60;
 
         public const int TOP_BAR_HEIGHT = 60;
-        public const int TOP_BAR_BUTTON_WIDTH = 150;
+        public const int TOP_BAR_BUTTON_WIDTH = 130;
         public const int TOP_BAR_BUTTON_HEIGHT = 40;
-        public const int TOP_BAR_BUTTON_SPACING = 20;
+        public const int TOP_BAR_BUTTON_SPACING = 15;
         public const int TOOLTIP_EDGE_THRESHOLD_RIGHT = 150;
         public const int TOOLTIP_EDGE_THRESHOLD_BOTTOM = 120;
         public static readonly Color TOP_BAR_BUTTON_COLOR = Color.Blue;

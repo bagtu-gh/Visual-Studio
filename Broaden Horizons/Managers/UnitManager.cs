@@ -59,7 +59,7 @@ namespace BroadenHorizons
                 Status = UnitStatus.Idle
             };
             _units.Add(startingUnit);
-            /*var startingUnit2 = new Unit
+            var startingUnit2 = new Unit
             {
                 ID = nextUnitId++,
                 Name = "Builder",
@@ -68,7 +68,7 @@ namespace BroadenHorizons
                 Region = 0,
                 Status = UnitStatus.Idle
             };
-            _units.Add(startingUnit2);*/
+            _units.Add(startingUnit2);
         }
 
         public static List<int> GetAvailableDestinations(Unit unit, Planet planet, int[] neighbors, List<HabitatType> habitatTypes, List<PlanetImprovement> improvements)

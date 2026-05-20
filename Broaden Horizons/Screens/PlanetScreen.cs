@@ -440,7 +440,7 @@ namespace BroadenHorizons.Screens
             _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Planet, _game.Turn, _game.GlobalScience, _game.Planets, _game.CalculateResourceTurn, _game.CurrentPlanet);
 
             float xOffset = _game._bitmapFontBig.MeasureString(_game.Planets[_game.CurrentPlanet].Name.ToUpper()).Width / 2;
-            _game._spriteBatch.DrawString(_game._bitmapFontBig, _game.Planets[_game.CurrentPlanet].Name.ToUpper(), new Vector2(Constants.SCREEN_WIDTH / 2 - xOffset, Constants.TOP_BAR_HEIGHT + 20), Color.White);
+            _game._spriteBatch.DrawString(_game._bitmapFontBig, _game.Planets[_game.CurrentPlanet].Name.ToUpper(), new Vector2(Constants.SCREEN_WIDTH / 2 - xOffset, Constants.TOP_BAR_HEIGHT + 10), Color.White);
 
             // Draw planet surface
             for (int i = 0; i <= Constants.MAX_PLANET_DIMENS; i++)
@@ -505,7 +505,7 @@ namespace BroadenHorizons.Screens
             // Draw available units
             var unitsOnPlanet = _game._unitManager.GetUnitsOnPlanet(_game.CurrentPlanet);
             int totalUnits = unitsOnPlanet.Count;
-            _game._spriteBatch.DrawString(_game._bitmapFont, $"Available Units/Ships", new Vector2(25, Constants.UNIT_MENU_MIN_Y - 35), Color.White);
+            _game._spriteBatch.DrawString(_game._bitmapFont, $"Available Units/Ships", new Vector2(25, Constants.TOP_BAR_HEIGHT + 10), Color.White);
             for (int i = 0; i < totalUnits; i++)
             {
                 Unit unit = unitsOnPlanet[i];
@@ -515,17 +515,18 @@ namespace BroadenHorizons.Screens
 
                 Vector2 center = new Vector2(_game.RegionDatas[region].XC, _game.RegionDatas[region].YC);
                 var unitTexture = _game.Textures[_game.UnitTypes[unitCode].TextureId];
+                float unitScale = (float)Constants.UNIT_MENU_ROW_HEIGHT / unitTexture.Height;
 
                 // Draw units icon on grid (grayed out if inactive)
-                float gridScale = (unit.Status != UnitStatus.Idle) ? Constants.UNIT_SCALE * 0.9f : Constants.UNIT_SCALE;
+                float gridScale = unitScale * Constants.UNIT_GRID_SCALE;
                 Color gridColor = (unit.Status != UnitStatus.Idle) ? Color.Gray * 0.7f : Color.White;
                 _game._spriteBatch.Draw(unitTexture, center, null, gridColor, 0f, Vector2.Zero, gridScale, SpriteEffects.None, 0f);
 
                 // Draw units in menu (grayed out if inactive)
-                _game._spriteBatch.Draw(unitTexture, new Vector2(25, 100 + i * Constants.UNIT_MENU_ROW_HEIGHT), null, gridColor, 0f, Vector2.Zero, Constants.MENU_UNIT_SCALE, SpriteEffects.None, 0f);
+                _game._spriteBatch.Draw(unitTexture, new Vector2(Constants.UNIT_MENU_MIN_X, Constants.UNIT_MENU_MIN_Y + i * Constants.UNIT_MENU_ROW_HEIGHT), null, gridColor, 0f, Vector2.Zero, unitScale, SpriteEffects.None, 0f);
                 float yOffset = _game._bitmapFont.MeasureString(_game.UnitTypes[unitCode].Name).Height / 2;
                 Color textColor = (unit.Status != UnitStatus.Idle) ? Color.Gray : Color.White;
-                _game._spriteBatch.DrawString(_game._bitmapFont, $"{_game.UnitTypes[unitCode].Name} ({region})", new Vector2(125, 145 + i * Constants.UNIT_MENU_ROW_HEIGHT - yOffset), textColor);
+                _game._spriteBatch.DrawString(_game._bitmapFont, $"{_game.UnitTypes[unitCode].Name} ({region})", new Vector2(Constants.UNIT_MENU_MIN_X + Constants.UNIT_MENU_MIN_Y, 145 + i * Constants.UNIT_MENU_ROW_HEIGHT - yOffset), textColor);
             }
             // Draw available ships
             var shipsOnPlanet = _game._shipManager.GetShipsOnPlanet(_game.CurrentPlanet);
@@ -536,18 +537,19 @@ namespace BroadenHorizons.Screens
                 Ship ship = shipsOnPlanet[i];
                 int shipCode = ship.TypeIndex;
                 var shipTexture = _game.Textures[GameData.ShipTypes[shipCode].TextureId];
+                float shipScale = (float)Constants.UNIT_MENU_ROW_HEIGHT / shipTexture.Height;
                 Color gridColor = (ship.Status == ShipStatus.Building || ship.Status == ShipStatus.InTransit) ? Color.Gray : Color.White;
 
                 // Draw ships in menu (grayed out if inactive)
-                _game._spriteBatch.Draw(shipTexture, new Vector2(25, 100 + pos * Constants.UNIT_MENU_ROW_HEIGHT), null, gridColor, 0f, Vector2.Zero, Constants.MENU_UNIT_SCALE, SpriteEffects.None, 0f);
+                _game._spriteBatch.Draw(shipTexture, new Vector2(25, Constants.UNIT_MENU_MIN_Y + pos * Constants.UNIT_MENU_ROW_HEIGHT), null, gridColor, 0f, Vector2.Zero, shipScale, SpriteEffects.None, 0f);
                 float yOffset = _game._bitmapFont.MeasureString(GameData.ShipTypes[shipCode].Name).Height / 2;
                 Color textColor = (ship.Status == ShipStatus.Building || ship.Status == ShipStatus.InTransit) ? Color.Gray : Color.White;
-                _game._spriteBatch.DrawString(_game._bitmapFont, $"{GameData.ShipTypes[shipCode].Name}", new Vector2(125, 145 + pos * Constants.UNIT_MENU_ROW_HEIGHT - yOffset), textColor);
+                _game._spriteBatch.DrawString(_game._bitmapFont, $"{GameData.ShipTypes[shipCode].Name}", new Vector2(Constants.UNIT_MENU_MIN_X + Constants.UNIT_MENU_MIN_Y, 145 + pos * Constants.UNIT_MENU_ROW_HEIGHT - yOffset), textColor);
             }
             //Draw recruit units menu
             if (_game.Planets[_game.CurrentPlanet].Status == PlanetStatus.Owned)
             {
-                _game._spriteBatch.DrawString(_game._bitmapFont, $"Recruitable Units/Ships", new Vector2(Constants.RECRUIT_MENU_X, Constants.RECRUIT_MENU_Y - 35), Color.White);
+                _game._spriteBatch.DrawString(_game._bitmapFont, $"Recruitable Units/Ships", new Vector2(Constants.RECRUIT_MENU_X, Constants.TOP_BAR_HEIGHT + 10), Color.White);
 
                 int unitPos = 0;
                 for (int i = 0; i < _game.UnitTypes.Count; i++)

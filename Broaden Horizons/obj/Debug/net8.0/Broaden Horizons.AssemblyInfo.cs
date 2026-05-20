@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Broaden Horizons")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0411a643dacda02684c027492196bdb7f33d20bc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8c32264c4a41c365a00feb8eaec2fae9b9202f0b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Broaden Horizons")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Broaden Horizons")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
