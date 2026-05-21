@@ -331,8 +331,8 @@ namespace BroadenHorizons.Screens
                                     {
                                         if (result)
                                         {
-                                            _game.Planets[n].OccupiedByUnit[clickedReg] = unitCode;
-                                            unitsOnPlanet[u].Status = UnitStatus.Occupied;
+                                            _game.Planets[n].OccupiedByUnit[clickedReg] = unitsOnPlanet[u].ID;
+                                            unitsOnPlanet[u].Status = UnitStatus.InImprovement;
                                             for (int j = _game.TurnActions.Count - 1; j >= 0; j--)
                                             {
                                                 if (_game.TurnActions[j].PlanetCode == n && _game.TurnActions[j].UnitID == u)

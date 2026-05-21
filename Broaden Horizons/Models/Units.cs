@@ -41,7 +41,7 @@ namespace BroadenHorizons
 	
 	public enum UnitStatus
 	{
-	    Occupied = -1,
+	    InImprovement = -1,
 	    Idle = 0,
 	    Busy = 1
 	}

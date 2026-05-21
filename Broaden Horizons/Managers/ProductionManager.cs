@@ -72,16 +72,21 @@ namespace BroadenHorizons
                     if (improvement.SciProd != 0) result.BreakdownText.Add($"{improvement.Name} (Region {t}): {Functions.GetSignedValue(improvement.SciProd)} Science");
                     if (improvement.EnergyProd != 0) result.BreakdownText.Add($"{improvement.Name} (Region {t}): {Functions.GetSignedValue(improvement.EnergyProd)} Energy");
 
-                    int occupied = _planets[planetIndex].OccupiedByUnit[t];
-                    if (occupied >= 0)
+                    int occupiedUnitId = _planets[planetIndex].OccupiedByUnit[t];
+                    if (occupiedUnitId >= 0)
                     {
-                        result.Food += _unitTypes[occupied].ExtraFoodProd;
-                        result.Materials += _unitTypes[occupied].ExtraMatProd;
-                        result.Science += _unitTypes[occupied].ExtraSciProd;
+                        var occupiedUnit = _unitManager.GetUnitById(occupiedUnitId);
+                        if (occupiedUnit != null)
+                        {
+                            int unitTypeIndex = occupiedUnit.TypeIndex;
+                            result.Food += _unitTypes[unitTypeIndex].ExtraFoodProd;
+                            result.Materials += _unitTypes[unitTypeIndex].ExtraMatProd;
+                            result.Science += _unitTypes[unitTypeIndex].ExtraSciProd;
 
-                        if (_unitTypes[occupied].ExtraFoodProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[occupied].ExtraFoodProd)} Food");
-                        if (_unitTypes[occupied].ExtraMatProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[occupied].ExtraMatProd)} Materials");
-                        if (_unitTypes[occupied].ExtraSciProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[occupied].ExtraSciProd)} Science");
+                            if (_unitTypes[unitTypeIndex].ExtraFoodProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraFoodProd)} Food");
+                            if (_unitTypes[unitTypeIndex].ExtraMatProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraMatProd)} Materials");
+                            if (_unitTypes[unitTypeIndex].ExtraSciProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraSciProd)} Science");
+                        }
                     }
                 }
             }
@@ -105,7 +110,7 @@ namespace BroadenHorizons
             // Unit maintenance: active units consume maintenance
             foreach (var unit in _unitManager.GetUnitsOnPlanet(planetIndex))
             {
-                if (unit.Status != UnitStatus.Occupied) // only active units count toward maintenance here
+                if (unit.Status != UnitStatus.InImprovement) // only active units count toward maintenance here
                 {
                     int unitType = unit.TypeIndex;
                     int foodMaint = _unitTypes[unitType].FoodMaint;
@@ -239,14 +244,19 @@ namespace BroadenHorizons
                 tooltipLines.Add($"  Materials: {Functions.GetSignedValue(improvement.MatProd)}");
                 tooltipLines.Add($"  Science: {Functions.GetSignedValue(improvement.SciProd)}");
                 tooltipLines.Add($"  Energy: {Functions.GetSignedValue(improvement.EnergyProd)}");
-                int occupied = _planets[planetIndex].OccupiedByUnit[regIndex];
-                if (occupied >= 0)
+                int occupiedUnitId = _planets[planetIndex].OccupiedByUnit[regIndex];
+                if (occupiedUnitId >= 0)
                 {
-                    tooltipLines.Add($"Occupied by: {_unitTypes[occupied].Name}");
-                    tooltipLines.Add($"Extra Production:");
-                    tooltipLines.Add($"  Food: {Functions.GetSignedValue(_unitTypes[occupied].ExtraFoodProd)}");
-                    tooltipLines.Add($"  Materials: {Functions.GetSignedValue(_unitTypes[occupied].ExtraMatProd)}");
-                    tooltipLines.Add($"  Science: {Functions.GetSignedValue(_unitTypes[occupied].ExtraSciProd)}");
+                    var occupiedUnit = _unitManager.GetUnitById(occupiedUnitId);
+                    if (occupiedUnit != null)
+                    {
+                        int unitTypeIndex = occupiedUnit.TypeIndex;
+                        tooltipLines.Add($"Occupied by: {occupiedUnit.Name} ({_unitTypes[unitTypeIndex].Name})");
+                        tooltipLines.Add($"Extra Production:");
+                        tooltipLines.Add($"  Food: {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraFoodProd)}");
+                        tooltipLines.Add($"  Materials: {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraMatProd)}");
+                        tooltipLines.Add($"  Science: {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraSciProd)}");
+                    }
                 }
             }
             else
