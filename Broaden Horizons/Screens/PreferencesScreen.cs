@@ -9,6 +9,7 @@ namespace BroadenHorizons.Screens
         private readonly BH _game = game;
         private readonly int[] _planetOptions = [15, 20, 25, 30];
         private readonly int[] _foodOptions = [6, 8, 10];
+        private readonly string[] _eventOptions = ["On", "Off"];
         private const int TOP_MARGIN = 180;
         private const int LEFT_MARGIN = 120;
         private const int BUTTON_WIDTH = 150;
@@ -41,7 +42,17 @@ namespace BroadenHorizons.Screens
                     }
                 }
 
-                var startGameButton = new Rectangle((Constants.SCREEN_WIDTH - BUTTON_WIDTH) / 2, 520, BUTTON_WIDTH, BUTTON_HEIGHT);
+                for (int i = 0; i < _eventOptions.Length; i++)
+                {
+                    var rect = new Rectangle(LEFT_MARGIN + i * (BUTTON_WIDTH + BUTTON_SPACING), TOP_MARGIN + 2 * BUTTON_VERT_DIST, BUTTON_WIDTH, BUTTON_HEIGHT);
+                    if (rect.Contains(mouse.Position))
+                    {
+                        Constants.EVENTS_ON = _eventOptions[i] == "On" ? true : false;
+                        return;
+                    }
+                }
+
+                var startGameButton = new Rectangle((Constants.SCREEN_WIDTH - BUTTON_WIDTH) / 2, TOP_MARGIN + 3 * BUTTON_VERT_DIST, BUTTON_WIDTH, BUTTON_HEIGHT);
                 if (startGameButton.Contains(mouse.Position))
                 {
                     _game.NewGame();
@@ -99,7 +110,26 @@ namespace BroadenHorizons.Screens
                 );
             }
 
-            var startGameButton = new Rectangle((Constants.SCREEN_WIDTH - BUTTON_WIDTH) / 2, 520, BUTTON_WIDTH, BUTTON_HEIGHT);
+            string eventLabel = "Event System";
+            _game._spriteBatch.DrawString(_game._bitmapFont, eventLabel, new Vector2(LEFT_MARGIN, 430), Color.Black);
+            for (int i = 0; i < _eventOptions.Length; i++)
+            {
+                string label = _eventOptions[i];
+                var rect = new Rectangle(LEFT_MARGIN + i * (BUTTON_WIDTH + BUTTON_SPACING), TOP_MARGIN + 2 * BUTTON_VERT_DIST, BUTTON_WIDTH, BUTTON_HEIGHT);
+                bool isOn = Constants.EVENTS_ON;
+                Color color = (isOn && label == "On") || (!isOn && label == "Off") ? Constants.MenuSelectedColor : Constants.MenuNonSelectedColor;
+                UIHelpers.DrawRoundedButton(
+                    _game._spriteBatch,
+                    _game._pixel,
+                    rect,
+                    label,
+                    color,
+                    _game._bitmapFont,
+                    (isOn && label == "On") || (!isOn && label == "Off")
+                );
+            }
+
+            var startGameButton = new Rectangle((Constants.SCREEN_WIDTH - BUTTON_WIDTH) / 2, TOP_MARGIN + 3 * BUTTON_VERT_DIST, BUTTON_WIDTH, BUTTON_HEIGHT);
             UIHelpers.DrawRoundedButton(
                 _game._spriteBatch,
                 _game._pixel,
@@ -109,9 +139,9 @@ namespace BroadenHorizons.Screens
                 _game._bitmapFont
             );
 
-            string currentSettings = $"Current: {Constants.NUM_PLANETS} planets, {Constants.STARTING_FOOD} food";
+            /*string currentSettings = $"Current: {Constants.NUM_PLANETS} planets, {Constants.STARTING_FOOD} food";
             Vector2 currentTextSize = _game._bitmapFont.MeasureString(currentSettings);
-            _game._spriteBatch.DrawString(_game._bitmapFont, currentSettings, new Vector2((Constants.SCREEN_WIDTH - currentTextSize.X) / 2, 460), Color.Black);
+            _game._spriteBatch.DrawString(_game._bitmapFont, currentSettings, new Vector2((Constants.SCREEN_WIDTH - currentTextSize.X) / 2, 800), Color.Black);*/
         }
     }
 }

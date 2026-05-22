@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace BroadenHorizons
 {
@@ -148,6 +149,50 @@ namespace BroadenHorizons
             new Tech { ID = 14, Name = "Aquaculture Development", Description = "Deep research about water resources", Cost = 60, MinScience = 15, Prerequisites = [13], BonusUnlocks = [], GridPosition = new Vector2(3, 13) },
             new Tech { ID = 15, Name = "Freight Logistics", Description = "Enables basic freighter ships", Cost = 50, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 7) },
             new Tech { ID = 16, Name = "Terraformation", Description = "Technology to modify temperature", Cost = 50, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 9) },
+        ];
+
+        public static readonly List<GameEvent> GameEvents =
+        [
+            new GameEvent
+            {
+                Name = "Meteor Strike",
+                GetDescription = (bh, target) => $"A meteor has struck {((Planet)target).Name}\nsome population has been lost, some materials could be fetched though.",
+                GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
+                Weight = 10,
+                Execute = (game, target) => { var planet = (Planet)target; /*planet.Population = (int)Math.Round(planet.Population * 0.95);*/ planet.Mat += 15; }
+            },
+            new GameEvent
+            {
+                Name = "Solar Flare",
+                GetDescription = (bh, target) => $"A solar flare has hit {((Planet)target).Name}\ncausing energy shortages and damaging habitats.",
+                GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
+                Weight = 10,
+                Execute = (game, target) => { var planet = (Planet)target; /*planet.Population = (int)Math.Round(planet.Population * 0.95);*/ planet.Mat += 15; }
+            },
+            new GameEvent
+            {
+                Name = "Good Harvest",
+                GetDescription = (bh, target) => $"A good harvest on {((Planet)target).Name}\nhas increased food production.",
+                GetValidTargets = bh => bh.Planets.Where(p => p.Food > 10).Cast<object>().ToList(),
+                Weight = 50000000,
+                Execute = (game, target) => { var planet = (Planet)target; planet.Food = (int)Math.Round(planet.Food * 1.05); }
+            },
+            new GameEvent
+            {
+                Name = "Technological Breakthrough",
+                GetDescription = (bh, target) => $"A technological breakthrough on {((Planet)target).Name} has increased production efficiency.",
+                GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
+                Weight = 15,
+                Execute = (game, target) => { var planet = (Planet)target; planet.Mat = (int)Math.Round(planet.Mat * 1.05); }
+            },
+            new GameEvent
+            {
+                Name = "Civil Unrest",
+                GetDescription = (bh, target) => $"Civil unrest has erupted on {((Planet)target).Name}, reducing productivity and causing damage to habitats.",
+                GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
+                Weight = 10,
+                Execute = (game, target) => { var planet = (Planet)target; planet.Food = (int)Math.Round(planet.Food * 0.95); planet.Mat = (int)Math.Round(planet.Mat * 0.95); }
+            }
         ];
 
         public static void AssignTechPositions()

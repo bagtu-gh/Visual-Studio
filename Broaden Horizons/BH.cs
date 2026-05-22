@@ -53,6 +53,7 @@ namespace BroadenHorizons
         internal TechManager _techManager;
         internal MessageManager _messageManager;
         internal EndTurnManager _endTurnManager;
+        internal EventManager _eventManager;
         internal Vector2 ScrollOffset = Vector2.Zero;
         internal enum GameState { MainMenu, Preferences, GalaxyMap, PlanetScreen, PlanetList, TechTree, ShipList }
         internal GameState CurrentState = GameState.MainMenu;
@@ -150,6 +151,7 @@ namespace BroadenHorizons
             _preferencesScreen = new PreferencesScreen(this);
             _messageManager = new MessageManager(this);
             _endTurnManager = new EndTurnManager(this);
+            _eventManager = new EventManager(this);
         }
 
         protected override void Initialize()

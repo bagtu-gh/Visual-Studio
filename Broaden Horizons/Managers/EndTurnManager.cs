@@ -23,6 +23,9 @@ namespace BroadenHorizons
             ProcessShips(summary);
             CheckResearchWarnings(summary);
 
+            if (Constants.EVENTS_ON)
+                _game._eventManager.TryTriggerEvent(summary);
+
             string summaryText = BuildSummaryText(summary);
 
             _game._messageManager.Show(summaryText, MessageType.Info);

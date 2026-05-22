@@ -83,10 +83,9 @@ namespace BroadenHorizons
         public const int MAX_PLANET_ATTEMPTS = 30;
         public const int STARTING_PLANET_MIN_SIZE = 22;
 
-        //Ships
-        public const int CITY_BUILD_TURNS = 5;
-        public const int COLONY_MATERIALS = 100;
-        public const int COLONY_FOOD = 50;
+        // Event system
+        public const float PROB_EVENT = 0.1f;
+        public static bool EVENTS_ON { get; set; } =  true;
 
         // File paths (centralize)
         private static string _helpText;
