@@ -64,8 +64,7 @@ namespace BroadenHorizons
                 ? selected.Event.GetDescription(_game, selected.Target)
                 : selected.Event.Name;
 
-            summary.Add($"Event: {description}"
-            );
+            summary.Add($"Event: {description}");
         }
     }
 }
