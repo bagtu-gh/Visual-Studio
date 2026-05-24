@@ -87,19 +87,6 @@ namespace BroadenHorizons
                     string msg = $"Technology researched: {t.Name}\nYou have unlocked: {Tech.GetItemsUnlockedByTech(t.ID)}{Tech.GetBonusesUnlockedByTech(t.ID)}";
                     summaryMessages.Add(msg);
                     _currentResearch = -1;
-
-                    // Apply habitat bonuses
-                    foreach (var bonus in t.BonusUnlocks)
-                    {
-                        if (bonus.FoodProd > 0) 
-                            _habitatTypes[_habitatTypes.FindIndex(h => h.Name == bonus.Habitat)].FoodProd += bonus.FoodProd;
-                        if (bonus.MatProd > 0) 
-                            _habitatTypes[_habitatTypes.FindIndex(h => h.Name == bonus.Habitat)].MatProd += bonus.MatProd;
-                        if (bonus.SciProd > 0) 
-                            _habitatTypes[_habitatTypes.FindIndex(h => h.Name == bonus.Habitat)].SciProd += bonus.SciProd;
-                        if (bonus.EnergyProd > 0) 
-                            _habitatTypes[_habitatTypes.FindIndex(h => h.Name == bonus.Habitat)].EnergyProd += bonus.EnergyProd;
-                    }
                 }
             }
         }

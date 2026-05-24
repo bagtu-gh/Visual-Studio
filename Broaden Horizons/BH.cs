@@ -264,7 +264,7 @@ namespace BroadenHorizons
             _regionBonusManager.UpdateHabitats(HabitatTypes);
             _unitManager = new UnitManager(this, UnitTypes, _messageManager);
             _shipManager = new ShipManager(Planets, Techs, _messageManager, TurnActions);
-            _productionManager = new ProductionManager(Planets, HabitatTypes, UnitTypes, PlanetImprovements, _regionBonusManager, _unitManager, _shipManager);
+            _productionManager = new ProductionManager(Planets, HabitatTypes, UnitTypes, PlanetImprovements, _regionBonusManager, _unitManager, _shipManager, Techs);
             _techManager = new TechManager(Techs, Constants.STARTING_SCIENCE, _messageManager, HabitatTypes);
         }
 
@@ -513,7 +513,7 @@ namespace BroadenHorizons
 
         public string CalculateResourceTurn(int planetIndex, string productionType)
         {
-            return _productionManager?.CalculateResourceTurn(planetIndex, productionType) ?? "0";
+            return _productionManager?.CalculateProductionTurn(planetIndex, productionType) ?? "0";
         }
 
         internal void HandleTechClick(int techId)

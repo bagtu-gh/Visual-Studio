@@ -13,6 +13,7 @@ namespace BroadenHorizons
         private RegionBonusManager _regionBonusManager;
         private UnitManager _unitManager;
         private ShipManager _shipManager;
+        private List<Tech> _techs;
 
         public ProductionManager(
             Planet[] planets,
@@ -21,7 +22,8 @@ namespace BroadenHorizons
             List<PlanetImprovement> planetImprovements,
             RegionBonusManager regionBonusManager,
             UnitManager unitManager,
-            ShipManager shipManager)
+            ShipManager shipManager,
+            List<Tech> techs)
         {
             _planets = planets;
             _habitatTypes = habitatTypes;
@@ -30,71 +32,7 @@ namespace BroadenHorizons
             _regionBonusManager = regionBonusManager;
             _unitManager = unitManager;
             _shipManager = shipManager;
-        }
-
-        /// <summary>
-        /// Aggregates production from habitats and improvements for a planet.
-        /// </summary>
-        private ProductionBreakdown AggregatePlanetProduction(int planetIndex)
-        {
-            var result = new ProductionBreakdown();
-
-            // Regions and improvements
-            for (int t = 0; t <= Constants.MAX_PLANET_DIMENS; t++)
-            {
-                int habIndex = _planets[planetIndex].Habitat[t];
-                if (habIndex >= 0 && _planets[planetIndex].HabitatPopulated[t])
-                {
-                    int hab = Math.Abs(habIndex);
-                    var habitat = _habitatTypes[hab];
-                    result.Food += habitat.FoodProd;
-                    result.Materials += habitat.MatProd;
-                    result.Science += habitat.SciProd;
-                    result.Energy += habitat.EnergyProd;
-
-                    if (habitat.FoodProd != 0) result.BreakdownText.Add($"{habitat.Name} (Region {t}): {Functions.GetSignedValue(habitat.FoodProd)} Food");
-                    if (habitat.MatProd != 0) result.BreakdownText.Add($"{habitat.Name} (Region {t}): {Functions.GetSignedValue(habitat.MatProd)} Materials");
-                    if (habitat.SciProd != 0) result.BreakdownText.Add($"{habitat.Name} (Region {t}): {Functions.GetSignedValue(habitat.SciProd)} Science");
-                    if (habitat.EnergyProd != 0) result.BreakdownText.Add($"{habitat.Name} (Region {t}): {Functions.GetSignedValue(habitat.EnergyProd)} Energy");
-                }
-
-                int impIndex = _planets[planetIndex].Improvements[t];
-                if (impIndex >= 0 && _planets[planetIndex].HabitatPopulated[t])
-                {
-                    var improvement = _planetImprovements[impIndex];
-                    result.Food += improvement.FoodProd;
-                    result.Materials += improvement.MatProd;
-                    result.Science += improvement.SciProd;
-                    result.Energy += improvement.EnergyProd;
-
-                    if (improvement.FoodProd != 0) result.BreakdownText.Add($"{improvement.Name} (Region {t}): {Functions.GetSignedValue(improvement.FoodProd)} Food");
-                    if (improvement.MatProd != 0) result.BreakdownText.Add($"{improvement.Name} (Region {t}): {Functions.GetSignedValue(improvement.MatProd)} Materials");
-                    if (improvement.SciProd != 0) result.BreakdownText.Add($"{improvement.Name} (Region {t}): {Functions.GetSignedValue(improvement.SciProd)} Science");
-                    if (improvement.EnergyProd != 0) result.BreakdownText.Add($"{improvement.Name} (Region {t}): {Functions.GetSignedValue(improvement.EnergyProd)} Energy");
-
-                    int occupiedUnitId = _planets[planetIndex].OccupiedByUnit[t];
-                    if (occupiedUnitId >= 0)
-                    {
-                        var occupiedUnit = _unitManager.GetUnitById(occupiedUnitId);
-                        if (occupiedUnit != null)
-                        {
-                            int unitTypeIndex = occupiedUnit.TypeIndex;
-                            result.Food += _unitTypes[unitTypeIndex].ExtraFoodProd;
-                            result.Materials += _unitTypes[unitTypeIndex].ExtraMatProd;
-                            result.Science += _unitTypes[unitTypeIndex].ExtraSciProd;
-
-                            if (_unitTypes[unitTypeIndex].ExtraFoodProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraFoodProd)} Food");
-                            if (_unitTypes[unitTypeIndex].ExtraMatProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraMatProd)} Materials");
-                            if (_unitTypes[unitTypeIndex].ExtraSciProd != 0) result.BreakdownText.Add($"{improvement.Name} Occupied (Region {t}): {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraSciProd)} Science");
-                        }
-                    }
-                }
-            }
-
-            // Apply non-maintenance region bonuses that are implemented by RegionBonusManager
-            _regionBonusManager.CalculateRegionBonuses(_planets[planetIndex], ref result);
-
-            return result;
+            _techs = techs;
         }
 
         /// <summary>
@@ -141,6 +79,116 @@ namespace BroadenHorizons
         }
 
         /// <summary>
+        /// Aggregates production from habitats and improvements for a planet.
+        /// </summary>
+        private ProductionBreakdown AggregatePlanetProduction(int planetIndex)
+        {
+            var result = new ProductionBreakdown();
+
+            // Regions and improvements
+            for (int t = 0; t <= Constants.MAX_PLANET_DIMENS; t++)
+            {
+                int habIndex = _planets[planetIndex].Habitat[t];
+
+                if (habIndex < 0 || !_planets[planetIndex].HabitatPopulated[t])
+                    continue;
+
+                // Base habitat production
+                int hab = Math.Abs(habIndex);
+                var habitat = _habitatTypes[hab];
+                int baseFood = habitat.FoodProd;
+                int baseMat = habitat.MatProd;
+                int baseSci = habitat.SciProd;
+                int baseEng = habitat.EnergyProd;
+
+                int modFood = 0;
+                int modMat = 0;
+                int modSci = 0;
+                int modEng = 0;
+
+                // Tech bonuses that apply to habitats
+                foreach (var tech in _techs)
+                {
+                    if (!tech.IsResearched) continue;
+
+                    foreach (var bonus in tech.BonusUnlocks)
+                    {
+                        if (bonus.Habitat == habitat.Name)
+                        {
+                            modFood += bonus.FoodProd;
+                            modMat += bonus.MatProd;
+                            modSci += bonus.SciProd;
+                            modEng += bonus.EnergyProd;
+                        }
+                    }
+                }
+
+                // Improvements and occupied units on top of habitats
+                int impIndex = _planets[planetIndex].Improvements[t];
+                if (impIndex >= 0 && _planets[planetIndex].HabitatPopulated[t])
+                {
+                    var improvement = _planetImprovements[impIndex];
+                    modFood += improvement.FoodProd;
+                    modMat += improvement.MatProd;
+                    modSci += improvement.SciProd;
+                    modEng += improvement.EnergyProd;
+
+                    int occupiedUnitId = _planets[planetIndex].OccupiedByUnit[t];
+                    if (occupiedUnitId >= 0)
+                    {
+                        var occupiedUnit = _unitManager.GetUnitById(occupiedUnitId);
+                        if (occupiedUnit != null)
+                        {
+                            int unitTypeIndex = occupiedUnit.TypeIndex;
+                            modFood += _unitTypes[unitTypeIndex].ExtraFoodProd;
+                            modMat += _unitTypes[unitTypeIndex].ExtraMatProd;
+                            modSci += _unitTypes[unitTypeIndex].ExtraSciProd;
+                        }
+                    }
+                }
+
+                result.Food += baseFood + modFood;
+                result.Materials += baseMat + modMat;
+                result.Science += baseSci + modSci;
+                result.Energy += baseEng + modEng;
+
+                var baseFoodLine = FormatResourceLine("Food", habitat.Name, t, baseFood, modFood);
+                if (baseFoodLine != null) result.BreakdownText.Add(baseFoodLine);
+
+                var baseMatLine = FormatResourceLine("Materials", habitat.Name, t, baseMat, modMat);
+                if (baseMatLine != null) result.BreakdownText.Add(baseMatLine);
+
+                var baseSciLine = FormatResourceLine("Science", habitat.Name, t, baseSci, modSci);
+                if (baseSciLine != null) result.BreakdownText.Add(baseSciLine);
+
+                var baseEngLine = FormatResourceLine("Energy", habitat.Name, t, baseEng, modEng);
+                if (baseEngLine != null) result.BreakdownText.Add(baseEngLine);
+            }
+
+            // Apply non-maintenance region bonuses that are implemented by RegionBonusManager
+            _regionBonusManager.CalculateRegionBonuses(_planets[planetIndex], ref result);
+
+            return result;
+        }
+
+        // Helper function to format the resource line
+        private static string FormatResourceLine(string resourceName, string habitatName, int region, int baseAmount, int modAmount)
+        {
+            if (baseAmount == 0 && modAmount == 0)
+                return null;
+
+            string baseStr = Functions.GetSignedValue(baseAmount);
+            string modStr = Functions.GetSignedValue(modAmount);
+
+            if (baseAmount != 0 && modAmount != 0)
+                return $"{habitatName} (Region {region}): {baseStr} ({modStr}) {resourceName}";
+            else if (baseAmount != 0)
+                return $"{habitatName} (Region {region}): {baseStr} {resourceName}";
+            else // only modAmount != 0
+                return $"{habitatName} (Region {region}): {modStr} {resourceName}";
+        }
+
+        /// <summary>
         /// Calculates production for a specific resource type for one planet or globally.
         /// planetIndex = -1 calculates global production.
         /// </summary>
@@ -180,14 +228,6 @@ namespace BroadenHorizons
         }
 
         /// <summary>
-        /// Alias for CalculateProductionTurn for consistency.
-        /// </summary>
-        public string CalculateResourceTurn(int planetIndex, string productionType)
-        {
-            return CalculateProductionTurn(planetIndex, productionType);
-        }
-
-        /// <summary>
         /// Gets a tooltip showing production breakdown for a specific resource type.
         /// </summary>
         public string GetProductionTooltip(int planetIndex, string productionType)
@@ -220,13 +260,37 @@ namespace BroadenHorizons
             tooltipLines.Add($" Materials: {Functions.GetSignedValue(habitat.MatProd)}");
             tooltipLines.Add($" Science: {Functions.GetSignedValue(habitat.SciProd)}");
             tooltipLines.Add($" Energy: {Functions.GetSignedValue(habitat.EnergyProd)}");
+
+            // Tech bonuses that apply to habitats
+            foreach (var tech in _techs)
+            {
+                if (!tech.IsResearched) continue;
+
+                foreach (var bonus in tech.BonusUnlocks)
+                {
+                    if (bonus.Habitat == habitat.Name)
+                    {
+                        if (bonus.FoodProd != 0)
+                            tooltipLines.Add($"  Tech Bonus Food: {Functions.GetSignedValue(bonus.FoodProd)}");
+                        if (bonus.MatProd != 0)
+                            tooltipLines.Add($"  Tech Bonus Materials: {Functions.GetSignedValue(bonus.MatProd)}");
+                        if (bonus.SciProd != 0)
+                            tooltipLines.Add($"  Tech Bonus Science: {Functions.GetSignedValue(bonus.SciProd)}");
+                        if (bonus.EnergyProd != 0)
+                            tooltipLines.Add($"  Tech Bonus Energy: {Functions.GetSignedValue(bonus.EnergyProd)}");
+                    }
+                }
+            }
+
             if (_planets[planetIndex].HabitatPopulated[regIndex])
             {
                 tooltipLines.Add($"Population: {GameData.HabitatTypes[_planets[planetIndex].Habitat[regIndex]].PopNeeded}");
-            } else {
+            }
+            else
+            {
                 tooltipLines.Add("Population: Unpopulated");
             }
-            
+
             // Add region bonus info
             string regionBonusInfo = _regionBonusManager.GetRegionBonusTooltipInfo(_planets[planetIndex], regIndex);
             if (!string.IsNullOrEmpty(regionBonusInfo))

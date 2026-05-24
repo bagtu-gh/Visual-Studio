@@ -106,7 +106,7 @@ namespace BroadenHorizons
 
             // Get all valid habitat regions
             List<int> validRegions = new List<int>();
-            for (int r = 1; r <= 36; r++)
+            for (int r = 1; r <= Constants.MAX_PLANET_DIMENS; r++)
             {
                 if (planet.Habitat[r] != Constants.NON_EXISTING_HABTITAT && planet.RegionBonusRegions[r] == -1)
                 {
@@ -174,7 +174,7 @@ namespace BroadenHorizons
 
         public void CalculateRegionBonuses(Planet planet, ref ProductionBreakdown result)
         {
-            for (int t = 0; t <= 36; t++)
+            for (int t = 0; t <= Constants.MAX_PLANET_DIMENS; t++)
             {
                 int bonusIndex = planet.RegionBonusRegions[t];
                 if (bonusIndex >= 0 && planet.Habitat[t] >= 0 && planet.HabitatPopulated[t]) // Only count explored bonuses and populated habitats
