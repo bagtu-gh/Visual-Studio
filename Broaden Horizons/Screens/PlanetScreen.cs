@@ -252,7 +252,7 @@ namespace BroadenHorizons.Screens
                                         var improvement = _game.PlanetImprovements[_game.availableImprovementIndices[0]];
                                         if (_game.Planets[n].Mat >= improvement.MatCost)
                                         {
-                                            _game._messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete\nand it will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Confirm, result =>
+                                            _game._messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete\nand it will cost {improvement.MatCost} materials.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Confirm, result =>
                                             {
                                                 if (result)
                                                 {
