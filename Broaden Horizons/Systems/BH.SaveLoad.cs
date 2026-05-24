@@ -268,30 +268,11 @@ namespace BroadenHorizons
                 }
             }
 
-            // 8) Apply tech bonuses to HabitatTypes
-            foreach (var t in Techs)
-            {
-                if (t.IsResearched)
-                {
-                    foreach (var bonus in t.BonusUnlocks)
-                    {
-                        int idx = HabitatTypes.FindIndex(h => h.Name == bonus.Habitat);
-                        if (idx >= 0)
-                        {
-                            if (bonus.FoodProd != 0) HabitatTypes[idx].FoodProd += bonus.FoodProd;
-                            if (bonus.MatProd != 0) HabitatTypes[idx].MatProd += bonus.MatProd;
-                            if (bonus.SciProd != 0) HabitatTypes[idx].SciProd += bonus.SciProd;
-                            if (bonus.EnergyProd != 0) HabitatTypes[idx].EnergyProd += bonus.EnergyProd;
-                        }
-                    }
-                }
-            }
-
-            // 9) Restore ships and units (managers already recreated in InitializeBasicData)
+            // 8) Restore ships and units (managers already recreated in InitializeBasicData)
             _shipManager.SetShipsAndId(state.Ships, state.NextShipId);
             _unitManager.SetUnitsAndId(state.Units, state.NextUnitId);
 
-            // 10) Clamp scroll offsets
+            // 9) Clamp scroll offsets
             ScrollOffset.X = MathHelper.Clamp(ScrollOffset.X, 0,
                 Textures.ContainsKey(1) ? Textures[1].Width - Constants.SCREEN_WIDTH : 0);
             float maxScrollY = Math.Max(0, (Textures.ContainsKey(1) ? Textures[1].Height : 0) - (Constants.SCREEN_HEIGHT - Constants.TOP_BAR_HEIGHT));
