@@ -57,14 +57,14 @@ namespace BroadenHorizons.Screens
                     _game.hoveredTech = i;
                     if (mouseClicked)
                     {
-                        _game.HandleTechClick(i);
+                        _game._techManager.HandleTechClick(i);
                     }
                     break;
                 }
             }
 
             // Handle top bar tooltips
-            if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, _game.Turn, _game.GlobalScience, _game.Planets, _game.CalculateResourceTurn, null, _game.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
+            if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, null, _game._productionManager.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
             {
                 _game.tooltipText = tt;
                 _game.tooltipPos = tp;
@@ -79,7 +79,7 @@ namespace BroadenHorizons.Screens
         {
             _game.GraphicsDevice.Clear(Color.Black);
 
-            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global, _game.Turn, _game.GlobalScience, _game.Planets, _game.CalculateResourceTurn);
+            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global, _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
 
             for (int i = 0; i < _game.Techs.Count; i++)
             {

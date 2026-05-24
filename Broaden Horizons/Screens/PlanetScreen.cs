@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Linq;
 using MonoGame.Extended.BitmapFonts;
+using System.Collections.Generic;
 
 namespace BroadenHorizons.Screens
 {
@@ -33,7 +34,7 @@ namespace BroadenHorizons.Screens
                 _game.tooltipPos = _game.mousePos + new Vector2(10, 10); // Slightly offset from mouse
 
                 // Handle top bar tooltips
-                if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Planet, _game.mousePos, _game.Turn, _game.GlobalScience, _game.Planets, _game.CalculateResourceTurn, _game.GetProductionTooltip, null, _game.GetPopulationTooltip, _game.CurrentPlanet, out string tt, out Vector2 tp))
+                if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Planet, _game.mousePos, _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game._productionManager.GetProductionTooltip, null, GetPopulationTooltip, _game.CurrentPlanet, out string tt, out Vector2 tp))
                 {
                     _game.tooltipText = tt;
                     _game.tooltipPos = tp;
@@ -44,7 +45,7 @@ namespace BroadenHorizons.Screens
                     int clickedReg = Functions.GetClickedReg(_game.RegionDatas, (int)_game.mousePos.X, (int)_game.mousePos.Y);
                     if (clickedReg != -1 && _game.Planets[_game.CurrentPlanet].Habitat[clickedReg] >= 0)
                     {
-                        _game.tooltipText = _game.GetRegTooltip(_game.CurrentPlanet, clickedReg);
+                        _game.tooltipText = _game._productionManager.GetRegTooltip(_game.CurrentPlanet, clickedReg);
                     }
                 }
 
@@ -430,6 +431,42 @@ namespace BroadenHorizons.Screens
             }
         }
 
+        public string GetPopulationTooltip(int planetIndex)
+        {
+            var planet = _game.Planets[planetIndex];
+            var tooltipLines = new List<string>{
+                "Summary:"
+            };
+
+            bool hasExplored = false;
+            for (int i = 0; i <= planet.Dimens; i++)
+            {
+                if (planet.Habitat[i] >= 0)
+                {
+                    hasExplored = true;
+                    string habitatName = GameData.HabitatTypes[planet.Habitat[i]].Name;
+                    if (planet.HabitatPopulated[i])
+                    {
+                        tooltipLines.Add($"Region {i}: {habitatName} ({GameData.HabitatTypes[planet.Habitat[i]].PopNeeded})");
+                    }
+                    else
+                    {
+                        tooltipLines.Add($"Region {i}: {habitatName} (0, requires {GameData.HabitatTypes[planet.Habitat[i]].PopNeeded})");
+                    }
+                }
+            }
+
+            if (!hasExplored)
+            {
+                tooltipLines.Add("No explored regions yet.");
+            }
+            var dataList = Functions.GetTemperatureRangeData(planet.Temperature);
+            tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {(float)dataList["Modifier"]:P0}");
+            tooltipLines.Add($"Food factor: {1 + double.Parse(_game._productionManager.CalculateProductionTurn(planetIndex, "Food")) * Constants.POPULATION_FOOD_GROWTH:P0}");
+
+            return string.Join("\n", tooltipLines);
+        }
+
         public void Draw(GameTime gameTime)
         {
             _game.GraphicsDevice.Clear(Color.Black);
@@ -437,7 +474,7 @@ namespace BroadenHorizons.Screens
             // Draw top info bar
             Color backColor = new Color(45, 60, 110);
             _game._spriteBatch.DrawRectangle(_game._pixel, new Rectangle(0, Constants.TOP_BAR_HEIGHT, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT), backColor);
-            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Planet, _game.Turn, _game.GlobalScience, _game.Planets, _game.CalculateResourceTurn, _game.CurrentPlanet);
+            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Planet, _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game.CurrentPlanet);
 
             float xOffset = _game._bitmapFontBig.MeasureString(_game.Planets[_game.CurrentPlanet].Name.ToUpper()).Width / 2;
             _game._spriteBatch.DrawString(_game._bitmapFontBig, _game.Planets[_game.CurrentPlanet].Name.ToUpper(), new Vector2(Constants.SCREEN_WIDTH / 2 - xOffset, Constants.TOP_BAR_HEIGHT + 10), Color.White);

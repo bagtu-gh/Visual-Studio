@@ -63,7 +63,7 @@ namespace BroadenHorizons.Screens
 
             // Top Bar
             _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global,
-                _game.Turn, _game.GlobalScience, _game.Planets, _game.CalculateResourceTurn);
+                _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
 
             // Title
             string title = "FLEET OVERVIEW";

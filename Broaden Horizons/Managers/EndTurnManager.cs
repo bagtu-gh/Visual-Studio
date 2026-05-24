@@ -54,7 +54,7 @@ namespace BroadenHorizons
                 _game.Planets[p].Population += int.Parse(
                     Functions.GetPopModifier(
                         _game.Planets[p],
-                        int.Parse(_game.CalculateResourceTurn(p, "Food"))
+                        int.Parse(_game._productionManager.CalculateProductionTurn(p, "Food"))
                     )
                 );
             }

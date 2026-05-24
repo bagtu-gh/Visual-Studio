@@ -55,21 +55,21 @@ namespace BroadenHorizons.Screens
                 {
                     _game._messageManager.Show("Research actions are available. End turn anyway?", MessageType.Confirm, result =>
                     {
-                        if (result) _game.EndTurn(gameTime);
+                        if (result) _game._endTurnManager.EndTurn(gameTime);
                     });
                 }
                 else
                 {
                     _game._messageManager.Show("End turn?", MessageType.Confirm, result =>
                     {
-                        if (result) _game.EndTurn(gameTime);
+                        if (result) _game._endTurnManager.EndTurn(gameTime);
                     });
                 }
             }
 
             _game.mousePos = new Vector2(mouse.X, mouse.Y);
 
-            if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, _game.Turn, _game.GlobalScience, _game.Planets, _game.CalculateResourceTurn, null, _game.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
+            if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, null, _game._productionManager.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
             {
                 _game.tooltipText = tt;
                 _game.tooltipPos = tp;
@@ -82,7 +82,7 @@ namespace BroadenHorizons.Screens
                     mouse,
                     _game._prevMouse,
                     _game._messageManager,
-                    _game.EndTurn,
+                    _game._endTurnManager.EndTurn,
                     () =>
                     {  // Tech Tree
                         _game.PrevState = _game.CurrentState;
@@ -176,7 +176,7 @@ namespace BroadenHorizons.Screens
                 _game._spriteBatch.DrawString(_game._bitmapFont, planetName, new Vector2(pos.X + _game.Planets[i].Dimens + 5f, pos.Y + _game.Planets[i].Dimens / 4 - nameSize.Y / 2), Color.White);
             }
 
-            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global, _game.Turn, _game.GlobalScience, _game.Planets, _game.CalculateResourceTurn);
+            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global, _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
 
             bool hasTechTreeActions = Tech.HasTechTreeActions(_game.Techs, _game.GlobalScience);
             UIHelpers.DrawGalaxyMapButtons(_game._spriteBatch, _game._pixel, _game._bitmapFont, _game.mousePos, hasTechTreeActions, _game.Techs, _game.GlobalScience, gameTime);
