@@ -156,25 +156,25 @@ namespace BroadenHorizons
             new GameEvent
             {
                 Name = "Meteor Strike",
-                GetDescription = (bh, target) => $"A meteor has struck {((Planet)target).Name}\nsome population has been lost, some materials could be fetched though.",
+                GetDescription = (bh, target) => $"A meteor has struck {((Planet)target).Name}, some population has been lost,\nsome materials could be fetched though.",
                 GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
                 Weight = 10,
-                Execute = (game, target) => { var planet = (Planet)target; /*planet.Population = (int)Math.Round(planet.Population * 0.95);*/ planet.Mat += 15; }
+                Execute = (game, target) => { var planet = (Planet)target; planet.Population = (int)Math.Round(planet.Population * 0.95); planet.Mat += 15; }
             },
             new GameEvent
             {
                 Name = "Solar Flare",
-                GetDescription = (bh, target) => $"A solar flare has hit {((Planet)target).Name}\ncausing energy shortages and damaging habitats.",
-                GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
+                GetDescription = (bh, target) => $"A solar flare has hit {((Planet)target).Name}\ncausing energy shortages.",
+                GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0 && p.Energy > 10).Cast<object>().ToList(),
                 Weight = 10,
-                Execute = (game, target) => { var planet = (Planet)target; /*planet.Population = (int)Math.Round(planet.Population * 0.95);*/ planet.Mat += 15; }
+                Execute = (game, target) => { var planet = (Planet)target; planet.Energy = (int)Math.Round(planet.Energy * 0.95); }
             },
             new GameEvent
             {
                 Name = "Good Harvest",
                 GetDescription = (bh, target) => $"A good harvest on {((Planet)target).Name}\nhas increased food production.",
-                GetValidTargets = bh => bh.Planets.Where(p => p.Food > 10).Cast<object>().ToList(),
-                Weight = 50000000,
+                GetValidTargets = bh => bh.Planets.Where(p => p.Food > 20).Cast<object>().ToList(),
+                Weight = 5,
                 Execute = (game, target) => { var planet = (Planet)target; planet.Food = (int)Math.Round(planet.Food * 1.05); }
             },
             new GameEvent
@@ -182,16 +182,16 @@ namespace BroadenHorizons
                 Name = "Technological Breakthrough",
                 GetDescription = (bh, target) => $"A technological breakthrough on {((Planet)target).Name} has increased production efficiency.",
                 GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
-                Weight = 15,
+                Weight = 5,
                 Execute = (game, target) => { var planet = (Planet)target; planet.Mat = (int)Math.Round(planet.Mat * 1.05); }
             },
             new GameEvent
             {
-                Name = "Civil Unrest",
-                GetDescription = (bh, target) => $"Civil unrest has erupted on {((Planet)target).Name}, reducing productivity and causing damage to habitats.",
+                Name = "Baby Boom",
+                GetDescription = (bh, target) => $"A baby boom on {((Planet)target).Name} has increased the population.",
                 GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
-                Weight = 10,
-                Execute = (game, target) => { var planet = (Planet)target; planet.Food = (int)Math.Round(planet.Food * 0.95); planet.Mat = (int)Math.Round(planet.Mat * 0.95); }
+                Weight = 5,
+                Execute = (game, target) => { var planet = (Planet)target; planet.Population = (int)Math.Round(planet.Population * 1.1); }
             }
         ];
 

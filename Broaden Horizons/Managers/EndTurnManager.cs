@@ -2,12 +2,14 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace BroadenHorizons
 {
     public class EndTurnManager(BH game)
     {
         private readonly BH _game = game;
+        private bool _techResearchedThisTurn;
 
         public void EndTurn(GameTime gameTime)
         {
@@ -25,6 +27,8 @@ namespace BroadenHorizons
 
             if (Constants.EVENTS_ON)
                 _game._eventManager.TryTriggerEvent(summary);
+
+            CheckRegionsPopulation(summary);
 
             string summaryText = BuildSummaryText(summary);
 
@@ -73,8 +77,6 @@ namespace BroadenHorizons
 
             _techResearchedThisTurn = techResearchedThisTurn;
         }
-
-        private bool _techResearchedThisTurn;
 
         private void ProcessTurnActions(List<string> summary)
         {
@@ -219,6 +221,24 @@ namespace BroadenHorizons
             foreach (var msg in shipMessages)
             {
                 summary.Add(msg);
+            }
+        }
+
+        private void CheckRegionsPopulation(List<string> summary)
+        {
+            foreach (var planet in _game.Planets)
+            {
+                while (planet.Population < Functions.GetPlanetPopulation(planet, "Assigned"))
+                {
+                    int highestPopulatedIndex = planet.HabitatPopulated
+                        .Select((populated, index) => new { populated, index })
+                        .Where(x => x.populated)
+                        .Select(x => x.index)
+                        .DefaultIfEmpty(-1) // in case no true values are found
+                        .Max();
+                    planet.HabitatPopulated[highestPopulatedIndex] = false;
+                    summary.Add($"Warning! Region {highestPopulatedIndex} ({GameData.HabitatTypes[planet.Habitat[highestPopulatedIndex]].Name}) at {planet.Name} is now unpopulated\n due to population loss.") ;
+                }
             }
         }
 
