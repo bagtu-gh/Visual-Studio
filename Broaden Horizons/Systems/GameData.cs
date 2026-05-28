@@ -167,7 +167,7 @@ namespace BroadenHorizons
                 GetDescription = (bh, target) => $"A solar flare has hit {((Planet)target).Name}\ncausing energy shortages.",
                 GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0 && p.Energy > 10).Cast<object>().ToList(),
                 Weight = 10,
-                Execute = (game, target) => { var planet = (Planet)target; planet.Energy = (int)Math.Round(planet.Energy * 0.95); }
+                Execute = (game, target) => { var planet = (Planet)target; planet.Energy = (int)Math.Round(planet.Energy * 0.8); }
             },
             new GameEvent
             {

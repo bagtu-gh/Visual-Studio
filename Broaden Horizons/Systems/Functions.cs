@@ -113,7 +113,8 @@ namespace BroadenHorizons
         public static string GetPopModifier(Planet planet, int DeltaFood)
         {
             var dataList = GetTemperatureRangeData(planet.Temperature);
-            return GetSignedValue((int)(planet.Population * Constants.POPULATION_BASE_GROWTH * (float)dataList["Modifier"] * (1 + DeltaFood * Constants.POPULATION_FOOD_GROWTH)));
+            double result = (DeltaFood >= 0) ? (1 + DeltaFood * Constants.POPULATION_FOOD_GROWTH) : (0.5 + DeltaFood * Constants.POPULATION_FOOD_GROWTH);
+            return GetSignedValue((int)(planet.Population * Constants.POPULATION_BASE_GROWTH * (float)dataList["Modifier"] * result));
         }
 
         public static int GetPlanetPopulation(Planet planet, string Type)

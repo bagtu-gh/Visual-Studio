@@ -28,6 +28,7 @@ namespace BroadenHorizons
             if (Constants.EVENTS_ON)
                 _game._eventManager.TryTriggerEvent(summary);
 
+            ProcessShortages(summary);
             CheckRegionsPopulation(summary);
 
             string summaryText = BuildSummaryText(summary);
@@ -238,6 +239,33 @@ namespace BroadenHorizons
                         .Max();
                     planet.HabitatPopulated[highestPopulatedIndex] = false;
                     summary.Add($"Warning! Region {highestPopulatedIndex} ({GameData.HabitatTypes[planet.Habitat[highestPopulatedIndex]].Name}) at {planet.Name} is now unpopulated\n due to population loss.") ;
+                }
+            }
+        }
+
+        private void ProcessShortages(List<string> summary)
+        {
+            foreach (var planet in _game.Planets)
+            {
+                if (planet.Status != PlanetStatus.Owned)
+                    continue;
+                    
+                if (planet.Food < 0)
+                {
+                    int foodShortage = -planet.Food;
+                    int populationLoss = (int)Math.Ceiling(foodShortage / 10.0);
+                    planet.Population = Math.Max(0, planet.Population - populationLoss);
+
+                    summary.Add($"Food shortage at {planet.Name}! Population decreased by {populationLoss}.");
+                }
+
+                if (planet.Energy < 0)
+                {
+                    int energyShortage = -planet.Energy;
+                    int productionLoss = (int)Math.Ceiling(energyShortage / 10.0);
+                    planet.Mat = Math.Max(0, planet.Mat - productionLoss);
+
+                    summary.Add($"Energy shortage at {planet.Name}! Material production decreased by {productionLoss}.");
                 }
             }
         }

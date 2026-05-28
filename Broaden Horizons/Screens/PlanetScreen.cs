@@ -461,8 +461,9 @@ namespace BroadenHorizons.Screens
                 tooltipLines.Add("No explored regions yet.");
             }
             var dataList = Functions.GetTemperatureRangeData(planet.Temperature);
-            tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {(float)dataList["Modifier"]:P0}");
-            tooltipLines.Add($"Food factor: {1 + double.Parse(_game._productionManager.CalculateProductionTurn(planetIndex, "Food")) * Constants.POPULATION_FOOD_GROWTH:P0}");
+            var DeltaFood = double.Parse(_game._productionManager.CalculateProductionTurn(planetIndex, "Food"));
+            var result = (DeltaFood >= 0) ? (1 + DeltaFood * Constants.POPULATION_FOOD_GROWTH) : (0.5 + DeltaFood * Constants.POPULATION_FOOD_GROWTH);
+            tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {(float)dataList["Modifier"]:P0}\nFood factor: {result:P0}");
 
             return string.Join("\n", tooltipLines);
         }

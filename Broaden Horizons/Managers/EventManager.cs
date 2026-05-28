@@ -59,12 +59,76 @@ namespace BroadenHorizons
             if (selected == null)
                 return;
 
+            var beforeSnapshot = CreateResourceSnapshot(selected.Target);
             selected.Event.Execute(_game, selected.Target);
             string description = selected.Event.GetDescription != null
                 ? selected.Event.GetDescription(_game, selected.Target)
                 : selected.Event.Name;
 
-            summary.Add($"Event: {description}");
+            string changeText = GetResourceChangeText(beforeSnapshot, selected.Target);
+            if (!string.IsNullOrEmpty(changeText))
+            {
+                summary.Add($"Event: {description}\n{changeText}");
+            }
+            else
+            {
+                summary.Add($"Event: {description}");
+            }
+        }
+
+        private static ResourceSnapshot? CreateResourceSnapshot(object target)
+        {
+            if (target is Planet planet)
+            {
+                return new ResourceSnapshot
+                {
+                    Name = planet.Name,
+                    Population = planet.Population,
+                    Food = planet.Food,
+                    Mat = planet.Mat,
+                    Energy = planet.Energy
+                };
+            }
+
+            return null;
+        }
+
+        private static string GetResourceChangeText(ResourceSnapshot? beforeSnapshot, object target)
+        {
+            if (beforeSnapshot is not ResourceSnapshot before)
+                return null;
+            if (target is not Planet after)
+                return null;
+
+            var changes = new List<string>();
+            AppendChange(changes, before.Population, after.Population, "population");
+            AppendChange(changes, before.Food, after.Food, "food");
+            AppendChange(changes, before.Mat, after.Mat, "materials");
+            AppendChange(changes, before.Energy, after.Energy, "energy");
+
+            if (changes.Count == 0)
+                return null;
+
+            return $"{after.Name} {string.Join(", ", changes)}.";
+        }
+
+        private static void AppendChange(List<string> changes, int before, int after, string resourceName)
+        {
+            int delta = after - before;
+            if (delta == 0)
+                return;
+
+            string verb = delta > 0 ? "increased" : "decreased";
+            changes.Add($"{verb} its {resourceName} by {Math.Abs(delta)}");
+        }
+
+        private readonly struct ResourceSnapshot
+        {
+            public string Name { get; init; }
+            public int Population { get; init; }
+            public int Food { get; init; }
+            public int Mat { get; init; }
+            public int Energy { get; init; }
         }
     }
 }
