@@ -208,8 +208,8 @@ namespace BroadenHorizons
                     _game._regionBonusManager.RegionBonusTypes[regionBonusIndex];
 
                 summary.Add(
-                    $"A {regionBonus.Name} was discovered in the " +
-                    $"{habitat.Name} at {planetName}!"
+                    $"A {regionBonus.Name} was discovered in the {habitat.Name} at {planetName}!" +
+                    $"\nIt will provide +{regionBonus.BaseBonus} {regionBonus.BonusType} to the region's production."
                 );
             }
         }
