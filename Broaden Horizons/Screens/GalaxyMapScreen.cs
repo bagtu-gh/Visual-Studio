@@ -148,7 +148,7 @@ namespace BroadenHorizons.Screens
             for (int i = 0; i < Constants.NUM_PLANETS; i++)
             {
                 Vector2 pos = new Vector2(_game.Planets[i].XPos - _game.ScrollOffset.X, _game.Planets[i].YPos - _game.ScrollOffset.Y);
-                float size = _game.Planets[i].Dimens * Constants.PLANET_GALAXY_SCALE / Constants.MAX_PLANET_DIMENS;
+                float size = (_game.Planets[i].Status == PlanetStatus.Owned || _game.Planets[i].Status == PlanetStatus.Explored) ? _game.Planets[i].Dimens * Constants.PLANET_GALAXY_SCALE / Constants.MAX_PLANET_DIMENS : Constants.PLANET_GALAXY_SCALE / 3f;
                 if (_game.Textures.ContainsKey(_game.Planets[i].TextureId))
                 {
                     float scale = size / _game.Textures[_game.Planets[i].TextureId].Width;

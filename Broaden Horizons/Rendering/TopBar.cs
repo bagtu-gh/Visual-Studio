@@ -146,6 +146,13 @@ namespace BroadenHorizons
                 float popX = tempX - Constants.PLANET_TOP_BAR_TEXT_DIST - popTextWidth;
                 float popY = tempY;
                 sb.DrawString(_font, popText, new Vector2(popX, popY), Color.White);
+
+                //Prepare and draw planet size
+                string sizeText = $"SIZE: {currentPlanet.Dimens}";
+                float sizeTextWidth = _font.MeasureString(sizeText).Width;
+                float sizeX = popX - Constants.PLANET_TOP_BAR_TEXT_DIST - sizeTextWidth;
+                float sizeY = tempY;
+                sb.DrawString(_font, sizeText, new Vector2(sizeX, sizeY), Color.White);
             }
         }
 
@@ -293,12 +300,14 @@ namespace BroadenHorizons
 
             if (mode == TopBarMode.Planet)
             {
-                if (planetIndex < 0 || planetIndex >= planets.Count) throw new ArgumentException("Invalid planet index for Planet mode");
                 var currentPlanet = planets[planetIndex];
                 var dataList = Functions.GetTemperatureRangeData(currentPlanet.Temperature);
 
+                string sizeText = $"SIZE: {currentPlanet.Dimens}";
                 string popText = $"POP: {Functions.GetPlanetPopulation(currentPlanet, "Assigned")}/{currentPlanet.Population} ({Functions.GetPopModifier(currentPlanet, int.Parse(calcResourceTurn(planetIndex, "Food")))})";
                 string tempText = $"TEMP: {currentPlanet.Temperature} ({dataList["Name"]})";
+                float sizeTextWidth = _font.MeasureString(sizeText).Width;
+                float sizeX = Constants.SCREEN_WIDTH - Constants.PLANET_TOP_BAR_TEXT_DIST - sizeTextWidth;
                 float tempTextWidth = _font.MeasureString(tempText).Width;
                 float tempX = Constants.SCREEN_WIDTH - Constants.PLANET_TOP_BAR_TEXT_DIST - tempTextWidth;
                 float popTextWidth = _font.MeasureString(popText).Width;
