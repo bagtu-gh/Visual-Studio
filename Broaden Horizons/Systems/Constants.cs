@@ -32,10 +32,12 @@ namespace BroadenHorizons
         public const int TURNS_TO_EXPLORE1 = 2;
         public const int TURNS_TO_EXPLORE2 = 4;
         public const int TURNS_TO_EXPLORE3 = 5;
+
         public const int MENU_BUTTON_WIDTH = 200;
         public const int MENU_BUTTON_HEIGHT = 50;
         public const int MENU_BUTTON_SPACING = 40;
         public const int MENU_BUTTON_BOTTOM_MARGIN = 60;
+        public static readonly Color BACKGROUND_COLOR = Color.LightSkyBlue;
 
         public const int TOP_BAR_HEIGHT = 60;
         public const int TOP_BAR_BUTTON_WIDTH = 130;
@@ -44,7 +46,7 @@ namespace BroadenHorizons
         public const int TOOLTIP_EDGE_THRESHOLD_RIGHT = 150;
         public const int TOOLTIP_EDGE_THRESHOLD_BOTTOM = 120;
         public static readonly Color TOP_BAR_BUTTON_COLOR = Color.Blue;
-        public static readonly Color TOP_BAR_BUTTON_HIGHLIGHT_COLOR = Color.DarkOrchid;
+        public static readonly Color TOP_BAR_BUTTON_HIGHLIGHT_COLOR = Color.DarkBlue;
         public static readonly Color TOP_BAR_BUTTON_COLOR_MSG = Color.Red;
         public static readonly Color TOP_BAR_BUTTON_HIGHLIGHT_COLOR_MSG = Color.MediumVioletRed;
 
@@ -52,13 +54,13 @@ namespace BroadenHorizons
         public const int TECH_TREE_BOX_HEIGHT = 80;
         public const int TECH_TREE_HORIZ_MARGIN = 50;
         public const int TECH_TREE_XDISTANCE = 300;
-        public static readonly Color TECH_RESEARCHED = Color.Green;
-        public static readonly Color TECH_IN_PROGRESS = Color.Yellow;
-        public static readonly Color TECH_CAN_RESEARCH = Color.LightCyan;
-        public static readonly Color TECH_NOT_RESEARCHABLE = Color.Gray;
+        public static readonly Color TECH_RESEARCHED = Color.Blue;
+        public static readonly Color TECH_IN_PROGRESS = Color.DarkGray;
+        public static readonly Color TECH_CAN_RESEARCH = Color.Green;
+        public static readonly Color TECH_NOT_RESEARCHABLE = Color.LightCoral;
 
-        public static readonly Color MenuSelectedColor = Color.Green;
-        public static readonly Color MenuNonSelectedColor = Color.OrangeRed;
+        public static readonly Color MenuSelectedColor = Color.DarkGreen;
+        public static readonly Color MenuNonSelectedColor = Color.LightSeaGreen;
 
         public const float LIST_ROW_HEIGHT = 48f;
         public const float LIST_HEADER_HEIGHT = 48f;

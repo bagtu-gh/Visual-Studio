@@ -716,7 +716,7 @@ namespace BroadenHorizons
                 Rectangle yesRect = new Rectangle(buttonsX, buttonsY, ButtonWidth, ButtonHeight);
                 Rectangle noRect = new Rectangle(buttonsX + ButtonWidth + ButtonSpacing, buttonsY, ButtonWidth, ButtonHeight);
 
-                UIHelpers.DrawRoundedButton(spriteBatch, pixel, yesRect, "Yes", Color.LightGreen, font);
+                UIHelpers.DrawRoundedButton(spriteBatch, pixel, yesRect, "Yes", Color.Green, font);
                 UIHelpers.DrawRoundedButton(spriteBatch, pixel, noRect, "No", Color.OrangeRed, font);
             }
 

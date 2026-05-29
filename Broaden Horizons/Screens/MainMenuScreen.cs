@@ -57,7 +57,7 @@ namespace BroadenHorizons.Screens
 
         public void Draw(GameTime gameTime)
         {
-            _game.GraphicsDevice.Clear(Color.LightBlue);
+            _game.GraphicsDevice.Clear(Constants.BACKGROUND_COLOR);
             if (_game._logoTexture != null)
             {
                 Vector2 logoSize = new Vector2(_game._logoTexture.Width, _game._logoTexture.Height);

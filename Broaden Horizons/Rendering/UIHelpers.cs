@@ -154,20 +154,21 @@ namespace BroadenHorizons
             }
         }
 
-        public static void DrawRoundedButton(SpriteBatch spriteBatch, Texture2D pixel, Rectangle rect, string text, 
+        public static void DrawRoundedButton(SpriteBatch spriteBatch, Texture2D pixel, Rectangle rect, string text,
             Color baseColor, BitmapFont font, bool isHighlighted = false, Color? textColor = null)
         {
             Color fillColor = isHighlighted ? Color.Lerp(baseColor, Color.White, 0.25f) : baseColor;
             Color borderColor = isHighlighted ? Color.White : Color.Lerp(baseColor, Color.Black, 0.3f);
 
-            // Draw rounded background using cached texture
+            // Draw rounded border using cached texture, then inset fill to create the border effect.
             Texture2D roundedTex = GetOrCreateRoundedButtonTexture(spriteBatch.GraphicsDevice, rect.Width, rect.Height);
-            spriteBatch.Draw(roundedTex, rect, fillColor);
+            spriteBatch.Draw(roundedTex, rect, borderColor);
 
-            // Optional subtle border
-            if (!isHighlighted)
+            Rectangle innerRect = new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4);
+            if (innerRect.Width > 0 && innerRect.Height > 0)
             {
-                Rectangle borderRect = new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4);
+                Texture2D innerTex = GetOrCreateRoundedButtonTexture(spriteBatch.GraphicsDevice, innerRect.Width, innerRect.Height);
+                spriteBatch.Draw(innerTex, innerRect, fillColor);
             }
 
             // Draw text centered
@@ -198,7 +199,7 @@ namespace BroadenHorizons
             Texture2D tex = new Texture2D(graphics, width, height);
             Color[] data = new Color[width * height];
 
-            Color baseFill = new Color(70, 70, 90);
+            Color baseFill = new Color(255, 255, 255, 255);
             int radius = 8;
             int rSquared = radius * radius;
 

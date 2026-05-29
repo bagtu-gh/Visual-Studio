@@ -68,7 +68,7 @@ namespace BroadenHorizons.Screens
         public void Draw(GameTime gameTime)
         {
             string title = "PREFERENCES";
-            _game.GraphicsDevice.Clear(Color.LightBlue);
+            _game.GraphicsDevice.Clear(Constants.BACKGROUND_COLOR);
             Vector2 titleSize = _game._bitmapFontBig.MeasureString(title);
             _game._spriteBatch.DrawString(_game._bitmapFontBig, title, new Vector2((Constants.SCREEN_WIDTH - titleSize.X) / 2, 50), Color.Black);
 
