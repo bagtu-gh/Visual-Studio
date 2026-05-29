@@ -494,10 +494,6 @@ namespace BroadenHorizons.Screens
                     {
                         lineColor = Color.Red;
                     }
-                    /*else if (_game.Planets[_game.CurrentPlanet].HabitatPopulated[i])
-                    {
-                        lineColor = Color.Green;
-                    }*/
 
                     UIHelpers.DrawHex(_game._spriteBatch, _game._pixel, center, Constants.HEX_SIZE / 2f, lineColor);
                     //_spriteBatch.DrawString(_font, HabitatTypes[hab].Name, center, Color.White);
@@ -505,8 +501,9 @@ namespace BroadenHorizons.Screens
                     if (hab >= 0)
                     {
                         var texture = _game.Textures[_game.HabitatTypes[Math.Abs(hab)].TextureId];
+                        Color textureColor = _game.Planets[_game.CurrentPlanet].HabitatPopulated[i] ? Color.White : Color.Gray;
                         _game.Texturescale = (float)Math.Round(Constants.HEX_SIZE / (decimal)texture.Width, 3);
-                        _game._spriteBatch.Draw(texture, new Vector2(center.X - Constants.HEX_SIZE / 2, center.Y - Constants.HEX_SIZE / 2 * 1.1547f), null, Color.White, 0f, Vector2.Zero, _game.Texturescale, SpriteEffects.None, 0f);
+                        _game._spriteBatch.Draw(texture, new Vector2(center.X - Constants.HEX_SIZE / 2, center.Y - Constants.HEX_SIZE / 2 * 1.1547f), null, textureColor, 0f, Vector2.Zero, _game.Texturescale, SpriteEffects.None, 0f);
 
                         int imp = _game.Planets[_game.CurrentPlanet].Improvements[i];
                         if (imp >= 0)
