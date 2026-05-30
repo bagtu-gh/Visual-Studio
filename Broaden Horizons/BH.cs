@@ -91,28 +91,6 @@ namespace BroadenHorizons
         public string tooltipText = "";
         public Vector2 tooltipPos = Vector2.Zero;
         internal List<Tech> Techs;
-        private int _globalScience = Constants.STARTING_SCIENCE;
-        private int _currentResearch = -1;
-        private List<HabitatBonus> _globalHabitatBonuses = new List<HabitatBonus>();
-
-        // Properties for tech state
-        internal int GlobalScience
-        {
-            get => _techManager?.GlobalScience ?? _globalScience;
-            set { if (_techManager != null) _techManager.GlobalScience = value; else _globalScience = value; }
-        }
-
-        internal int CurrentResearch
-        {
-            get => _techManager?.CurrentResearch ?? _currentResearch;
-            set { if (_techManager != null) _techManager.CurrentResearch = value; else _currentResearch = value; }
-        }
-
-        internal List<HabitatBonus> GlobalHabitatBonuses
-        {
-            get => _techManager?.GlobalHabitatBonuses ?? _globalHabitatBonuses;
-            set { if (_techManager != null) _techManager.GlobalHabitatBonuses = value; else _globalHabitatBonuses = value ?? new List<HabitatBonus>(); }
-        }
         internal int hoveredTech = -1;
         private readonly Dictionary<GameState, Action<GameTime, KeyboardState, MouseState>> updateHandlers;
         private readonly Dictionary<GameState, Action<GameTime>> drawHandlers;

@@ -176,9 +176,9 @@ namespace BroadenHorizons
 
                 // Tech
                 Techs = Techs,
-                GlobalScience = GlobalScience,
-                CurrentResearch = CurrentResearch,
-                GlobalHabitatBonuses = GlobalHabitatBonuses ?? new List<HabitatBonus>(),
+                GlobalScience = _techManager.GlobalScience,
+                CurrentResearch = _techManager.CurrentResearch,
+                GlobalHabitatBonuses = _techManager.GlobalHabitatBonuses ?? new List<HabitatBonus>(),
 
                 // Visuals
                 StarPositions = new List<Vector2>(StarPositions),
@@ -247,9 +247,9 @@ namespace BroadenHorizons
             chooseReg = state.chooseReg;
 
             Techs = state.Techs ?? GameData.Technologies.ToList();
-            GlobalScience = state.GlobalScience;
-            CurrentResearch = state.CurrentResearch;
-            GlobalHabitatBonuses = state.GlobalHabitatBonuses ?? new List<HabitatBonus>();
+            _techManager.GlobalScience = state.GlobalScience;
+            _techManager.CurrentResearch = state.CurrentResearch;
+            _techManager.GlobalHabitatBonuses = state.GlobalHabitatBonuses ?? new List<HabitatBonus>();
 
             // 7) Starfield
             if (state.StarPositions != null && state.StarPositions.Count > 0)

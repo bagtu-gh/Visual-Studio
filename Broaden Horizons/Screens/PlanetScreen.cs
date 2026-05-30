@@ -34,7 +34,7 @@ namespace BroadenHorizons.Screens
                 _game.tooltipPos = _game.mousePos + new Vector2(10, 10); // Slightly offset from mouse
 
                 // Handle top bar tooltips
-                if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Planet, _game.mousePos, _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game._productionManager.GetProductionTooltip, null, GetPopulationTooltip, _game.CurrentPlanet, out string tt, out Vector2 tp))
+                if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Planet, _game.mousePos, _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game._productionManager.GetProductionTooltip, null, GetPopulationTooltip, _game.CurrentPlanet, out string tt, out Vector2 tp))
                 {
                     _game.tooltipText = tt;
                     _game.tooltipPos = tp;
@@ -475,7 +475,7 @@ namespace BroadenHorizons.Screens
             // Draw top info bar
             Color backColor = new Color(45, 60, 110);
             _game._spriteBatch.DrawRectangle(_game._pixel, new Rectangle(0, Constants.TOP_BAR_HEIGHT, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT), backColor);
-            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Planet, _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game.CurrentPlanet);
+            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Planet, _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game.CurrentPlanet);
 
             float xOffset = _game._bitmapFontBig.MeasureString(_game.Planets[_game.CurrentPlanet].Name.ToUpper()).Width / 2;
             _game._spriteBatch.DrawString(_game._bitmapFontBig, _game.Planets[_game.CurrentPlanet].Name.ToUpper(), new Vector2(Constants.SCREEN_WIDTH / 2 - xOffset, Constants.TOP_BAR_HEIGHT + 10), Color.White);
