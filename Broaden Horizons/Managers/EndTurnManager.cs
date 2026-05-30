@@ -13,7 +13,7 @@ namespace BroadenHorizons
 
         public void EndTurn(GameTime gameTime)
         {
-            _game.Turn++;
+            Constants.TURN++;
 
             ResetRecruitmentFlags();
             ProcessPlanetProduction();
@@ -87,7 +87,7 @@ namespace BroadenHorizons
 
                 var selectedUnit = _game._unitManager.GetUnitById(ta.UnitID);
 
-                if (_game.Turn < ta.TurnFinal)
+                if (Constants.TURN < ta.TurnFinal)
                     continue;
 
                 switch (ta.UnitActionType)
@@ -217,7 +217,7 @@ namespace BroadenHorizons
         private void ProcessShips(List<string> summary)
         {
             var shipMessages =
-                _game._shipManager.ProcessEndTurn(_game.Turn);
+                _game._shipManager.ProcessEndTurn(Constants.TURN);
 
             foreach (var msg in shipMessages)
             {
@@ -287,11 +287,11 @@ namespace BroadenHorizons
         {
             if (summary.Count > 0)
             {
-                return $"Turn {_game.Turn - 1} Summary:\n\n" +
+                return $"Turn {Constants.TURN - 1} Summary:\n\n" +
                        string.Join("\n\n", summary);
             }
 
-            return $"Turn {_game.Turn - 1} completed. No actions finished this turn.";
+            return $"Turn {Constants.TURN - 1} completed. No actions finished this turn.";
         }
 
         private void LogTurnToFile(string summaryText)
@@ -301,7 +301,7 @@ namespace BroadenHorizons
                 string filePath = "TurnLog.txt";
                 string logEntry = $"{summaryText}\n\n";
 
-                if (_game.Turn == 2)
+                if (Constants.TURN == 2)
                 {
                     System.IO.File.WriteAllText(filePath, logEntry);
                 }

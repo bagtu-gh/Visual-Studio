@@ -12,6 +12,7 @@ namespace BroadenHorizons.Screens
         private readonly BH _game = game;
         private bool _initialized = false;
         public Vector2 TechScrollOffset = Vector2.Zero;
+        private int hoveredTech = -1;
 
         public void Update(GameTime gameTime, KeyboardState keyboard, MouseState mouse)
         {
@@ -43,7 +44,7 @@ namespace BroadenHorizons.Screens
             float maxX = _game.Techs.Max(t => t.UiPosition.X);
             TechScrollOffset.X = MathHelper.Clamp(TechScrollOffset.X, Constants.TECH_TREE_HORIZ_MARGIN - minX, Constants.SCREEN_WIDTH - maxX - Constants.TECH_TREE_BOX_WIDTH - Constants.TECH_TREE_HORIZ_MARGIN);
 
-            _game.hoveredTech = -1;
+            hoveredTech = -1;
             bool mouseClicked = mouse.LeftButton == ButtonState.Pressed && _game._prevMouse.LeftButton == ButtonState.Released;
             _game._prevMouse = mouse;
             Vector2 mouseP = new Vector2(mouse.X, mouse.Y);
@@ -54,7 +55,7 @@ namespace BroadenHorizons.Screens
                 Rectangle box = new Rectangle((int)pos.X, (int)pos.Y, Constants.TECH_TREE_BOX_WIDTH, Constants.TECH_TREE_BOX_HEIGHT);
                 if (box.Contains(mouseP))
                 {
-                    _game.hoveredTech = i;
+                    hoveredTech = i;
                     if (mouseClicked)
                     {
                         _game._techManager.HandleTechClick(i);
@@ -64,7 +65,7 @@ namespace BroadenHorizons.Screens
             }
 
             // Handle top bar tooltips
-            if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, null, _game._productionManager.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
+            if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, null, _game._productionManager.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
             {
                 _game.tooltipText = tt;
                 _game.tooltipPos = tp;
@@ -79,7 +80,7 @@ namespace BroadenHorizons.Screens
         {
             _game.GraphicsDevice.Clear(Color.Black);
 
-            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global, _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
+            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global, Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
 
             for (int i = 0; i < _game.Techs.Count; i++)
             {
@@ -124,9 +125,9 @@ namespace BroadenHorizons.Screens
                 }
             }
 
-            if (_game.hoveredTech >= 0)
+            if (hoveredTech >= 0)
             {
-                Tech t = _game.Techs[_game.hoveredTech];
+                Tech t = _game.Techs[hoveredTech];
                 string tt = $"{t.Name}\n{t.Description}";
                 tt += !t.IsResearched ? $"\nCost: {t.Cost}\nInitial Science Cost: {t.MinScience}" : "\nResearched";
                 if ((t.ResearchProgress > 0 || t.IsInProgress) && !t.IsResearched)

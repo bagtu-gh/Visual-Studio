@@ -35,7 +35,6 @@ namespace BroadenHorizons
         internal int PosX, PosY;
         internal int MouseMapX, MouseMapY;
         internal TopBarRenderer _topBar;
-        internal int Turn = 1;
         internal RegionData[] RegionDatas = new RegionData[37];
         public Planet[] Planets = new Planet[Constants.NUM_PLANETS];
         public List<TurnAction> TurnActions = new List<TurnAction>();
@@ -67,31 +66,18 @@ namespace BroadenHorizons
         internal BitmapFont _bitmapFontMessages;
         internal Texture2D _pixel;
         internal Texture2D _logoTexture;
-        public int SelectedUnit = -1;
         public List<int> PossibleDestinations = new List<int>();
-        internal bool confirmEndTurn = false;
         internal List<Vector2> StarPositions = new List<Vector2>();
-        internal bool confirmRecruit = false;
-        internal int recruitIndex = -1;
         public bool[] hasRecruitedThisTurn = new bool[Constants.NUM_PLANETS];
-        internal bool confirmBuild = false;
-        internal int buildReg = -1;
-        internal int buildImprovementIndex = -1;
-        internal bool confirmOccupy = false;
-        internal int occupyReg = -1;
-        internal bool chooseBuild = false;
-        internal int chooseReg = -1;
         public List<int> availableImprovementIndices = new List<int>();
         public List<int> availableUnitIndices = new List<int>();
         internal KeyboardState _prevKeyboard;
         internal MouseState _prevMouse;
         public Vector2 mousePos;
-        public float Texturescale;
         public bool requireMouseRelease = false;
         public string tooltipText = "";
         public Vector2 tooltipPos = Vector2.Zero;
         internal List<Tech> Techs;
-        internal int hoveredTech = -1;
         private readonly Dictionary<GameState, Action<GameTime, KeyboardState, MouseState>> updateHandlers;
         private readonly Dictionary<GameState, Action<GameTime>> drawHandlers;
         internal PlanetScreen _planetScreen;
@@ -284,14 +270,11 @@ namespace BroadenHorizons
             InitializeData();
 
             // Reset UI/runtime flags
-            Turn = 1;
+            Constants.TURN = 1;
             ScrollOffset = Vector2.Zero;
             PosX = 0; PosY = 0;
             CurrentPlanet = -1;
-            SelectedUnit = -1;
             PossibleDestinations.Clear();
-            confirmEndTurn = confirmRecruit = confirmBuild = confirmOccupy = chooseBuild = false;
-            recruitIndex = buildReg = buildImprovementIndex = occupyReg = chooseReg = -1;
             availableImprovementIndices.Clear();
 
             // World defaults not done by InitializeData:

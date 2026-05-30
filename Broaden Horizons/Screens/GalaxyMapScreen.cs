@@ -69,7 +69,7 @@ namespace BroadenHorizons.Screens
 
             _game.mousePos = new Vector2(mouse.X, mouse.Y);
 
-            if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, null, _game._productionManager.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
+            if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, null, _game._productionManager.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
             {
                 _game.tooltipText = tt;
                 _game.tooltipPos = tp;
@@ -176,7 +176,7 @@ namespace BroadenHorizons.Screens
                 _game._spriteBatch.DrawString(_game._bitmapFont, planetName, new Vector2(pos.X + _game.Planets[i].Dimens + 5f, pos.Y + _game.Planets[i].Dimens / 4 - nameSize.Y / 2), Color.White);
             }
 
-            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global, _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
+            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global, Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
 
             bool hasTechTreeActions = Tech.HasTechTreeActions(_game.Techs, _game._techManager.GlobalScience);
             UIHelpers.DrawGalaxyMapButtons(_game._spriteBatch, _game._pixel, _game._bitmapFont, _game.mousePos, hasTechTreeActions, _game.Techs, _game._techManager.GlobalScience, gameTime);

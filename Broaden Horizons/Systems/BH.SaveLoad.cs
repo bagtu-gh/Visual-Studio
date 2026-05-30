@@ -28,15 +28,11 @@ namespace BroadenHorizons
             public int SelectedUnit;
             public List<int> PossibleDestinations;
             public bool confirmEndTurn;
-            public bool confirmRecruit;
             public int recruitIndex;
             public bool[] hasRecruitedThisTurn;
-            public bool confirmBuild;
             public int buildReg;
             public int buildImprovementIndex;
-            public bool confirmOccupy;
             public int occupyReg;
-            public bool chooseBuild;
             public int chooseReg;
 
             // World
@@ -146,24 +142,13 @@ namespace BroadenHorizons
                 SavedAtUtc = DateTime.UtcNow,
 
                 // UI / selection
-                Turn = Turn,
+                Turn = Constants.TURN,
                 ScrollOffset = ScrollOffset,
                 PosX = PosX,
                 PosY = PosY,
                 CurrentPlanet = CurrentPlanet,
-                SelectedUnit = SelectedUnit,
                 PossibleDestinations = new List<int>(PossibleDestinations ?? new List<int>()),
-                confirmEndTurn = confirmEndTurn,
-                confirmRecruit = confirmRecruit,
-                recruitIndex = recruitIndex,
                 hasRecruitedThisTurn = (bool[])hasRecruitedThisTurn.Clone(),
-                confirmBuild = confirmBuild,
-                buildReg = buildReg,
-                buildImprovementIndex = buildImprovementIndex,
-                confirmOccupy = confirmOccupy,
-                occupyReg = occupyReg,
-                chooseBuild = chooseBuild,
-                chooseReg = chooseReg,
 
                 // World
                 Planets = Planets,
@@ -227,24 +212,13 @@ namespace BroadenHorizons
             }
 
             // 6) UI/Runtime state
-            Turn = state.Turn;
+            Constants.TURN = state.Turn;
             ScrollOffset = state.ScrollOffset;
             PosX = state.PosX;
             PosY = state.PosY;
             CurrentPlanet = state.CurrentPlanet;
-            SelectedUnit = state.SelectedUnit;
             PossibleDestinations = state.PossibleDestinations ?? new List<int>();
-            confirmEndTurn = state.confirmEndTurn;
-            confirmRecruit = state.confirmRecruit;
-            recruitIndex = state.recruitIndex;
             hasRecruitedThisTurn = state.hasRecruitedThisTurn ?? new bool[Constants.NUM_PLANETS];
-            confirmBuild = state.confirmBuild;
-            buildReg = state.buildReg;
-            buildImprovementIndex = state.buildImprovementIndex;
-            confirmOccupy = state.confirmOccupy;
-            occupyReg = state.occupyReg;
-            chooseBuild = state.chooseBuild;
-            chooseReg = state.chooseReg;
 
             Techs = state.Techs ?? GameData.Technologies.ToList();
             _techManager.GlobalScience = state.GlobalScience;

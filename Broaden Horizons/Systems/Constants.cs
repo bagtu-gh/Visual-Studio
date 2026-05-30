@@ -10,6 +10,7 @@ namespace BroadenHorizons
         public const int SCREEN_HEIGHT = 900;
         public const int MIN_PLANET_DISTANCE = 150;
         public static int NUM_PLANETS { get; set; } = 20;
+        public static int TURN { get; set; } = 1;
         public const int TERRAFORMER_TEMP_CHANGE = 1;
         public const float POPULATION_BASE_GROWTH = 0.05f;
         public const float POPULATION_FOOD_GROWTH = 0.05f;

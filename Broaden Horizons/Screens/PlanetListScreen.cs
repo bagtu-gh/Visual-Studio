@@ -108,7 +108,7 @@ namespace BroadenHorizons.Screens
 
             // Top Bar
             _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global,
-                _game.Turn, _game.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
+                Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
 
             // Title
             string title = "PLANET LIST";

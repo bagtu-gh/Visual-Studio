@@ -63,7 +63,7 @@ namespace BroadenHorizons.Screens
 
             // Top Bar
             _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Global,
-                _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
+                Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn);
 
             // Title
             string title = "FLEET OVERVIEW";
@@ -217,8 +217,8 @@ namespace BroadenHorizons.Screens
             currentX += colWidths[5];
 
             // === ETA ===
-            string eta = ship.Status == ShipStatus.InTransit && ship.FinalTurnAction > _game.Turn
-                ? $"{ship.FinalTurnAction - _game.Turn} turns"
+            string eta = ship.Status == ShipStatus.InTransit && ship.FinalTurnAction > Constants.TURN
+                ? $"{ship.FinalTurnAction - Constants.TURN} turns"
                 : "—";
             _game._spriteBatch.DrawString(_game._bitmapFont, eta,
                 new Vector2(currentX, textY), Color.Orange);

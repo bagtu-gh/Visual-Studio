@@ -12,6 +12,7 @@ namespace BroadenHorizons.Screens
     {
         private BH _game;
         private bool showRegionNumber = true;
+        private int SelectedUnit = -1;
 
         public PlanetScreen(BH game)
         {
@@ -34,7 +35,7 @@ namespace BroadenHorizons.Screens
                 _game.tooltipPos = _game.mousePos + new Vector2(10, 10); // Slightly offset from mouse
 
                 // Handle top bar tooltips
-                if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Planet, _game.mousePos, _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game._productionManager.GetProductionTooltip, null, GetPopulationTooltip, _game.CurrentPlanet, out string tt, out Vector2 tp))
+                if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Planet, _game.mousePos, Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game._productionManager.GetProductionTooltip, null, GetPopulationTooltip, _game.CurrentPlanet, out string tt, out Vector2 tp))
                 {
                     _game.tooltipText = tt;
                     _game.tooltipPos = tp;
@@ -53,17 +54,8 @@ namespace BroadenHorizons.Screens
                 {
                     _game.CurrentState = BH.GameState.GalaxyMap;
                     _game.CurrentPlanet = -1;
-                    _game.SelectedUnit = -1;
+                    SelectedUnit = -1;
                     _game.PossibleDestinations.Clear();
-                    _game.confirmRecruit = false;
-                    _game.recruitIndex = -1;
-                    _game.confirmBuild = false;
-                    _game.buildReg = -1;
-                    _game.buildImprovementIndex = -1;
-                    _game.confirmOccupy = false;
-                    _game.occupyReg = -1;
-                    _game.chooseBuild = false;
-                    _game.chooseReg = -1;
                     _game.availableImprovementIndices.Clear();
                 }
 
@@ -89,7 +81,7 @@ namespace BroadenHorizons.Screens
                                 //Unit clicked
                                 if (i < totalUnits)
                                 {
-                                    _game.SelectedUnit = -1;
+                                    SelectedUnit = -1;
                                     _game.PossibleDestinations.Clear();
                                     _game._unitManager.HandleUnitClicked(
                                         unitsOnPlanet[i],
@@ -100,7 +92,7 @@ namespace BroadenHorizons.Screens
                                         _game.Planets[_game.CurrentPlanet],
                                         _game.Neighbors,
                                         _game.HabitatTypes,
-                                        ref _game.SelectedUnit,
+                                        ref SelectedUnit,
                                         ref _game.PossibleDestinations,
                                         _game._messageManager
                                     );
@@ -108,19 +100,19 @@ namespace BroadenHorizons.Screens
                                 }
                                 else //Ship clicked
                                 {
-                                    _game.SelectedUnit = -1;
+                                    SelectedUnit = -1;
                                     _game.PossibleDestinations.Clear();
                                     Ship ship = shipsOnPlanet[i - totalUnits];
                                     if (ship.TypeIndex == (int)ShipTypeEnum.Probe && ship.Status == ShipStatus.Docked)
                                     {
-                                        _game._shipManager.ShowProbeLaunchMenu(ship, _game.Turn);
+                                        _game._shipManager.ShowProbeLaunchMenu(ship, Constants.TURN);
                                         break;
                                     }
                                     else if (ship.TypeIndex == (int)ShipTypeEnum.ColonyShip && ship.Status == ShipStatus.Docked)
                                     {
                                         if (unitsOnPlanet.Exists(u => u.TypeIndex == (int)UnitTypeEnum.Colonist))
                                         {
-                                            //_game._shipManager.ShowColonyLaunchMenu(ship, _game.Turn);
+                                            //_game._shipManager.ShowColonyLaunchMenu(ship, Constants.TURN);
                                             break;
                                         }
                                         else
@@ -131,11 +123,11 @@ namespace BroadenHorizons.Screens
                                     }
                                     else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Freighter && ship.Status == ShipStatus.Docked)
                                     {
-                                        _game._shipManager.ShowFreighterLaunchMenu(ship, _game.Turn);
+                                        _game._shipManager.ShowFreighterLaunchMenu(ship, Constants.TURN);
                                     }
                                     else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Terraformer && ship.Status == ShipStatus.Docked)
                                     {
-                                        _game._shipManager.ShowTerraformerLaunchMenu(ship, _game.Turn);
+                                        _game._shipManager.ShowTerraformerLaunchMenu(ship, Constants.TURN);
                                     }
                                     else if (ship.Status == ShipStatus.InTransit)
                                     {
@@ -171,7 +163,7 @@ namespace BroadenHorizons.Screens
                                     if (result)
                                     {
                                         var unit = _game.UnitTypes[unitIndex];
-                                        _game._unitManager.RecruitUnit(_game.CurrentPlanet, unitIndex, _game.Turn);
+                                        _game._unitManager.RecruitUnit(_game.CurrentPlanet, unitIndex, Constants.TURN);
                                         _game.hasRecruitedThisTurn[_game.CurrentPlanet] = true;
                                     }
                                 });
@@ -203,7 +195,7 @@ namespace BroadenHorizons.Screens
                                 {
                                     if (result)
                                     {
-                                        _game._shipManager.StartBuildingShip(_game.CurrentPlanet, shipIndex, _game.Turn);
+                                        _game._shipManager.StartBuildingShip(_game.CurrentPlanet, shipIndex, Constants.TURN);
                                         _game.hasRecruitedThisTurn[_game.CurrentPlanet] = true;
                                     }
                                 });
@@ -219,13 +211,13 @@ namespace BroadenHorizons.Screens
                     //Region clicked
                     else
                     {
-                        if (_game.SelectedUnit != -1)
+                        if (SelectedUnit != -1)
                         {
                             int clickedReg = Functions.GetClickedReg(_game.RegionDatas, (int)_game.mousePos.X, (int)_game.mousePos.Y);
                             if (clickedReg != -1 && _game.PossibleDestinations.Contains(clickedReg))
                             {
                                 int n = _game.CurrentPlanet;
-                                int u = _game.SelectedUnit;
+                                int u = SelectedUnit;
                                 int currentReg = unitsOnPlanet[u].Region;
                                 int unitCode = unitsOnPlanet[u].TypeIndex;
                                 int hab = _game.Planets[n].Habitat[clickedReg];
@@ -259,9 +251,9 @@ namespace BroadenHorizons.Screens
                                                 {
                                                     _game.Planets[n].Mat -= improvement.MatCost;
                                                     unitsOnPlanet[u].Status = UnitStatus.Busy;
-                                                    _game.TurnActions.Add(new TurnAction { ActionTurn = _game.Turn, TurnFinal = _game.Turn + improvement.TurnsToBuild, PlanetCode = n, UnitID = _game.SelectedUnit, UnitActionType = UnitActionType.Building, TargetReg = clickedReg, ImprovementIndex = _game.availableImprovementIndices[0] });
-                                                    _game._messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name}\n it will available on turn {_game.Turn + improvement.TurnsToBuild}.", MessageType.Info);
-                                                    _game.SelectedUnit = -1;
+                                                    _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + improvement.TurnsToBuild, PlanetCode = n, UnitID = SelectedUnit, UnitActionType = UnitActionType.Building, TargetReg = clickedReg, ImprovementIndex = _game.availableImprovementIndices[0] });
+                                                    _game._messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name}\n it will available on turn {Constants.TURN + improvement.TurnsToBuild}.", MessageType.Info);
+                                                    SelectedUnit = -1;
                                                     _game.PossibleDestinations.Clear();
                                                 }
                                             });
@@ -296,16 +288,16 @@ namespace BroadenHorizons.Screens
                                                             unitsOnPlanet[u].Status = UnitStatus.Busy;
                                                             _game.TurnActions.Add(new TurnAction
                                                             {
-                                                                ActionTurn = _game.Turn,
-                                                                TurnFinal = _game.Turn + improvement.TurnsToBuild,
+                                                                ActionTurn = Constants.TURN,
+                                                                TurnFinal = Constants.TURN + improvement.TurnsToBuild,
                                                                 PlanetCode = n,
-                                                                UnitID = _game.SelectedUnit,
+                                                                UnitID = SelectedUnit,
                                                                 UnitActionType = UnitActionType.Building,
                                                                 TargetReg = clickedReg,
                                                                 ImprovementIndex = improvementIdx
                                                             });
                                                             _game._messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name},\nit will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Info);
-                                                            _game.SelectedUnit = -1;
+                                                            SelectedUnit = -1;
                                                             _game.PossibleDestinations.Clear();
                                                         }
                                                     });
@@ -355,9 +347,9 @@ namespace BroadenHorizons.Screens
                                         {
                                             unitsOnPlanet[u].Region = clickedReg;
                                             unitsOnPlanet[u].Status = UnitStatus.Busy;
-                                            _game.TurnActions.Add(new TurnAction { ActionTurn = _game.Turn, TurnFinal = _game.Turn + Functions.GetTurnsToExplore(clickedReg), PlanetCode = n, UnitID = u, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
-                                            _game._messageManager.Show($"Exploring a new region, it will be finished on turn {Functions.GetTurnsToExplore(clickedReg) + _game.Turn}", MessageType.Info);
-                                            _game.SelectedUnit = -1;
+                                            _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + Functions.GetTurnsToExplore(clickedReg), PlanetCode = n, UnitID = u, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
+                                            _game._messageManager.Show($"Exploring a new region, it will be finished on turn {Functions.GetTurnsToExplore(clickedReg) + Constants.TURN}", MessageType.Info);
+                                            SelectedUnit = -1;
                                             _game.PossibleDestinations.Clear();
                                         }
                                     });
@@ -371,9 +363,9 @@ namespace BroadenHorizons.Screens
                                         {
                                             unitsOnPlanet[u].Region = clickedReg;
                                             unitsOnPlanet[u].Status = UnitStatus.Busy;
-                                            _game.TurnActions.Add(new TurnAction { ActionTurn = _game.Turn, TurnFinal = _game.Turn + 1, PlanetCode = n, UnitID = u, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
+                                            _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + 1, PlanetCode = n, UnitID = u, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
                                             //messageManager.Show($"Moving to habitat {clickedReg}", MessageType.Info);
-                                            _game.SelectedUnit = -1;
+                                            SelectedUnit = -1;
                                             _game.PossibleDestinations.Clear();
                                         }
                                     });
@@ -382,7 +374,7 @@ namespace BroadenHorizons.Screens
                             }
                             else
                             {
-                                _game.SelectedUnit = -1;
+                                SelectedUnit = -1;
                                 _game.PossibleDestinations.Clear();
                             }
                         }
@@ -475,7 +467,7 @@ namespace BroadenHorizons.Screens
             // Draw top info bar
             Color backColor = new Color(45, 60, 110);
             _game._spriteBatch.DrawRectangle(_game._pixel, new Rectangle(0, Constants.TOP_BAR_HEIGHT, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT), backColor);
-            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Planet, _game.Turn, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game.CurrentPlanet);
+            _game._topBar.DrawTopBar(_game._spriteBatch, TopBarRenderer.TopBarMode.Planet, Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game.CurrentPlanet);
 
             float xOffset = _game._bitmapFontBig.MeasureString(_game.Planets[_game.CurrentPlanet].Name.ToUpper()).Width / 2;
             _game._spriteBatch.DrawString(_game._bitmapFontBig, _game.Planets[_game.CurrentPlanet].Name.ToUpper(), new Vector2(Constants.SCREEN_WIDTH / 2 - xOffset, Constants.TOP_BAR_HEIGHT + 10), Color.White);
@@ -502,8 +494,8 @@ namespace BroadenHorizons.Screens
                     {
                         var texture = _game.Textures[_game.HabitatTypes[Math.Abs(hab)].TextureId];
                         Color textureColor = _game.Planets[_game.CurrentPlanet].HabitatPopulated[i] ? Color.White : Color.Gray;
-                        _game.Texturescale = (float)Math.Round(Constants.HEX_SIZE / (decimal)texture.Width, 3);
-                        _game._spriteBatch.Draw(texture, new Vector2(center.X - Constants.HEX_SIZE / 2, center.Y - Constants.HEX_SIZE / 2 * 1.1547f), null, textureColor, 0f, Vector2.Zero, _game.Texturescale, SpriteEffects.None, 0f);
+                        var textureScale = (float)Math.Round(Constants.HEX_SIZE / (decimal)texture.Width, 3);
+                        _game._spriteBatch.Draw(texture, new Vector2(center.X - Constants.HEX_SIZE / 2, center.Y - Constants.HEX_SIZE / 2 * 1.1547f), null, textureColor, 0f, Vector2.Zero, textureScale, SpriteEffects.None, 0f);
 
                         int imp = _game.Planets[_game.CurrentPlanet].Improvements[i];
                         if (imp >= 0)
