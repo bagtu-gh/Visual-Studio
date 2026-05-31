@@ -421,7 +421,7 @@ namespace BroadenHorizons.Screens
             };
 
             bool hasExplored = false;
-            for (int i = 0; i <= planet.Dimens; i++)
+            for (int i = 0; i <= Constants.MAX_PLANET_DIMENS; i++)
             {
                 if (planet.Habitat[i] >= 0)
                 {

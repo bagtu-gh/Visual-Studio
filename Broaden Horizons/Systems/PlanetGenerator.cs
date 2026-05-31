@@ -154,7 +154,8 @@ namespace BroadenHorizons
                 for (int k = 0; k < 6; k++)
                 {
                     int neighbor = neighbors[j * 6 + k];
-                    if (neighbor >= 0 && neighbor <= Constants.MAX_PLANET_DIMENS && !occupiedRegs.Contains(neighbor))
+                    if (neighbor >= 0 && neighbor <= Constants.MAX_PLANET_DIMENS && 
+                        !occupiedRegs.Contains(neighbor) && !frontier.Contains(neighbor))
                     {
                         frontier.Add(neighbor);
                     }
@@ -167,6 +168,10 @@ namespace BroadenHorizons
                 int frontierIndex = rand.Next(0, frontier.Count);
                 int selectedReg = frontier[frontierIndex];
                 frontier.RemoveAt(frontierIndex);
+
+                if (occupiedRegs.Contains(selectedReg))
+                    continue;
+
                 occupiedRegs.Add(selectedReg);
 
                 // Assign habitat based on ring
@@ -195,18 +200,22 @@ namespace BroadenHorizons
                     }
                 }
                 regsToAssign--;
+            }
 
-                // Starting planet data
-                if (isStartingPlanet)
-                {
-                    planet.Habitat[0] = 0;
-                    planet.Food = Constants.STARTING_FOOD;
-                    planet.Mat = Constants.STARTING_MATERIALS;
-                    planet.Energy = Constants.STARTING_ENERGY;
-                    planet.Status = PlanetStatus.Owned;
-                    planet.Population = Constants.STARTING_POPULATION;
-                    planet.HabitatPopulated[0] = true;
-                }
+            planet.Dimens = planet.Habitat
+                .Skip(1)
+                .Count(h => h != Constants.NON_EXISTING_HABTITAT);
+
+            // Starting planet data
+            if (isStartingPlanet)
+            {
+                planet.Habitat[0] = 0;
+                planet.Food = Constants.STARTING_FOOD;
+                planet.Mat = Constants.STARTING_MATERIALS;
+                planet.Energy = Constants.STARTING_ENERGY;
+                planet.Status = PlanetStatus.Owned;
+                planet.Population = Constants.STARTING_POPULATION;
+                planet.HabitatPopulated[0] = true;
             }
 
             // Assign region bonuses

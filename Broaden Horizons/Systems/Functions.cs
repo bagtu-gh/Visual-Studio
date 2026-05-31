@@ -120,7 +120,7 @@ namespace BroadenHorizons
         public static int GetPlanetPopulation(Planet planet, string Type)
         {
             int count = 0;
-            for (int i = 0; i <= planet.Dimens; i++)
+            for (int i = 0; i <= Constants.MAX_PLANET_DIMENS; i++)
             {
                 if (planet.Habitat[i] >= 0 && planet.HabitatPopulated[i])
                 {
