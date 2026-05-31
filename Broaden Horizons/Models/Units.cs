@@ -35,8 +35,7 @@ namespace BroadenHorizons
         Scientist = 3,
         Builder = 4,
         Harvester = 5,
-        Fisher = 6,
-        Colonist = 7
+        Fisher = 6
     }
 	
 	public enum UnitStatus

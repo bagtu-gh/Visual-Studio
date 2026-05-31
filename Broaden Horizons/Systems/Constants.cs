@@ -21,6 +21,7 @@ namespace BroadenHorizons
         public const float PLANET_GALAXY_SCALE = 75f;
         public const int HEX_SIZE = 115;
 
+        // Planet Menu
         public const int UNIT_MENU_X = 25;
         public const int UNIT_MENU_START_Y = 110;
         public const int UNIT_MENU_ROW_HEIGHT = 100;
@@ -40,6 +41,7 @@ namespace BroadenHorizons
         public const int MENU_BUTTON_BOTTOM_MARGIN = 60;
         public static readonly Color BACKGROUND_COLOR = Color.LightSkyBlue;
 
+        // Top bar layout
         public const int TOP_BAR_HEIGHT = 60;
         public const int TOP_BAR_BUTTON_WIDTH = 130;
         public const int TOP_BAR_BUTTON_HEIGHT = 40;
@@ -50,7 +52,11 @@ namespace BroadenHorizons
         public static readonly Color TOP_BAR_BUTTON_HIGHLIGHT_COLOR = Color.DarkBlue;
         public static readonly Color TOP_BAR_BUTTON_COLOR_MSG = Color.Red;
         public static readonly Color TOP_BAR_BUTTON_HIGHLIGHT_COLOR_MSG = Color.MediumVioletRed;
+        public const int PLANET_TOP_BAR_IMGTEXT_PAD = 10;
+        public const int PLANET_TOP_BAR_LEFT_PAD = 15;
+        public const int PLANET_TOP_BAR_TEXT_DIST = 20;
 
+        // Tech tree layout
         public const int TECH_TREE_BOX_WIDTH = 175;
         public const int TECH_TREE_BOX_HEIGHT = 80;
         public const int TECH_TREE_HORIZ_MARGIN = 50;
@@ -66,17 +72,20 @@ namespace BroadenHorizons
         public const float LIST_ROW_HEIGHT = 48f;
         public const float LIST_HEADER_HEIGHT = 48f;
 
-        public const int PLANET_TOP_BAR_IMGTEXT_PAD = 10;
-        public const int PLANET_TOP_BAR_LEFT_PAD = 15;
-        public const int PLANET_TOP_BAR_TEXT_DIST = 20;
-
         // Defaults for planet production
         public static int STARTING_FOOD { get; set; } = 6;
         public const int STARTING_MATERIALS = 2;
         public const int STARTING_SCIENCE = 2;
-        public const int STARTING_ENERGY = 20;
+        public const int STARTING_ENERGY = 6;
         public const int STARTING_POPULATION = 70;
         public const int DEFAULT_PLANET_TEXTURE = 2;
+
+        // Colony ship constants
+        public const int COLONY_POPULATION_COST = 75;
+        public const int COLONY_FOOD_CARGO = 12;
+        public const int COLONY_MATERIAL_CARGO = 8;
+        public const int COLONY_STARTING_ENERGY = 5;
+
 
         public static readonly int REGION_BONUS_MAX_PER_PLANET = 6; // Divisor for planet dimensions to get max region bonuses
         public static readonly int MIN_REGION_BONUSES = 1;
@@ -88,7 +97,7 @@ namespace BroadenHorizons
 
         // Event system
         public const float PROB_EVENT = 0.1f;
-        public static bool EVENTS_ON { get; set; } =  true;
+        public static bool EVENTS_ON { get; set; } = true;
 
         // File paths (centralize)
         private static string _helpText;

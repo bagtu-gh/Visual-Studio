@@ -108,16 +108,8 @@ namespace BroadenHorizons.Screens
                                     }
                                     else if (ship.TypeIndex == (int)ShipTypeEnum.ColonyShip && ship.Status == ShipStatus.Docked)
                                     {
-                                        if (unitsOnPlanet.Exists(u => u.TypeIndex == (int)UnitTypeEnum.Colonist))
-                                        {
-                                            //_game._shipManager.ShowColonyLaunchMenu(ship, Constants.TURN);
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            _game._messageManager.Show("You don't have a colonist on this planet", MessageType.Info);
-                                            break;
-                                        }
+                                        _game._shipManager.ShowColonyLaunchMenu(ship, Constants.TURN);
+                                        break;
                                     }
                                     else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Freighter && ship.Status == ShipStatus.Docked)
                                     {

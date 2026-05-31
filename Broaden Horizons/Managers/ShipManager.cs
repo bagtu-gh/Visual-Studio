@@ -47,9 +47,9 @@ namespace BroadenHorizons
             /*var startingShip2 = new Ship
             {
                 Id = nextShipId++,
-                Name = "Terraformer 2",
-                TypeIndex = ShipTypeEnum.Terraformer.GetHashCode(),
-                AssignedPlanet = 1,
+                Name = "Colony Ship 2",
+                TypeIndex = ShipTypeEnum.ColonyShip.GetHashCode(),
+                AssignedPlanet = planetId,
                 Status = ShipStatus.Docked,
                 CurrentPosition = new Vector2(_planets[planetId].XPos, _planets[planetId].YPos)
             };
@@ -111,7 +111,7 @@ namespace BroadenHorizons
 
             ProcessCompletedBuilds(currentTurn, messages);
 
-            foreach (var ship in GetActiveShips())
+            foreach (var ship in GetActiveShips().ToList())
             {
                 ProcessShip(ship, currentTurn, messages);
             }
@@ -152,6 +152,10 @@ namespace BroadenHorizons
 
                 case ShipTypeEnum.Freighter:
                     ProcessFreighter(ship, currentTurn, messages);
+                    break;
+
+                case ShipTypeEnum.ColonyShip:
+                    ProcessColonyShip(ship, currentTurn, messages);
                     break;
 
                 case ShipTypeEnum.Terraformer:
@@ -225,6 +229,39 @@ namespace BroadenHorizons
 
             ship.CargoFood = 0;
             ship.CargoMat = 0;
+        }
+
+        private void ProcessColonyShip(Ship ship, int currentTurn, List<string> messages)
+        {
+            UpdateLinearMovement(ship, currentTurn);
+
+            if (currentTurn < ship.FinalTurnAction)
+                return;
+
+            EstablishColony(ship, messages);
+        }
+
+        private void EstablishColony(Ship ship, List<string> messages)
+        {
+            var targetPlanet = _planets[ship.TargetPlanet];
+
+            targetPlanet.Status = PlanetStatus.Owned;
+            targetPlanet.Habitat[0] = 0; // City
+            targetPlanet.HabitatPopulated[0] = true;
+            targetPlanet.Improvements[0] = -1;
+            targetPlanet.OccupiedByUnit[0] = -1;
+            targetPlanet.Population = Constants.COLONY_POPULATION_COST;
+            targetPlanet.Food = Constants.COLONY_FOOD_CARGO;
+            targetPlanet.Mat = Constants.COLONY_MATERIAL_CARGO;
+            targetPlanet.Energy = Constants.COLONY_STARTING_ENERGY;
+
+            messages.Add(
+                $"Colony established on {targetPlanet.Name}.\n" +
+                $"{Constants.COLONY_POPULATION_COST} colonists founded the first city region\n" +
+                $"with {Constants.COLONY_FOOD_CARGO} food and {Constants.COLONY_MATERIAL_CARGO} materials."
+            );
+
+            _ships.Remove(ship);
         }
 
         private void ProcessTerraformer(Ship ship, int currentTurn, List<string> messages)
@@ -492,50 +529,150 @@ namespace BroadenHorizons
                                 $"It will arrive in {turnsNeeded} turns.", MessageType.Info);
         }
 
-        /*public void ShowColonyLaunchMenu(Ship ship, int turn)
+        public void ShowColonyLaunchMenu(Ship ship, int turn)
         {
-            var planetData = new List<(int PlanetIndex, float Distance, int TurnsNeeded, int EnergyNeeded, string OptionString)>();
+            var origin = _planets[ship.AssignedPlanet];
+
+            if (!CanPrepareColonyShip(ship, out string reason))
+            {
+                _messageManager.Show(reason, MessageType.Info);
+                return;
+            }
+
+            var planetData = new List<(int PlanetIndex, string Name, float Distance, int TurnsNeeded, int EnergyNeeded, bool CanLaunch, string OptionString)>();
 
             for (int i = 0; i < _planets.Length; i++)
             {
                 if (i != ship.AssignedPlanet && _planets[i].Status == PlanetStatus.Explored)
                 {
                     float distance = Vector2.Distance(
-                        new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos),
+                        new Vector2(origin.XPos, origin.YPos),
                         new Vector2(_planets[i].XPos, _planets[i].YPos)
                     );
+
                     int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex].Speed);
                     turnsNeeded = Math.Max(1, turnsNeeded);
                     int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex].EnergyperTurn;
-                    string optionString = $"{_planets[i].Name} ({distance:0} units) Turns to arrive: {turnsNeeded} Energy: {energyNeeded * 2}";
 
-                    planetData.Add((i, distance, turnsNeeded, energyNeeded, optionString));
+                    bool canLaunch = CanLaunchColonyShip(ship, i, energyNeeded, out _);
+
+                    string optionString =
+                        $"{_planets[i].Name} ({distance:0} units) Turns: {turnsNeeded} " +
+                        $"Energy: {energyNeeded} Pop: {Constants.COLONY_POPULATION_COST} " +
+                        $"Food: {Constants.COLONY_FOOD_CARGO} Mat: {Constants.COLONY_MATERIAL_CARGO}";
+
+                    planetData.Add((i, _planets[i].Name, distance, turnsNeeded, energyNeeded, canLaunch, optionString));
                 }
+            }
+
+            if (planetData.Count == 0)
+            {
+                _messageManager.Show("No explored planets are available for colonization.", MessageType.Info);
+                return;
+            }
+
+            if (!planetData.Any(data => data.CanLaunch))
+            {
+                _messageManager.Show("Not enough energy to reach any explored planet with this colony ship.", MessageType.Info);
+                return;
             }
 
             planetData.Sort((a, b) => a.Distance.CompareTo(b.Distance));
 
             var optionStrings = planetData.Select(data => data.OptionString).ToList();
-            var targetPlanets = planetData.Select(data => data.PlanetIndex).ToList();
-            var turns = planetData.Select(data => data.TurnsNeeded).ToList();
-            var energies = planetData.Select(data => data.EnergyNeeded).ToList();
 
-            _messageManager.ShowSelection($"Choose planet to colonise:", optionStrings, selectedIndex =>
+            _messageManager.ShowSelection("Choose planet to colonize", optionStrings, selectedIndex =>
             {
                 if (selectedIndex >= 0)
                 {
-                    int selectedPlanetIndex = targetPlanets[selectedIndex];
-                    LaunchData launchData = new LaunchData
-                    {
-                        Turn = turn,
-                        TurnsNeeded = turns[selectedIndex],
-                        EnergyNeeded = energies[selectedIndex],
-                        TargetPlanet = selectedPlanetIndex
-                    };
-                    LaunchShip(ship, launchData);
+                    var selected = planetData[selectedIndex];
+                    LaunchColonyShip(ship, selected.PlanetIndex, turn, selected.EnergyNeeded, selected.TurnsNeeded);
                 }
-            });
-        }*/
+            }, planetData.Select(data => data.CanLaunch).ToList());
+        }
+
+        public void LaunchColonyShip(Ship ship, int targetPlanet, int turn, int energyCost, int turnsNeeded)
+        {
+            var origin = _planets[ship.AssignedPlanet];
+
+            if (!CanLaunchColonyShip(ship, targetPlanet, energyCost, out string reason))
+            {
+                _messageManager.Show(reason, MessageType.Info);
+                return;
+            }
+
+            origin.Population -= Constants.COLONY_POPULATION_COST;
+            origin.Food -= Constants.COLONY_FOOD_CARGO;
+            origin.Mat -= Constants.COLONY_MATERIAL_CARGO;
+            origin.Energy -= energyCost;
+
+            ship.BeginTurnAction = turn;
+            ship.TargetPlanet = targetPlanet;
+            ship.Status = ShipStatus.InTransit;
+            ship.FinalTurnAction = turn + Math.Max(1, turnsNeeded);
+
+            _messageManager.Show(
+                $"Colony ship launched to {_planets[targetPlanet].Name}.\n" +
+                $"It carries {Constants.COLONY_POPULATION_COST} colonists, {Constants.COLONY_FOOD_CARGO} food, " +
+                $"{Constants.COLONY_MATERIAL_CARGO} materials and will arrive in {turnsNeeded} turns.",
+                MessageType.Info);
+        }
+
+        private bool CanLaunchColonyShip(Ship ship, int targetPlanet, int energyCost, out string reason)
+        {
+            reason = "";
+
+            if (targetPlanet < 0 || targetPlanet >= _planets.Length)
+            {
+                reason = "Invalid colony destination.";
+                return false;
+            }
+
+            if (!CanPrepareColonyShip(ship, out reason))
+                return false;
+
+            if (_planets[targetPlanet].Status != PlanetStatus.Explored)
+            {
+                reason = "Only explored, unowned planets can be colonized.";
+                return false;
+            }
+
+            var origin = _planets[ship.AssignedPlanet];
+
+            if (origin.Energy < energyCost)
+            {
+                reason = "Not enough energy to launch!";
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CanPrepareColonyShip(Ship ship, out string reason)
+        {
+            reason = "";
+
+            if (ship.Status != ShipStatus.Docked)
+            {
+                reason = "The colony ship must be docked before launch.";
+                return false;
+            }
+
+            var origin = _planets[ship.AssignedPlanet];
+            int freePopulation = Functions.GetPlanetPopulation(origin, "Unassigned");
+
+            if (freePopulation < Constants.COLONY_POPULATION_COST || origin.Food < Constants.COLONY_FOOD_CARGO || origin.Mat < Constants.COLONY_MATERIAL_CARGO)
+            {
+                var populationStatus = freePopulation < Constants.COLONY_POPULATION_COST ? "Insufficient" : "Sufficient";
+                var foodStatus = origin.Food < Constants.COLONY_FOOD_CARGO ? "Insufficient" : "Sufficient";
+                var materialsStatus = origin.Mat < Constants.COLONY_MATERIAL_CARGO ? "Insufficient" : "Sufficient";
+
+                reason = $"Not enough resources.\nColonization requires {Constants.COLONY_POPULATION_COST} unassigned colonists ({populationStatus}),\n{Constants.COLONY_FOOD_CARGO} food ({foodStatus}), and {Constants.COLONY_MATERIAL_CARGO} materials ({materialsStatus}).";
+                return false;
+            }
+
+            return true;
+        }
 
         public void LaunchProbeShip(Ship ship, LaunchData data, List<int> loadUnits = null)
         {

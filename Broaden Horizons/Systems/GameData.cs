@@ -99,8 +99,7 @@ namespace BroadenHorizons
             new UnitType { Name = "Scientists", Type = UnitTypeEnum.Scientist, FoodCost = 15, MatCost = 0, PopCost = 50, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 0, ExtraSciProd = 2, TextureId = 33, RecruitTurns = 2, RequiredTech = 2 },
             new UnitType { Name = "Builders", Type = UnitTypeEnum.Builder, FoodCost = 20, MatCost = 5, PopCost = 50, FoodMaint = 3, MatMaint = 1, TextureId = 34, RecruitTurns = 3, RequiredTech = 3 },
             new UnitType { Name = "Harvesters", Type = UnitTypeEnum.Harvester, FoodCost = 12, MatCost = 2, PopCost = 50, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 2, ExtraSciProd = 0, TextureId = 35, RecruitTurns = 2, RequiredTech = 13 },
-            new UnitType { Name = "Fishermen", Type = UnitTypeEnum.Fisher, FoodCost = 12, MatCost = 0, PopCost = 50, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 2, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 36, RecruitTurns = 2, RequiredTech = 14 },
-            new UnitType { Name = "Colonists", Type = UnitTypeEnum.Colonist, FoodCost = 25, MatCost = 5, PopCost = 100, FoodMaint = 3, MatMaint = 0, TextureId = 37, RecruitTurns = 4, RequiredTech = 9 }
+            new UnitType { Name = "Fishermen", Type = UnitTypeEnum.Fisher, FoodCost = 12, MatCost = 0, PopCost = 50, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 2, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 36, RecruitTurns = 2, RequiredTech = 14 }
         ];
 
         public static readonly List<PlanetImprovement> PlanetImprovements =

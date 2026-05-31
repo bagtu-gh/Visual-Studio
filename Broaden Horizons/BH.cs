@@ -151,7 +151,6 @@ namespace BroadenHorizons
             Textures[34] = Content.Load<Texture2D>("images/Builder");
             Textures[35] = Content.Load<Texture2D>("images/Harvester");
             Textures[36] = Content.Load<Texture2D>("images/Fisher");
-            Textures[37] = Content.Load<Texture2D>("images/Colonist");
 
             for (int i = 40; i <= 50; i++)
             {
