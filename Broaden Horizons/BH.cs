@@ -44,7 +44,6 @@ namespace BroadenHorizons
         internal List<ShipType> Ships = new List<ShipType>();
         internal List<string> PlanetNames = new List<string>();
         internal int[] Neighbors = new int[222];
-        internal List<string> PlanetRegionBonuses = new List<string>();
         internal RegionBonusManager _regionBonusManager;
         internal ShipManager _shipManager;
         internal UnitManager _unitManager;
@@ -66,20 +65,17 @@ namespace BroadenHorizons
         internal BitmapFont _bitmapFontMessages;
         internal Texture2D _pixel;
         internal Texture2D _logoTexture;
-        public List<int> PossibleDestinations = new List<int>();
+        internal List<int> PossibleDestinations = new List<int>();
         internal List<Vector2> StarPositions = new List<Vector2>();
-        public bool[] hasRecruitedThisTurn = new bool[Constants.NUM_PLANETS];
-        public List<int> availableImprovementIndices = new List<int>();
-        public List<int> availableUnitIndices = new List<int>();
+        internal bool[] hasRecruitedThisTurn = new bool[Constants.NUM_PLANETS];
+        internal List<int> availableImprovementIndices = new List<int>();
+        internal List<int> availableUnitIndices = new List<int>();
         internal KeyboardState _prevKeyboard;
         internal MouseState _prevMouse;
-        public Vector2 mousePos;
-        public bool requireMouseRelease = false;
-        public string tooltipText = "";
-        public Vector2 tooltipPos = Vector2.Zero;
+        internal Vector2 mousePos;
+        internal bool requireMouseRelease = false;
+        internal string tooltipText = "";
         internal List<Tech> Techs;
-        private readonly Dictionary<GameState, Action<GameTime, KeyboardState, MouseState>> updateHandlers;
-        private readonly Dictionary<GameState, Action<GameTime>> drawHandlers;
         internal PlanetScreen _planetScreen;
         internal GalaxyMapScreen _galaxyMapScreen;
         internal MainMenuScreen _mainMenuScreen;
@@ -97,15 +93,8 @@ namespace BroadenHorizons
             _graphics.PreferredBackBufferWidth = Constants.SCREEN_WIDTH;
             _graphics.PreferredBackBufferHeight = Constants.SCREEN_HEIGHT;
             //_graphics.IsFullScreen = true;
+
             _regionBonusManager = new RegionBonusManager(this, Rand, new List<HabitatType>());
-
-            updateHandlers = new Dictionary<GameState, Action<GameTime, KeyboardState, MouseState>>
-            {
-            };
-            drawHandlers = new Dictionary<GameState, Action<GameTime>>
-            {
-            };
-
             _planetScreen = new PlanetScreen(this);
             _galaxyMapScreen = new GalaxyMapScreen(this);
             _mainMenuScreen = new MainMenuScreen(this);
@@ -240,13 +229,6 @@ namespace BroadenHorizons
             // Initialize region bonuses through RegionBonusManager
             _regionBonusManager.InitializeRegionBonuses();
 
-            // Populate PlanetRegionBonuses with names for galaxy view compatibility
-            PlanetRegionBonuses.Clear();
-            foreach (var bonus in _regionBonusManager.RegionBonusTypes)
-            {
-                PlanetRegionBonuses.Add(bonus.Name);
-            }
-
             PlanetNames.AddRange(GameData.PlanetNames);
 
             Array.Copy(GameData.NeighborsData, Neighbors, GameData.NeighborsData.Length);
@@ -259,7 +241,6 @@ namespace BroadenHorizons
             HabitatTypes.Clear();
             UnitTypes.Clear();
             PlanetImprovements.Clear();
-            PlanetRegionBonuses.Clear();
             TurnActions.Clear();
             PlanetNames.Clear();
         }
@@ -404,10 +385,6 @@ namespace BroadenHorizons
                     {
                         _shipListScreen.Update(gameTime, keyboard, mouse);
                     }
-                    else
-                    {
-                        updateHandlers[CurrentState](gameTime, keyboard, mouse);
-                    }
                 }
 
                 _prevKeyboard = keyboard;
@@ -451,10 +428,6 @@ namespace BroadenHorizons
             else if (CurrentState == GameState.ShipList)
             {
                 _shipListScreen.Draw(gameTime);
-            }
-            else
-            {
-                drawHandlers[CurrentState](gameTime);
             }
             _messageManager.Draw(_spriteBatch, _pixel, _bitmapFontMessages, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, graphicsDevice: GraphicsDevice);
             _spriteBatch.End();

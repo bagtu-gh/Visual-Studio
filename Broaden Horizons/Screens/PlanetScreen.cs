@@ -32,13 +32,11 @@ namespace BroadenHorizons.Screens
             {
                 // Tooltip handling for resources and regions
                 _game.tooltipText = "";
-                _game.tooltipPos = _game.mousePos + new Vector2(10, 10); // Slightly offset from mouse
 
                 // Handle top bar tooltips
                 if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Planet, _game.mousePos, Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, _game._productionManager.GetProductionTooltip, null, GetPopulationTooltip, _game.CurrentPlanet, out string tt, out Vector2 tp))
                 {
                     _game.tooltipText = tt;
-                    _game.tooltipPos = tp;
                 }
                 else
                 {

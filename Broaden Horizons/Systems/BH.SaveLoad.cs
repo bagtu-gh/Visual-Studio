@@ -156,7 +156,6 @@ namespace BroadenHorizons
                 NextUnitId = _unitManager.NextUnitId,
                 TurnActions = new List<TurnAction>(TurnActions ?? new List<TurnAction>()),
                 RegionDatas = RegionDatas,
-                PlanetRegionBonuses = new List<string>(PlanetRegionBonuses ?? new List<string>()),
                 RegionBonusTypes = new List<RegionBonus>(_regionBonusManager.RegionBonusTypes ?? new List<RegionBonus>()),
 
                 // Tech
@@ -183,7 +182,6 @@ namespace BroadenHorizons
             Planets = state.Planets ?? new Planet[Constants.NUM_PLANETS];
             _unitManager._units = state.Units ?? new List<Unit>();
             TurnActions = state.TurnActions ?? new List<TurnAction>();
-            PlanetRegionBonuses = state.PlanetRegionBonuses ?? new List<string>();
 
             // 2) Initialize static data (sets HabitatTypes, recreates managers, preserves Planets)
             InitializeBasicData();  // ← Now safe: doesn't overwrite Planets

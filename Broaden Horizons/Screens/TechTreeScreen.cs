@@ -68,7 +68,6 @@ namespace BroadenHorizons.Screens
             if (_game._topBar.HandleTopBarTooltips(TopBarRenderer.TopBarMode.Global, _game.mousePos, Constants.TURN, _game._techManager.GlobalScience, _game.Planets, _game._productionManager.CalculateProductionTurn, null, _game._productionManager.BuildGlobalProductionTooltip, null, -1, out string tt, out Vector2 tp))
             {
                 _game.tooltipText = tt;
-                _game.tooltipPos = tp;
             }
             else
             {
