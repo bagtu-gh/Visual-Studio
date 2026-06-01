@@ -445,6 +445,8 @@ namespace BroadenHorizons.Screens
             var dataList = Functions.GetTemperatureRangeData(planet.Temperature);
             var DeltaFood = double.Parse(_game._productionManager.CalculateProductionTurn(planetIndex, "Food"));
             var result = (DeltaFood >= 0) ? (1 + DeltaFood * Constants.POPULATION_FOOD_GROWTH) : (0.5 + DeltaFood * Constants.POPULATION_FOOD_GROWTH);
+            int foodConsumption = _game._productionManager.CalculatePopulationFoodConsumption(planetIndex);
+            tooltipLines.Add($"Food consumption: -{foodConsumption} food ({Constants.POPULATION_FOOD_CONSUMPTION} pop per food)");
             tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {(float)dataList["Modifier"]:P0}\nFood factor: {result:P0}");
 
             return string.Join("\n", tooltipLines);

@@ -45,6 +45,14 @@ namespace BroadenHorizons
             // Initialize breakdown list if null (safety)
             if (result.BreakdownText == null) result.BreakdownText = new List<string>();
 
+            int populationFoodConsumption = CalculatePopulationFoodConsumption(planetIndex);
+            if (populationFoodConsumption > 0)
+            {
+                result.Food -= populationFoodConsumption;
+                result.BreakdownText.Add(
+                    $"Population Consumption ({_planets[planetIndex].Population} Pop): -{populationFoodConsumption} Food");
+            }
+
             // Unit maintenance: active units consume maintenance
             foreach (var unit in _unitManager.GetUnitsOnPlanet(planetIndex))
             {
@@ -76,6 +84,14 @@ namespace BroadenHorizons
             }
 
             return result;
+        }
+
+        public int CalculatePopulationFoodConsumption(int planetIndex)
+        {
+            int population = Math.Max(0, _planets[planetIndex].Population);
+            if (population == 0) return 0;
+
+            return (int)Math.Ceiling(population / (double)Constants.POPULATION_FOOD_CONSUMPTION);
         }
 
         /// <summary>

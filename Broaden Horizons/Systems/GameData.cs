@@ -93,61 +93,61 @@ namespace BroadenHorizons
 
         public static readonly List<UnitType> UnitTypes =
         [
-            new UnitType { Name = "Explorers", Type = UnitTypeEnum.Explorer, FoodCost = 12, MatCost = 2, PopCost = 25, FoodMaint = 2, MatMaint = 0, TextureId = 30, RecruitTurns = 2, RequiredTech = 0 },
+            new UnitType { Name = "Explorers", Type = UnitTypeEnum.Explorer, FoodCost = 12, MatCost = 2, PopCost = 25, FoodMaint = 1, MatMaint = 0, TextureId = 30, RecruitTurns = 2, RequiredTech = 0 },
             new UnitType { Name = "Farmers", Type = UnitTypeEnum.Farmer, FoodCost = 15, MatCost = 2, PopCost = 50, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 2, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 31, RecruitTurns = 2, RequiredTech = 13 },
-            new UnitType { Name = "Miners", Type = UnitTypeEnum.Miner, FoodCost = 18, MatCost = 3, PopCost = 50, FoodMaint = 3, MatMaint = 1, ExtraFoodProd = 0, ExtraMatProd = 2, ExtraSciProd = 0, TextureId = 32, RecruitTurns = 2, RequiredTech = 1 },
-            new UnitType { Name = "Scientists", Type = UnitTypeEnum.Scientist, FoodCost = 15, MatCost = 0, PopCost = 50, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 0, ExtraSciProd = 2, TextureId = 33, RecruitTurns = 2, RequiredTech = 2 },
-            new UnitType { Name = "Builders", Type = UnitTypeEnum.Builder, FoodCost = 20, MatCost = 5, PopCost = 50, FoodMaint = 3, MatMaint = 1, TextureId = 34, RecruitTurns = 3, RequiredTech = 3 },
-            new UnitType { Name = "Harvesters", Type = UnitTypeEnum.Harvester, FoodCost = 12, MatCost = 2, PopCost = 50, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 2, ExtraSciProd = 0, TextureId = 35, RecruitTurns = 2, RequiredTech = 13 },
-            new UnitType { Name = "Fishermen", Type = UnitTypeEnum.Fisher, FoodCost = 12, MatCost = 0, PopCost = 50, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 2, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 36, RecruitTurns = 2, RequiredTech = 14 }
+            new UnitType { Name = "Miners", Type = UnitTypeEnum.Miner, FoodCost = 18, MatCost = 3, PopCost = 50, FoodMaint = 2, MatMaint = 1, ExtraFoodProd = 0, ExtraMatProd = 2, ExtraSciProd = 0, TextureId = 32, RecruitTurns = 2, RequiredTech = 1 },
+            new UnitType { Name = "Scientists", Type = UnitTypeEnum.Scientist, FoodCost = 15, MatCost = 0, PopCost = 50, FoodMaint = 2, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 0, ExtraSciProd = 2, TextureId = 33, RecruitTurns = 2, RequiredTech = 2 },
+            new UnitType { Name = "Builders", Type = UnitTypeEnum.Builder, FoodCost = 20, MatCost = 5, PopCost = 50, FoodMaint = 2, MatMaint = 1, TextureId = 34, RecruitTurns = 3, RequiredTech = 3 },
+            new UnitType { Name = "Harvesters", Type = UnitTypeEnum.Harvester, FoodCost = 12, MatCost = 2, PopCost = 50, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 0, ExtraMatProd = 2, ExtraSciProd = 0, TextureId = 35, RecruitTurns = 2, RequiredTech = 13 },
+            new UnitType { Name = "Fishermen", Type = UnitTypeEnum.Fisher, FoodCost = 12, MatCost = 0, PopCost = 50, FoodMaint = 3, MatMaint = 0, ExtraFoodProd = 2, ExtraMatProd = 0, ExtraSciProd = 0, TextureId = 36, RecruitTurns = 2, RequiredTech = 14 }
         ];
 
         public static readonly List<PlanetImprovement> PlanetImprovements =
         [
-            new PlanetImprovement { Name = "Urban Development", FoodProd = 1, MatProd = 1, SciProd = 1, EnergyProd = 1, AllowedHabitat = "City", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 2, MatCost = 30, RequiredTech = 0 },
-            new PlanetImprovement { Name = "Woodcutter Camp", FoodProd = -1, MatProd = 2, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Forest", AllowedUnit = "Harvesters", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 3 },
-            new PlanetImprovement { Name = "Hunting Camp", FoodProd = 2, MatProd = -1, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Forest", AllowedUnit = "Harvesters", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 3 },
-            new PlanetImprovement { Name = "Aquaculture Farm", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Ocean", AllowedUnit = "Fishermen", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 14 },
-            new PlanetImprovement { Name = "Mines", FoodProd = 0, MatProd = 2, SciProd = 0, EnergyProd = -1, AllowedHabitat = "Mountains", AllowedUnit = "Miners", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 1 },
-            new PlanetImprovement { Name = "Crop Intensification", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Prairie", AllowedUnit = "Farmers", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 13 },
-            new PlanetImprovement { Name = "Irrigation Systems", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Valley", AllowedUnit = "Farmers", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 3 },
-            new PlanetImprovement { Name = "Science Research Stations", FoodProd = 0, MatProd = 0, SciProd = 2, EnergyProd = -1, AllowedHabitat = "Desert", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 2 },
-            new PlanetImprovement { Name = "Historical Research", FoodProd = 0, MatProd = 0, SciProd = 3, EnergyProd = 0, AllowedHabitat = "Ruins", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 2 },
-            new PlanetImprovement { Name = "Geothermal Mining", FoodProd = 0, MatProd = 2, SciProd = 0, EnergyProd = -3, AllowedHabitat = "Volcano", AllowedUnit = "Miners", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 5 },
-            new PlanetImprovement { Name = "Cryo-Science Research Lab", FoodProd = 0, MatProd = 0, SciProd = 2, EnergyProd = -2, AllowedHabitat = "Arctic", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 3, MatCost = 30, RequiredTech = 6 },
-            new PlanetImprovement { Name = "Wind Farm", FoodProd = 0, MatProd = 0, SciProd = 0, EnergyProd = 3, AllowedHabitat = "Mountains", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 4, MatCost = 40, RequiredTech = 4 },
-            new PlanetImprovement { Name = "Hydroelectric Dam", FoodProd = 1, MatProd = 0, SciProd = 0, EnergyProd = 3, AllowedHabitat = "Valley", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 4, MatCost = 40, RequiredTech = 4 },
-            new PlanetImprovement { Name = "Solar Power Plant", FoodProd = 0, MatProd = 0, SciProd = 0, EnergyProd = 3, AllowedHabitat = "Desert", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 4, MatCost = 40, RequiredTech = 4 },
-            new PlanetImprovement { Name = "Geothermal Power Plant", FoodProd = 0, MatProd = 0, SciProd = 0, EnergyProd = 5, AllowedHabitat = "Volcano", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 5, MatCost = 60, RequiredTech = 8 }
+            new PlanetImprovement { Name = "Urban Development", FoodProd = 1, MatProd = 1, SciProd = 1, EnergyProd = 1, AllowedHabitat = "City", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 2, MatCost = 60, RequiredTech = 0 },
+            new PlanetImprovement { Name = "Woodcutter Camp", FoodProd = -1, MatProd = 2, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Forest", AllowedUnit = "Harvesters", TextureId = 11, TurnsToBuild = 3, MatCost = 45, RequiredTech = 3 },
+            new PlanetImprovement { Name = "Hunting Camp", FoodProd = 2, MatProd = -1, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Forest", AllowedUnit = "Harvesters", TextureId = 11, TurnsToBuild = 3, MatCost = 45, RequiredTech = 3 },
+            new PlanetImprovement { Name = "Aquaculture Farm", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Ocean", AllowedUnit = "Fishermen", TextureId = 11, TurnsToBuild = 3, MatCost = 45, RequiredTech = 14 },
+            new PlanetImprovement { Name = "Mines", FoodProd = 0, MatProd = 2, SciProd = 0, EnergyProd = -1, AllowedHabitat = "Mountains", AllowedUnit = "Miners", TextureId = 11, TurnsToBuild = 3, MatCost = 55, RequiredTech = 1 },
+            new PlanetImprovement { Name = "Crop Intensification", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Prairie", AllowedUnit = "Farmers", TextureId = 11, TurnsToBuild = 3, MatCost = 45, RequiredTech = 13 },
+            new PlanetImprovement { Name = "Irrigation Systems", FoodProd = 2, MatProd = 0, SciProd = 0, EnergyProd = 0, AllowedHabitat = "Valley", AllowedUnit = "Farmers", TextureId = 11, TurnsToBuild = 3, MatCost = 45, RequiredTech = 3 },
+            new PlanetImprovement { Name = "Science Research Stations", FoodProd = 0, MatProd = 0, SciProd = 2, EnergyProd = -1, AllowedHabitat = "Desert", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 3, MatCost = 50, RequiredTech = 2 },
+            new PlanetImprovement { Name = "Historical Research", FoodProd = 0, MatProd = 0, SciProd = 3, EnergyProd = 0, AllowedHabitat = "Ruins", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 3, MatCost = 60, RequiredTech = 2 },
+            new PlanetImprovement { Name = "Geothermal Mining", FoodProd = 0, MatProd = 2, SciProd = 0, EnergyProd = -3, AllowedHabitat = "Volcano", AllowedUnit = "Miners", TextureId = 11, TurnsToBuild = 3, MatCost = 55, RequiredTech = 5 },
+            new PlanetImprovement { Name = "Cryo-Science Research Lab", FoodProd = 0, MatProd = 0, SciProd = 2, EnergyProd = -2, AllowedHabitat = "Arctic", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 3, MatCost = 55, RequiredTech = 6 },
+            new PlanetImprovement { Name = "Wind Farm", FoodProd = 0, MatProd = 0, SciProd = 0, EnergyProd = 3, AllowedHabitat = "Mountains", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 4, MatCost = 70, RequiredTech = 4 },
+            new PlanetImprovement { Name = "Hydroelectric Dam", FoodProd = 1, MatProd = 0, SciProd = 0, EnergyProd = 3, AllowedHabitat = "Valley", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 4, MatCost = 65, RequiredTech = 4 },
+            new PlanetImprovement { Name = "Solar Power Plant", FoodProd = 0, MatProd = 0, SciProd = 0, EnergyProd = 3, AllowedHabitat = "Desert", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 4, MatCost = 70, RequiredTech = 4 },
+            new PlanetImprovement { Name = "Geothermal Power Plant", FoodProd = 0, MatProd = 0, SciProd = 0, EnergyProd = 5, AllowedHabitat = "Volcano", AllowedUnit = "Scientists", TextureId = 11, TurnsToBuild = 5, MatCost = 90, RequiredTech = 8 }
         ];
 
         public static readonly List<ShipType> ShipTypes =
         [
             new ShipType { Name = "Probe", MatCost = 50, MaintCost = 2, Speed = 150, EnergyperTurn = 1, TurnsToBuild = 3, RequiredTech = 0, TextureId = 61, Type = ShipTypeEnum.Probe, Capacity = 0 },
-            new ShipType { Name = "Colony Ship", MatCost = 200, MaintCost = 4, Speed = 100, EnergyperTurn = 4, TurnsToBuild = 5, RequiredTech = 9, TextureId = 62, Type = ShipTypeEnum.ColonyShip, Capacity = 0 },
-            new ShipType { Name = "Freighter", MatCost = 100, MaintCost = 8, Speed = 125, EnergyperTurn = 2, TurnsToBuild = 4, RequiredTech = 15, TextureId = 63, Type = ShipTypeEnum.Freighter, Capacity = 50 },
-            new ShipType { Name = "Terraformer", MatCost = 150, MaintCost = 6, Speed = 80, EnergyperTurn = 5, TurnsToBuild = 6, RequiredTech = 16, TextureId = 64, Type = ShipTypeEnum.Terraformer, Capacity = 0 },
+            new ShipType { Name = "Colony Ship", MatCost = 200, MaintCost = 4, Speed = 100, EnergyperTurn = 6, TurnsToBuild = 5, RequiredTech = 9, TextureId = 62, Type = ShipTypeEnum.ColonyShip, Capacity = 0 },
+            new ShipType { Name = "Freighter", MatCost = 125, MaintCost = 8, Speed = 125, EnergyperTurn = 3, TurnsToBuild = 4, RequiredTech = 15, TextureId = 63, Type = ShipTypeEnum.Freighter, Capacity = 50 },
+            new ShipType { Name = "Terraformer", MatCost = 250, MaintCost = 6, Speed = 80, EnergyperTurn = 6, TurnsToBuild = 6, RequiredTech = 16, TextureId = 64, Type = ShipTypeEnum.Terraformer, Capacity = 0 },
         ];
 
         public static readonly List<Tech> Technologies =
         [
-            new Tech { ID = 0, Name = "Colonization Basics", Description = "Fundamental settlement knowledge", Cost = 10, MinScience = 0, Prerequisites = [], BonusUnlocks = [], GridPosition = new Vector2(1, 7) },
-            new Tech { ID = 1, Name = "Industrial Mining", Description = "Improved resource extraction techniques", Cost = 30, MinScience = 0, Prerequisites = [0], BonusUnlocks = [new() { Habitat = "Mountains", MatProd = 1 }], GridPosition = new Vector2(2, 1) },
+            new Tech { ID = 0, Name = "Colonization Basics", Description = "Fundamental settlement knowledge", Cost = 15, MinScience = 0, Prerequisites = [], BonusUnlocks = [], GridPosition = new Vector2(1, 7) },
+            new Tech { ID = 1, Name = "Industrial Mining", Description = "Improved resource extraction techniques", Cost = 50, MinScience = 0, Prerequisites = [0], BonusUnlocks = [new() { Habitat = "Mountains", MatProd = 1 }], GridPosition = new Vector2(2, 1) },
             new Tech { ID = 2, Name = "Research Methods", Description = "Foundations of scientific inquiry", Cost = 25, MinScience = 0, Prerequisites = [0], BonusUnlocks = [new() { Habitat = "Desert", SciProd = 1 }, new HabitatBonus { Habitat = "Ruins", SciProd = 1 }], GridPosition = new Vector2(2, 4) },
-            new Tech { ID = 3, Name = "Construction Techniques", Description = "Enhanced building practices", Cost = 35, MinScience = 20, Prerequisites = [0], BonusUnlocks = [], GridPosition = new Vector2(2, 8) },
+            new Tech { ID = 3, Name = "Construction Techniques", Description = "Enhanced building practices", Cost = 60, MinScience = 20, Prerequisites = [0], BonusUnlocks = [], GridPosition = new Vector2(2, 8) },
             new Tech { ID = 4, Name = "Renewable Energy", Description = "Sustainable power sources", Cost = 40, MinScience = 10, Prerequisites = [0], BonusUnlocks = [new() { Habitat = "Mountains", EnergyProd = 1 }, new HabitatBonus { Habitat = "Desert", EnergyProd = 1 }], GridPosition = new Vector2(2, 11) },
             new Tech { ID = 5, Name = "Advanced Mining", Description = "Advanced mining operations", Cost = 60, MinScience = 30, Prerequisites = [1], BonusUnlocks = [new() { Habitat = "Volcano", MatProd = 1 }], GridPosition = new Vector2(3, 1) },
-            new Tech { ID = 6, Name = "Polar Research", Description = "Studies in extreme environments", Cost = 50, MinScience = 25, Prerequisites = [2], BonusUnlocks = [new() { Habitat = "Arctic", SciProd = 1 }], GridPosition = new Vector2(3, 3) },
-            new Tech { ID = 7, Name = "Advanced Genetics", Description = "Genetic manipulation for production", Cost = 80, MinScience = 50, Prerequisites = [2], BonusUnlocks = [new() { Habitat = "Forest", FoodProd = 1 }, new HabitatBonus { Habitat = "Prairie", FoodProd = 1 }], GridPosition = new Vector2(3, 5) },
-            new Tech { ID = 8, Name = "Geothermal Energy", Description = "Harnessing planetary heat", Cost = 70, MinScience = 40, Prerequisites = [4], BonusUnlocks = [new() { Habitat = "Volcano", EnergyProd = 2 }], GridPosition = new Vector2(3, 11) },
-            new Tech { ID = 9, Name = "Colonization Technology", Description = "Nanoscale building enhancements", Cost = 100, MinScience = 70, Prerequisites = [3], BonusUnlocks = [new() { Habitat = "Valley", MatProd = 1 }], GridPosition = new Vector2(3, 8) },
-            new Tech { ID = 10, Name = "Quantum Materials", Description = "Exotic material processing", Cost = 120, MinScience = 90, Prerequisites = [5], BonusUnlocks = [new() { Habitat = "Mountains", MatProd = 2 }], GridPosition = new Vector2(4, 1) },
-            new Tech { ID = 11, Name = "Alien Xenology", Description = "Deep study of alien life", Cost = 110, MinScience = 80, Prerequisites = [6], BonusUnlocks = [new() { Habitat = "Ruins", SciProd = 2 }], GridPosition = new Vector2(4, 3) },
+            new Tech { ID = 6, Name = "Polar Research", Description = "Studies in extreme environments", Cost = 75, MinScience = 25, Prerequisites = [2], BonusUnlocks = [new() { Habitat = "Arctic", SciProd = 1 }], GridPosition = new Vector2(3, 3) },
+            new Tech { ID = 7, Name = "Advanced Genetics", Description = "Genetic manipulation for production", Cost = 120, MinScience = 50, Prerequisites = [2], BonusUnlocks = [new() { Habitat = "Forest", FoodProd = 1 }, new HabitatBonus { Habitat = "Prairie", FoodProd = 1 }], GridPosition = new Vector2(3, 5) },
+            new Tech { ID = 8, Name = "Geothermal Energy", Description = "Harnessing planetary heat", Cost = 80, MinScience = 40, Prerequisites = [4], BonusUnlocks = [new() { Habitat = "Volcano", EnergyProd = 2 }], GridPosition = new Vector2(3, 11) },
+            new Tech { ID = 9, Name = "Colonization Technology", Description = "Nanoscale building enhancements", Cost = 150, MinScience = 70, Prerequisites = [3], BonusUnlocks = [new() { Habitat = "Valley", MatProd = 1 }], GridPosition = new Vector2(3, 8) },
+            new Tech { ID = 10, Name = "Quantum Materials", Description = "Exotic material processing", Cost = 325, MinScience = 90, Prerequisites = [5], BonusUnlocks = [new() { Habitat = "Mountains", MatProd = 2 }], GridPosition = new Vector2(4, 1) },
+            new Tech { ID = 11, Name = "Alien Xenology", Description = "Deep study of alien life", Cost = 350, MinScience = 80, Prerequisites = [6], BonusUnlocks = [new() { Habitat = "Ruins", SciProd = 2 }], GridPosition = new Vector2(4, 3) },
             new Tech { ID = 12, Name = "Fusion Power", Description = "Advanced energy fusion", Cost = 150, MinScience = 120, Prerequisites = [8], BonusUnlocks = [new() { Habitat = "City", EnergyProd = 2 }], GridPosition = new Vector2(4, 11) },
-            new Tech { ID = 13, Name = "Farming Techniques", Description = "New techniques of farming", Cost = 25, MinScience = 0, Prerequisites = [0], BonusUnlocks = [], GridPosition = new Vector2(2, 13) },
-            new Tech { ID = 14, Name = "Aquaculture Development", Description = "Deep research about water resources", Cost = 60, MinScience = 15, Prerequisites = [13], BonusUnlocks = [], GridPosition = new Vector2(3, 13) },
-            new Tech { ID = 15, Name = "Freight Logistics", Description = "Enables basic freighter ships", Cost = 50, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 7) },
-            new Tech { ID = 16, Name = "Terraformation", Description = "Technology to modify temperature", Cost = 50, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 9) },
+            new Tech { ID = 13, Name = "Farming Techniques", Description = "New techniques of farming", Cost = 40, MinScience = 0, Prerequisites = [0], BonusUnlocks = [], GridPosition = new Vector2(2, 13) },
+            new Tech { ID = 14, Name = "Aquaculture Development", Description = "Deep research about water resources", Cost = 120, MinScience = 15, Prerequisites = [13], BonusUnlocks = [], GridPosition = new Vector2(3, 13) },
+            new Tech { ID = 15, Name = "Freight Logistics", Description = "Enables basic freighter ships", Cost = 175, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 7) },
+            new Tech { ID = 16, Name = "Terraformation", Description = "Technology to modify temperature", Cost = 275, MinScience = 25, Prerequisites = [9], BonusUnlocks = [], GridPosition = new Vector2(4, 9) },
         ];
 
         public static readonly List<GameEvent> GameEvents =

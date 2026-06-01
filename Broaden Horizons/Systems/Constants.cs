@@ -12,8 +12,9 @@ namespace BroadenHorizons
         public static int NUM_PLANETS { get; set; } = 20;
         public static int TURN { get; set; } = 1;
         public const int TERRAFORMER_TEMP_CHANGE = 1;
-        public const float POPULATION_BASE_GROWTH = 0.05f;
-        public const float POPULATION_FOOD_GROWTH = 0.05f;
+        public const float POPULATION_BASE_GROWTH = 0.02f;
+        public const float POPULATION_FOOD_GROWTH = 0.01f;
+        public const int POPULATION_FOOD_CONSUMPTION = 75;
         public const int SCROLL_SPEED = 20;
         public const int MIN_PLANET_DIMENS = 12;
         public const int MAX_PLANET_DIMENS = 36;
