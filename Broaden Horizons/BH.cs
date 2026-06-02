@@ -180,7 +180,7 @@ namespace BroadenHorizons
             base.UnloadContent();
         }
 
-        private void InitializeBasicData()
+        private void InitializeBasicData(bool clearTurnLog = true)
         {
             ResetGameData();
 
@@ -210,10 +210,13 @@ namespace BroadenHorizons
                 Planets[i].RegionBonuses = [];
             }
 
-            string filePath = "TurnLog.txt";
-            if (System.IO.File.Exists(filePath))
+            if (clearTurnLog)
             {
-                System.IO.File.Delete(filePath);
+                string filePath = Constants.TURN_LOG_FILE;
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
             }
 
             for (int i = 0; i < RegionDatas.Length; i++)
