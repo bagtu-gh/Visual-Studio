@@ -45,6 +45,7 @@ namespace BroadenHorizons
     public class HabitatType
     {
         public string Name { get; set; }
+        public HabitatTypeEnum Type { get; set; }
         public int FoodProd { get; set; }
         public int MatProd { get; set; }
         public int SciProd { get; set; }
@@ -56,6 +57,20 @@ namespace BroadenHorizons
         public int TextureId { get; set; }
     }
 
+    public enum HabitatTypeEnum
+    {
+        City = 0,
+        Forest = 1,
+        Ocean = 2,
+        Mountains = 3,
+        Prairie = 4,
+        Valley = 5,
+        Desert = 6,
+        Ruins = 7,
+        Volcano = 8,
+        Arctic = 9
+    }
+
     public class PlanetImprovement
     {
         public string Name { get; set; }
@@ -63,8 +78,8 @@ namespace BroadenHorizons
         public int MatProd { get; set; }
         public int SciProd { get; set; }
         public int EnergyProd { get; set; }
-        public string AllowedHabitat { get; set; }
-        public string AllowedUnit { get; set; }
+        public HabitatTypeEnum AllowedHabitat { get; set; }
+        public UnitTypeEnum AllowedUnit { get; set; }
         public int TextureId { get; set; }
         public int TurnsToBuild { get; set; }
         public int MatCost { get; set; }

@@ -58,15 +58,14 @@ namespace BroadenHorizons
             {
                 if (unit.Status != UnitStatus.InImprovement) // only active units count toward maintenance here
                 {
-                    int unitType = unit.TypeIndex;
-                    int foodMaint = _unitTypes[unitType].FoodMaint;
-                    int matMaint = _unitTypes[unitType].MatMaint;
+                    int foodMaint = _unitTypes[unit.Type.GetHashCode()].FoodMaint;
+                    int matMaint = _unitTypes[unit.Type.GetHashCode()].MatMaint;
 
                     result.Food -= foodMaint;
                     result.Materials -= matMaint;
 
-                    if (foodMaint != 0) result.BreakdownText.Add($"{_unitTypes[unitType].Name} Maintenance: -{foodMaint} Food");
-                    if (matMaint != 0) result.BreakdownText.Add($"{_unitTypes[unitType].Name} Maintenance: -{matMaint} Materials");
+                    if (foodMaint != 0) result.BreakdownText.Add($"{unit.Name} Maintenance: -{foodMaint} Food");
+                    if (matMaint != 0) result.BreakdownText.Add($"{unit.Name} Maintenance: -{matMaint} Materials");
                 }
             }
 
@@ -155,7 +154,7 @@ namespace BroadenHorizons
                         var occupiedUnit = _unitManager.GetUnitById(occupiedUnitId);
                         if (occupiedUnit != null)
                         {
-                            int unitTypeIndex = occupiedUnit.TypeIndex;
+                            int unitTypeIndex = occupiedUnit.Type.GetHashCode();
                             modFood += _unitTypes[unitTypeIndex].ExtraFoodProd;
                             modMat += _unitTypes[unitTypeIndex].ExtraMatProd;
                             modSci += _unitTypes[unitTypeIndex].ExtraSciProd;
@@ -330,7 +329,7 @@ namespace BroadenHorizons
                     var occupiedUnit = _unitManager.GetUnitById(occupiedUnitId);
                     if (occupiedUnit != null)
                     {
-                        int unitTypeIndex = occupiedUnit.TypeIndex;
+                        int unitTypeIndex = occupiedUnit.Type.GetHashCode();
                         tooltipLines.Add($"Occupied by: {occupiedUnit.Name} ({_unitTypes[unitTypeIndex].Name})");
                         tooltipLines.Add($"Extra Production:");
                         tooltipLines.Add($"  Food: {Functions.GetSignedValue(_unitTypes[unitTypeIndex].ExtraFoodProd)}");

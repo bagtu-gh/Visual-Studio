@@ -53,7 +53,7 @@ namespace BroadenHorizons
             {
                 ID = nextUnitId++,
                 Name = "Explorer",
-                TypeIndex = UnitTypeEnum.Explorer.GetHashCode(),
+                Type = UnitTypeEnum.Explorers,
                 Planet = PlanetId,
                 Region = 0,
                 Status = UnitStatus.Idle
@@ -63,7 +63,7 @@ namespace BroadenHorizons
             {
                 ID = nextUnitId++,
                 Name = "Builder",
-                TypeIndex = UnitTypeEnum.Builder.GetHashCode(),
+                Type = UnitTypeEnum.Builders,
                 Planet = PlanetId,
                 Region = 0,
                 Status = UnitStatus.Idle
@@ -71,11 +71,11 @@ namespace BroadenHorizons
             _units.Add(startingUnit2);*/
         }
 
-        public static List<int> GetAvailableDestinations(Unit unit, Planet planet, int[] neighbors, List<HabitatType> habitatTypes, List<PlanetImprovement> improvements)
+        private static List<int> GetAvailableDestinations(Unit unit, Planet planet, int[] neighbors, List<HabitatType> habitatTypes, List<UnitType> unitTypes, List<PlanetImprovement> improvements)
         {
             var destinations = new List<int>();
             int currentReg = unit.Region;
-            int unitCode = unit.TypeIndex;
+            UnitTypeEnum unitCode = unit.Type;
 
             for (int j = 0; j < 6; j++)
             {
@@ -85,7 +85,7 @@ namespace BroadenHorizons
                     bool add = false;
                     if (planet.Habitat[neigh] >= 0)
                         add = true;
-                    if (unitCode == 0 && planet.Habitat[neigh] < 0)
+                    if (unitCode == UnitTypeEnum.Explorers && planet.Habitat[neigh] < 0)
                         add = true;
                     if (add)
                         destinations.Add(neigh);
@@ -93,18 +93,19 @@ namespace BroadenHorizons
             }
             int hab = planet.Habitat[currentReg];
             int imp = planet.Improvements[currentReg];
-            if (unitCode == 4 && hab >= 0 && imp == -1)// && habitatTypes[hab].Name != "City")
+            if (unitCode == UnitTypeEnum.Builders && hab >= 0 && imp == -1)
             {
                 var available = improvements
                     .Select((pi, idx) => idx)
-                    .Where(idx => improvements[idx].AllowedHabitat == habitatTypes[hab].Name)
+                    .Where(idx => improvements[idx].AllowedHabitat == habitatTypes[hab].Type)
                     .ToList();
 
                 if (available.Count > 0)
                     destinations.Add(currentReg);
             }
             if (imp >= 0 && planet.OccupiedByUnit[currentReg] == -1 &&
-                habitatTypes[hab].Name == improvements[imp].AllowedHabitat)
+                habitatTypes[hab].Type == improvements[imp].AllowedHabitat &&
+                unitCode == improvements[imp].AllowedUnit)
             {
                 destinations.Add(currentReg);
             }
@@ -123,7 +124,7 @@ namespace BroadenHorizons
             {
                 ID = nextUnitId++,
                 Name = unitType.Name,
-                TypeIndex = unitTypeIndex,
+                Type = unitType.Type,
                 Planet = planetId,
                 Region = 0,
                 Status = UnitStatus.Busy
@@ -164,14 +165,14 @@ namespace BroadenHorizons
                     {
                         UnitActionType.Building => $"building {improvements[ta.ImprovementIndex].Name}",
                         UnitActionType.Recruiting => "being recruited",
-                        UnitActionType.MovingOrExploring => unit.TypeIndex == (int)UnitTypeEnum.Explorer && planet.Habitat[ta.TargetReg] < 0
+                        UnitActionType.MovingOrExploring => unit.Type == UnitTypeEnum.Explorers && planet.Habitat[ta.TargetReg] < 0
                             ? "surveying a new region"
                             : "moving to new region",
                         _ => "busy"
                     };
 
                     messageManager.Show(
-                        $"{unitTypes[unit.TypeIndex].Name} are {actionDesc}\nThey will be available at turn {availableTurn}",
+                        $"{unit.Name} are {actionDesc}\nThey will be available at turn {availableTurn}",
                         MessageType.Info);
                 }
                 else
@@ -181,8 +182,7 @@ namespace BroadenHorizons
             }
             else // Free unit
             {
-                selectedUnitIndex = unit.ID;
-                possibleDestinations = GetAvailableDestinations(unit, planet, neighbors, habitatTypes, improvements);
+                possibleDestinations = GetAvailableDestinations(unit, planet, neighbors, habitatTypes, unitTypes, improvements);
 
                 if (possibleDestinations.Count == 0)
                 {

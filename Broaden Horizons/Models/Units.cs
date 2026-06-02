@@ -4,7 +4,7 @@ namespace BroadenHorizons
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public int TypeIndex { get; set; }
+        public UnitTypeEnum Type { get; set; }
         public int Planet { get; set; }
         public int Region { get; set; }
         public UnitStatus Status { get; set; }
@@ -29,13 +29,13 @@ namespace BroadenHorizons
 
     public enum UnitTypeEnum
     {
-        Explorer = 0,
-        Farmer = 1,
-        Miner = 2,
-        Scientist = 3,
-        Builder = 4,
-        Harvester = 5,
-        Fisher = 6
+        Explorers = 0,
+        Farmers = 1,
+        Miners = 2,
+        Scientists = 3,
+        Builders = 4,
+        Harvesters = 5,
+        Fishermen = 6
     }
 	
 	public enum UnitStatus

@@ -147,14 +147,12 @@ namespace BroadenHorizons
             Unit selectedUnit,
             List<string> summary)
         {
-            int unitCode = selectedUnit.TypeIndex;
-
-            string unitName = _game.UnitTypes[unitCode].Name;
+            string unitName = selectedUnit.Name;
             string planetName = _game.Planets[ta.PlanetCode].Name;
 
             int targetRegion = ta.TargetReg;
 
-            if (unitCode == (int)UnitTypeEnum.Explorer &&
+            if (selectedUnit.Type == UnitTypeEnum.Explorers &&
                 _game.Planets[ta.PlanetCode].Habitat[targetRegion] < 0)
             {
                 HandleExplorerDiscovery(ta, targetRegion, planetName, summary);
@@ -298,7 +296,7 @@ namespace BroadenHorizons
         {
             try
             {
-                string filePath = "TurnLog.txt";
+                string filePath = Constants.TURN_LOG_FILE;
                 string logEntry = $"{summaryText}\n\n";
 
                 if (Constants.TURN == 2)
@@ -324,7 +322,7 @@ namespace BroadenHorizons
         {
             try
             {
-                string filePath = "TurnLog.txt";
+                string filePath = Constants.TURN_LOG_FILE;
 
                 if (System.IO.File.Exists(filePath))
                 {
