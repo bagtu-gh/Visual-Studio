@@ -210,6 +210,12 @@ namespace BroadenHorizons
                 Planets[i].RegionBonuses = [];
             }
 
+            string filePath = "TurnLog.txt";
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+
             for (int i = 0; i < RegionDatas.Length; i++)
                 RegionDatas[i] = new RegionData();
 

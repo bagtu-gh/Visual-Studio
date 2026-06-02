@@ -43,6 +43,7 @@ namespace BroadenHorizons
             public RegionData[] RegionDatas;
             public List<string> PlanetRegionBonuses;
             public List<RegionBonus> RegionBonusTypes;
+            public string TurnLogText { get; set; } = string.Empty;
 
             // Tech tree
             public List<Tech> Techs { get; set; }
@@ -157,6 +158,7 @@ namespace BroadenHorizons
                 TurnActions = new List<TurnAction>(TurnActions ?? new List<TurnAction>()),
                 RegionDatas = RegionDatas,
                 RegionBonusTypes = new List<RegionBonus>(_regionBonusManager.RegionBonusTypes ?? new List<RegionBonus>()),
+                TurnLogText = File.Exists(Constants.TURN_LOG_FILE) ? File.ReadAllText(Constants.TURN_LOG_FILE) : string.Empty,
 
                 // Tech
                 Techs = Techs,
@@ -184,7 +186,7 @@ namespace BroadenHorizons
             TurnActions = state.TurnActions ?? new List<TurnAction>();
 
             // 2) Initialize static data (sets HabitatTypes, recreates managers, preserves Planets)
-            InitializeBasicData();  // ← Now safe: doesn't overwrite Planets
+            InitializeBasicData(clearTurnLog: false);  // ← Now safe: doesn't overwrite Planets or turn log
 
             // 3) Regenerate RegionDatas & hex positions (critical for PlanetScreen!)
             RegionDatas = new RegionData[Constants.MAX_PLANET_DIMENS + 1];  // Fresh array
@@ -240,7 +242,17 @@ namespace BroadenHorizons
                 }
             }
 
-            // 8) Restore ships and units (managers already recreated in InitializeBasicData)
+            // 8) Restore turn log file
+            if (!string.IsNullOrEmpty(state.TurnLogText))
+            {
+                File.WriteAllText(Constants.TURN_LOG_FILE, state.TurnLogText);
+            }
+            else if (File.Exists(Constants.TURN_LOG_FILE))
+            {
+                File.Delete(Constants.TURN_LOG_FILE);
+            }
+
+            // 9) Restore ships and units (managers already recreated in InitializeBasicData)
             _shipManager.SetShipsAndId(state.Ships, state.NextShipId);
             _unitManager.SetUnitsAndId(state.Units, state.NextUnitId);
 

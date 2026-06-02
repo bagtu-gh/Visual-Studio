@@ -131,5 +131,6 @@ namespace BroadenHorizons
             }
         }
         public const string SAVE_FILE = "game_save.json";
+        public const string TURN_LOG_FILE = "TurnLog.txt";
     }
 }
