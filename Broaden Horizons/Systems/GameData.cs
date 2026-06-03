@@ -179,7 +179,7 @@ namespace BroadenHorizons
             new GameEvent
             {
                 Name = "Technological Breakthrough",
-                GetDescription = (bh, target) => $"A technological breakthrough on {((Planet)target).Name} has increased production efficiency.",
+                GetDescription = (bh, target) => $"A technological breakthrough on {((Planet)target).Name}\nhas increased production efficiency.",
                 GetValidTargets = bh => bh.Planets.Where(p => p.Population > 0).Cast<object>().ToList(),
                 Weight = 5,
                 Execute = (game, target) => { var planet = (Planet)target; planet.Mat = (int)Math.Round(planet.Mat * 1.05); }
