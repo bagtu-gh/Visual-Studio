@@ -29,7 +29,7 @@ namespace BroadenHorizons
 
         public List<Unit> GetUnitsOnPlanet(int planetId)
         {
-            return _units.FindAll(u => u.Planet == planetId);
+            return [.. _units.FindAll(u => u.Planet == planetId).OrderBy(u => u.ID)];
         }
 
         public static List<int> GetAvailableUnitTypes(List<Tech> techs)
@@ -151,7 +151,7 @@ namespace BroadenHorizons
             Planet planet,
             int[] neighbors,
             List<HabitatType> habitatTypes,
-            ref int selectedUnitIndex,
+            ref int selectedUnitID,
             ref List<int> possibleDestinations,
             MessageManager messageManager)
         {
@@ -187,7 +187,7 @@ namespace BroadenHorizons
                 if (possibleDestinations.Count == 0)
                 {
                     messageManager.Show("No potential actions", MessageType.Info);
-                    selectedUnitIndex = -1;
+                    selectedUnitID = -1;
                 }
             }
         }
