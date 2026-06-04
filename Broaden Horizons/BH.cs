@@ -180,9 +180,9 @@ namespace BroadenHorizons
             base.UnloadContent();
         }
 
-        private void InitializeBasicData(bool clearTurnLog = true)
+        private void InitializeBasicData(bool clearTurnLog = true, bool clearTurnActions = true, bool resetPlanetData = true)
         {
-            ResetGameData();
+            ResetGameData(clearTurnActions);
 
             HabitatTypes = [.. GameData.HabitatTypes];
             UnitTypes = [.. GameData.UnitTypes];
@@ -201,13 +201,30 @@ namespace BroadenHorizons
                 if (Planets[i] == null)
                     Planets[i] = new Planet();
 
-                // Reset lists/arrays that depend on planet size
-                Planets[i].Habitat = [.. Enumerable.Repeat(Constants.NON_EXISTING_HABTITAT, 37)];
-                Planets[i].HabitatPopulated = [.. Enumerable.Repeat(false, 37)];
-                Planets[i].Improvements = [.. Enumerable.Repeat(-1, 37)];
-                Planets[i].OccupiedByUnit = [.. Enumerable.Repeat(-1, 37)];
-                Planets[i].RegionBonusRegions = [.. Enumerable.Repeat(-1, 37)];
-                Planets[i].RegionBonuses = [];
+                if (resetPlanetData)
+                {
+                    Planets[i].Habitat = [.. Enumerable.Repeat(Constants.NON_EXISTING_HABTITAT, 37)];
+                    Planets[i].HabitatPopulated = [.. Enumerable.Repeat(false, 37)];
+                    Planets[i].Improvements = [.. Enumerable.Repeat(-1, 37)];
+                    Planets[i].OccupiedByUnit = [.. Enumerable.Repeat(-1, 37)];
+                    Planets[i].RegionBonusRegions = [.. Enumerable.Repeat(-1, 37)];
+                    Planets[i].RegionBonuses = [];
+                }
+                else
+                {
+                    if (Planets[i].Habitat == null || Planets[i].Habitat.Count != 37)
+                        Planets[i].Habitat = [.. Enumerable.Repeat(Constants.NON_EXISTING_HABTITAT, 37)];
+                    if (Planets[i].HabitatPopulated == null || Planets[i].HabitatPopulated.Count != 37)
+                        Planets[i].HabitatPopulated = [.. Enumerable.Repeat(false, 37)];
+                    if (Planets[i].Improvements == null || Planets[i].Improvements.Count != 37)
+                        Planets[i].Improvements = [.. Enumerable.Repeat(-1, 37)];
+                    if (Planets[i].OccupiedByUnit == null || Planets[i].OccupiedByUnit.Count != 37)
+                        Planets[i].OccupiedByUnit = [.. Enumerable.Repeat(-1, 37)];
+                    if (Planets[i].RegionBonusRegions == null || Planets[i].RegionBonusRegions.Count != 37)
+                        Planets[i].RegionBonusRegions = [.. Enumerable.Repeat(-1, 37)];
+                    if (Planets[i].RegionBonuses == null)
+                        Planets[i].RegionBonuses = [];
+                }
             }
 
             if (clearTurnLog)
@@ -244,12 +261,13 @@ namespace BroadenHorizons
             Functions.GenHex(RegionDatas);
         }
 
-        private void ResetGameData()
+        private void ResetGameData(bool clearTurnActions = true)
         {
             HabitatTypes.Clear();
             UnitTypes.Clear();
             PlanetImprovements.Clear();
-            TurnActions.Clear();
+            if (clearTurnActions)
+                TurnActions.Clear();
             PlanetNames.Clear();
         }
 

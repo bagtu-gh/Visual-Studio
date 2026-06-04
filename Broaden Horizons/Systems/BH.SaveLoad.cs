@@ -180,13 +180,12 @@ namespace BroadenHorizons
         // -----------------------------
         private void RestoreFromSaveState(GameStateData state)
         {
-            // 1) Restore World Data (Planets, Units, etc. — preserves Name/Dimens/Status)
+            // 1) Restore World Data (Planets, TurnActions, etc. — preserves Name/Dimens/Status)
             Planets = state.Planets ?? new Planet[Constants.NUM_PLANETS];
-            _unitManager._units = state.Units ?? new List<Unit>();
             TurnActions = state.TurnActions ?? new List<TurnAction>();
 
             // 2) Initialize static data (sets HabitatTypes, recreates managers, preserves Planets)
-            InitializeBasicData(clearTurnLog: false);  // ← Now safe: doesn't overwrite Planets or turn log
+            InitializeBasicData(clearTurnLog: false, clearTurnActions: false, resetPlanetData: false);  // ← preserve loaded Planets data and TurnActions during restore
 
             // 3) Regenerate RegionDatas & hex positions (critical for PlanetScreen!)
             RegionDatas = new RegionData[Constants.MAX_PLANET_DIMENS + 1];  // Fresh array
