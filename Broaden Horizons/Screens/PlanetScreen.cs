@@ -348,7 +348,7 @@ namespace BroadenHorizons.Screens
                                             selectedUnit.Region = clickedReg;
                                             selectedUnit.Status = UnitStatus.Busy;
                                             _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + Functions.GetTurnsToExplore(clickedReg), PlanetCode = n, UnitID = selectedUnit.ID, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
-                                            _game._messageManager.Show($"Exploring a new region, it will be finished on turn {Functions.GetTurnsToExplore(clickedReg) + Constants.TURN}", MessageType.Info);
+                                            _game._messageManager.Show($"Exploring a new region, it will be available on turn {Functions.GetTurnsToExplore(clickedReg) + Constants.TURN}", MessageType.Info);
                                             SelectedUnitID = -1;
                                             _game.PossibleDestinations.Clear();
                                         }
