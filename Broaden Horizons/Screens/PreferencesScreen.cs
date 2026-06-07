@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.BitmapFonts;
@@ -8,7 +10,6 @@ namespace BroadenHorizons.Screens
     {
         private readonly BH _game = game;
         private readonly int[] _planetOptions = [15, 20, 25, 30];
-        private readonly int[] _foodOptions = [6, 8, 10];
         private readonly string[] _eventOptions = ["On", "Off"];
         private const int TOP_MARGIN = 180;
         private const int LEFT_MARGIN = 120;
@@ -32,12 +33,16 @@ namespace BroadenHorizons.Screens
                     }
                 }
 
-                for (int i = 0; i < _foodOptions.Length; i++)
+                for (int i = 0; i < Constants.startOptionsValues.Count; i++)
                 {
                     var rect = new Rectangle(LEFT_MARGIN + i * (BUTTON_WIDTH + BUTTON_SPACING), TOP_MARGIN + BUTTON_VERT_DIST, BUTTON_WIDTH, BUTTON_HEIGHT);
+                    var keysList = Constants.startOptionsValues.Keys.ToList();
                     if (rect.Contains(mouse.Position))
                     {
-                        Constants.STARTING_FOOD = _foodOptions[i];
+                        Constants.STARTING_FOOD = Constants.startOptionsValues[keysList[i]][0];
+                        Constants.STARTING_MATERIALS = Constants.startOptionsValues[keysList[i]][1];
+                        Constants.STARTING_SCIENCE = Constants.startOptionsValues[keysList[i]][2];
+                        Constants.STARTING_ENERGY = Constants.startOptionsValues[keysList[i]][3];
                         return;
                     }
                 }
@@ -91,14 +96,15 @@ namespace BroadenHorizons.Screens
                 );
             }
 
-            string foodLabel = "Starting Food";
-            _game._spriteBatch.DrawString(_game._bitmapFont, foodLabel, new Vector2(LEFT_MARGIN, 280), Color.Black);
-
-            for (int i = 0; i < _foodOptions.Length; i++)
+            string resourceLabel = "Initial Resources";
+            _game._spriteBatch.DrawString(_game._bitmapFont, resourceLabel, new Vector2(LEFT_MARGIN, 280), Color.Black);
+            var keysList = Constants.startOptionsValues.Keys.ToList();
+            for (int i = 0; i < Constants.startOptionsValues.Count; i++)
             {
-                string label = _foodOptions[i].ToString();
+                string label = keysList[i];
+
                 var rect = new Rectangle(LEFT_MARGIN + i * (BUTTON_WIDTH + BUTTON_SPACING), TOP_MARGIN + BUTTON_VERT_DIST, BUTTON_WIDTH, BUTTON_HEIGHT);
-                Color color = Constants.STARTING_FOOD == _foodOptions[i] ? Constants.MenuSelectedColor : Constants.MenuNonSelectedColor;
+                Color color = Constants.STARTING_FOOD == Constants.startOptionsValues[label][0] ? Constants.MenuSelectedColor : Constants.MenuNonSelectedColor;
                 UIHelpers.DrawRoundedButton(
                     _game._spriteBatch,
                     _game._pixel,
@@ -106,7 +112,7 @@ namespace BroadenHorizons.Screens
                     label,
                     color,
                     _game._bitmapFont,
-                    Constants.STARTING_FOOD == _foodOptions[i]
+                    Constants.STARTING_FOOD == Constants.startOptionsValues[label][0]
                 );
             }
 

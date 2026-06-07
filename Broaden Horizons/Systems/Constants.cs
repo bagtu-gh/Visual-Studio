@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 
@@ -12,7 +13,7 @@ namespace BroadenHorizons
         public static int NUM_PLANETS { get; set; } = 20;
         public static int TURN { get; set; } = 1;
         public const int TERRAFORMER_TEMP_CHANGE = 1;
-        public const float POPULATION_BASE_GROWTH = 0.03f;
+        public const float POPULATION_BASE_GROWTH = 0.04f;
         public const float POPULATION_FOOD_GROWTH = 0.01f;
         public const int POPULATION_FOOD_CONSUMPTION = 75;
         public const int SCROLL_SPEED = 20;
@@ -74,10 +75,16 @@ namespace BroadenHorizons
         public const float LIST_HEADER_HEIGHT = 48f;
 
         // Defaults for planet production
-        public static int STARTING_FOOD { get; set; } = 6;
-        public const int STARTING_MATERIALS = 2;
-        public const int STARTING_SCIENCE = 2;
-        public const int STARTING_ENERGY = 6;
+        public static readonly Dictionary<string, int[]> startOptionsValues = new Dictionary<string, int[]>
+        {
+            { "Scarce", new int[] {6, 2, 0, 4} },
+            { "Standard", new int[] {8, 4, 2, 6} },
+            { "Abundant", new int[] {12, 10, 6, 15} }
+        };
+        public static int STARTING_FOOD { get; set; } = startOptionsValues["Standard"][0];
+        public static int STARTING_MATERIALS { get; set; } = startOptionsValues["Standard"][1];
+        public static int STARTING_SCIENCE { get; set; } = startOptionsValues["Standard"][2];
+        public static int STARTING_ENERGY { get; set; } = startOptionsValues["Standard"][3];
         public const int STARTING_POPULATION = 70;
         public const int DEFAULT_PLANET_TEXTURE = 2;
 
