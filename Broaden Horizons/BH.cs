@@ -53,9 +53,11 @@ namespace BroadenHorizons
         internal EndTurnManager _endTurnManager;
         internal EventManager _eventManager;
         internal Vector2 ScrollOffset = Vector2.Zero;
-        internal enum GameState { MainMenu, Preferences, GalaxyMap, PlanetScreen, PlanetList, TechTree, ShipList }
+        internal enum GameState { MainMenu, Preferences, GalaxyMap, PlanetScreen, PlanetList, TechTree, ShipList, SaveLoadScreen }
+        internal enum SaveLoadMode { Load, Save }
         internal GameState CurrentState = GameState.MainMenu;
         internal GameState PrevState = GameState.MainMenu;
+        internal SaveLoadMode CurrentSaveLoadMode = SaveLoadMode.Load;
         internal int CurrentPlanet = -1;
         internal Random Rand = new Random();
         internal Dictionary<int, Texture2D> Textures = new Dictionary<int, Texture2D>();
@@ -83,6 +85,7 @@ namespace BroadenHorizons
         internal PlanetListScreen _planetListScreen;
         internal ShipListScreen _shipListScreen;
         internal PreferencesScreen _preferencesScreen;
+        internal SaveLoadScreen _saveLoadScreen;
         internal Dictionary<int, Vector2> _planetNameSizeCache = new Dictionary<int, Vector2>();
 
         public BH()
@@ -102,6 +105,7 @@ namespace BroadenHorizons
             _planetListScreen = new PlanetListScreen(this);
             _shipListScreen = new ShipListScreen(this);
             _preferencesScreen = new PreferencesScreen(this);
+            _saveLoadScreen = new SaveLoadScreen(this);
             _messageManager = new MessageManager(this);
             _endTurnManager = new EndTurnManager(this);
             _eventManager = new EventManager(this);
@@ -411,6 +415,10 @@ namespace BroadenHorizons
                     {
                         _shipListScreen.Update(gameTime, keyboard, mouse);
                     }
+                    else if (CurrentState == GameState.SaveLoadScreen)
+                    {
+                        _saveLoadScreen.Update(gameTime, keyboard, mouse);
+                    }
                 }
 
                 _prevKeyboard = keyboard;
@@ -454,6 +462,10 @@ namespace BroadenHorizons
             else if (CurrentState == GameState.ShipList)
             {
                 _shipListScreen.Draw(gameTime);
+            }
+            else if (CurrentState == GameState.SaveLoadScreen)
+            {
+                _saveLoadScreen.Draw(gameTime);
             }
             _messageManager.Draw(_spriteBatch, _pixel, _bitmapFontMessages, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, graphicsDevice: GraphicsDevice);
             _spriteBatch.End();

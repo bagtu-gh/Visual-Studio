@@ -41,6 +41,7 @@ namespace BroadenHorizons
         public const int MENU_BUTTON_HEIGHT = 50;
         public const int MENU_BUTTON_SPACING = 40;
         public const int MENU_BUTTON_BOTTOM_MARGIN = 60;
+        public const int MAX_SAVE_SLOTS = 5;
         public static readonly Color BACKGROUND_COLOR = Color.LightSkyBlue;
 
         // Top bar layout
@@ -137,7 +138,6 @@ namespace BroadenHorizons
                 return _helpText;
             }
         }
-        public const string SAVE_FILE = "game_save.json";
         public const string TURN_LOG_FILE = "TurnLog.txt";
     }
 }

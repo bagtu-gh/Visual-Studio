@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using BroadenHorizons.Screens;
 using Microsoft.Xna.Framework;
 
 namespace BroadenHorizons
@@ -25,15 +24,8 @@ namespace BroadenHorizons
             public Vector2 ScrollOffset;
             public int PosX, PosY;
             public int CurrentPlanet;
-            public int SelectedUnit;
             public List<int> PossibleDestinations;
-            public bool confirmEndTurn;
-            public int recruitIndex;
             public bool[] hasRecruitedThisTurn;
-            public int buildReg;
-            public int buildImprovementIndex;
-            public int occupyReg;
-            public int chooseReg;
 
             // World
             public Planet[] Planets;
@@ -41,7 +33,6 @@ namespace BroadenHorizons
             public int NextUnitId { get; set; } = 0;
             public List<TurnAction> TurnActions;
             public RegionData[] RegionDatas;
-            public List<string> PlanetRegionBonuses;
             public List<RegionBonus> RegionBonusTypes;
             public string TurnLogText { get; set; } = string.Empty;
 
@@ -50,7 +41,6 @@ namespace BroadenHorizons
             public int GlobalScience { get; set; }
             public int CurrentResearch { get; set; }
             public List<HabitatBonus> GlobalHabitatBonuses { get; set; }
-            public Vector2 TechScrollOffset { get; set; }
 
             // Visuals
             public List<Vector2> StarPositions { get; set; } = new();
@@ -74,21 +64,73 @@ namespace BroadenHorizons
             IncludeFields = true
         };
 
-        private const string DefaultSavePath = "game_save.json";
+        [Serializable]
+        public class SaveSlotInfo
+        {
+            public int SlotIndex { get; set; }
+            public bool Exists { get; set; }
+            public int Turn { get; set; }
+            public DateTime SavedAtUtc { get; set; }
+            public string FilePath { get; set; } = string.Empty;
+        }
 
-        // -----------------------------
-        // Save Entry Point
-        // -----------------------------
-        internal void SaveGame(GameTime gameTime)
+        internal static string GetSaveSlotPath(int slotIndex)
+        {
+            return $"game_save_slot{slotIndex + 1}.json";
+        }
+
+        internal List<SaveSlotInfo> GetSaveSlotInfos()
+        {
+            return Enumerable.Range(0, Constants.MAX_SAVE_SLOTS)
+                .Select(GetSaveSlotInfo)
+                .ToList();
+        }
+
+        internal SaveSlotInfo GetSaveSlotInfo(int slotIndex)
+        {
+            var info = new SaveSlotInfo
+            {
+                SlotIndex = slotIndex,
+                FilePath = GetSaveSlotPath(slotIndex),
+                Exists = File.Exists(GetSaveSlotPath(slotIndex))
+            };
+
+            if (!info.Exists)
+            {
+                return info;
+            }
+
+            try
+            {
+                string json = File.ReadAllText(info.FilePath);
+                var state = JsonSerializer.Deserialize<GameStateData>(json, _loadOptions);
+                if (state != null)
+                {
+                    info.Turn = state.Turn;
+                    info.SavedAtUtc = state.SavedAtUtc;
+                }
+                else
+                {
+                    info.Exists = false;
+                }
+            }
+            catch
+            {
+                info.Exists = false;
+            }
+
+            return info;
+        }
+
+        internal void SaveGameToSlot(int slotIndex, GameTime gameTime)
         {
             try
             {
                 var state = BuildSaveState();
-
                 string json = JsonSerializer.Serialize(state, _saveOptions);
-                AtomicWrite(DefaultSavePath, json);
+                AtomicWrite(GetSaveSlotPath(slotIndex), json);
 
-                _messageManager.Show("Game saved successfully!", MessageType.Info);
+                _messageManager.Show($"Game saved to slot {slotIndex + 1}.", MessageType.Info);
             }
             catch (Exception ex)
             {
@@ -96,20 +138,18 @@ namespace BroadenHorizons
             }
         }
 
-        // -----------------------------
-        // Load Entry Point
-        // -----------------------------
-        internal void LoadGame(GameTime gameTime)
+        internal void LoadGameFromSlot(int slotIndex, GameTime gameTime)
         {
             try
             {
-                if (!File.Exists(DefaultSavePath))
+                string path = GetSaveSlotPath(slotIndex);
+                if (!File.Exists(path))
                 {
-                    _messageManager.Show("No saved game found", MessageType.Info);
+                    _messageManager.Show("This save slot is empty.", MessageType.Info);
                     return;
                 }
 
-                string json = File.ReadAllText(DefaultSavePath);
+                string json = File.ReadAllText(path);
                 GameStateData state = JsonSerializer.Deserialize<GameStateData>(json, _loadOptions);
 
                 if (state == null)
@@ -121,13 +161,17 @@ namespace BroadenHorizons
                 RestoreFromSaveState(state);
 
                 CurrentState = GameState.GalaxyMap;
-                _messageManager.Show("Game loaded successfully!", MessageType.Info);
+                _messageManager.Show($"Loaded game from slot {slotIndex + 1}.", MessageType.Info);
             }
             catch (Exception ex)
             {
                 _messageManager.Show($"Failed to load game: {ex.Message}", MessageType.Info);
             }
         }
+
+        // -----------------------------
+        // Save/Load for numbered save slots only
+        // -----------------------------
 
         // -----------------------------
         // Build Save State

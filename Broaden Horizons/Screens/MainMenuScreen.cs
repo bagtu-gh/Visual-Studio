@@ -34,11 +34,13 @@ namespace BroadenHorizons.Screens
                 }
                 else if (loadGameButton.Contains(mouse.Position))
                 {
-                    _game.LoadGame(gameTime);
+                    _game.CurrentSaveLoadMode = BH.SaveLoadMode.Load;
+                    _game.CurrentState = BH.GameState.SaveLoadScreen;
                 }
                 else if (saveGameButton.Contains(mouse.Position) && _game.PrevState != BH.GameState.MainMenu)
                 {
-                    _game.SaveGame(gameTime);
+                    _game.CurrentSaveLoadMode = BH.SaveLoadMode.Save;
+                    _game.CurrentState = BH.GameState.SaveLoadScreen;
                 }
                 else if (exitGameButton.Contains(mouse.Position))
                 {
