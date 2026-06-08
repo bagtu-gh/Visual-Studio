@@ -75,7 +75,7 @@ namespace BroadenHorizons.Screens
             float summaryY = startY + titleSize.Y + SPACING;
             var ships = _game._shipManager.Ships;
             int docked = ships.Count(s => s.Status == ShipStatus.Docked);
-            int building = ships.Count(s => s.Status == ShipStatus.Building);
+            int building = ships.Count(s => s.Status == ShipStatus.UnderConstruction);
             int transit = ships.Count(s => s.Status == ShipStatus.InTransit);
             string summary = $"Total Ships: {ships.Count}   •   Docked: {docked}   •   Building: {building}   •   In Transit: {transit}";
             Vector2 summarySize = _game._bitmapFont.MeasureString(summary);
@@ -111,7 +111,7 @@ namespace BroadenHorizons.Screens
                 if (rowY > Constants.SCREEN_HEIGHT) break;
 
                 var ship = ships[i];
-                var shipType = GameData.ShipTypes[ship.TypeIndex];
+                var shipType = GameData.ShipTypes[ship.TypeIndex.GetHashCode()];
 
                 DrawShipRow(ship, shipType, startX, rowY, i % 2 == 0);
                 rowY += RowHeight;
@@ -195,7 +195,7 @@ namespace BroadenHorizons.Screens
             Color statusColor = ship.Status switch
             {
                 ShipStatus.Docked => Color.LimeGreen,
-                ShipStatus.Building => Color.Goldenrod,
+                ShipStatus.UnderConstruction => Color.Goldenrod,
                 ShipStatus.InTransit => Color.Cyan,
                 _ => Color.White
             };

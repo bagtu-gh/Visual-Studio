@@ -8,16 +8,13 @@ namespace BroadenHorizons
         private readonly BH _game = game;
         public Planet[] _planets => _game.Planets;
         private readonly List<UnitType> _unitTypes = unitTypes;
-        public List<Unit> _units = new List<Unit>();
-        private int nextUnitId = 0;
+        public List<Unit> _units = [];
 
         // Save/Load Support
-        public int NextUnitId => nextUnitId;
-        public void SetUnitsAndId(List<Unit> units, int nextId)
+        public void SetUnitsAndId(List<Unit> units)
         {
             _units.Clear();
             if (units != null) _units.AddRange(units);
-            nextUnitId = nextId;
         }
 
         public Unit GetUnitById(int id)
@@ -49,7 +46,7 @@ namespace BroadenHorizons
             // Add a starting explorer to the home planet
             var startingUnit = new Unit
             {
-                ID = nextUnitId++,
+                ID = Constants.NEXT_ID++,
                 Name = "Explorer",
                 Type = UnitTypeEnum.Explorers,
                 Planet = PlanetId,
@@ -59,7 +56,7 @@ namespace BroadenHorizons
             _units.Add(startingUnit);
             /*var startingUnit2 = new Unit
             {
-                ID = nextUnitId++,
+                ID = Constants.NEXT_ID++,
                 Name = "Builder",
                 Type = UnitTypeEnum.Builders,
                 Planet = PlanetId,
@@ -120,7 +117,7 @@ namespace BroadenHorizons
 
             var unit = new Unit
             {
-                ID = nextUnitId++,
+                ID = Constants.NEXT_ID++,
                 Name = unitType.Name,
                 Type = unitType.Type,
                 Planet = planetId,
@@ -135,8 +132,8 @@ namespace BroadenHorizons
                 ActionTurn = currentTurn,
                 TurnFinal = currentTurn + unitType.RecruitTurns,
                 PlanetCode = planetId,
-                UnitID = unit.ID,
-                UnitActionType = UnitActionType.Recruiting
+                ID = unit.ID,
+                ActionType = ActionType.RecruitingUnit
             });
         }
 
@@ -155,15 +152,15 @@ namespace BroadenHorizons
         {
             if (unit.Status == UnitStatus.Busy)
             {
-                var ta = turnActions.FirstOrDefault(t => t.PlanetCode == currentPlanetIndex && t.UnitID == unit.ID);
+                var ta = turnActions.FirstOrDefault(t => t.PlanetCode == currentPlanetIndex && t.ID == unit.ID);
                 if (ta != null)
                 {
                     int availableTurn = ta.TurnFinal;
-                    string actionDesc = ta.UnitActionType switch
+                    string actionDesc = ta.ActionType switch
                     {
-                        UnitActionType.Building => $"building {improvements[ta.ImprovementIndex].Name}",
-                        UnitActionType.Recruiting => "being recruited",
-                        UnitActionType.MovingOrExploring => unit.Type == UnitTypeEnum.Explorers && planet.Habitat[ta.TargetReg] < 0
+                        ActionType.Building => $"building {improvements[ta.ImprovementIndex].Name}",
+                        ActionType.RecruitingUnit => "being recruited",
+                        ActionType.MovingOrExploring => unit.Type == UnitTypeEnum.Explorers && planet.Habitat[ta.TargetReg] < 0
                             ? "surveying a new region"
                             : "moving to new region",
                         _ => "busy"

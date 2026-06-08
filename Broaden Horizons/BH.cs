@@ -22,10 +22,19 @@ namespace BroadenHorizons
         public int ActionTurn { get; set; }
         public int TurnFinal { get; set; }
         public int PlanetCode { get; set; }
-        public int UnitID { get; set; }
-        public UnitActionType UnitActionType { get; set; }
+        public int ID { get; set; }
+        public ActionType ActionType { get; set; }
         public int TargetReg { get; set; } = -1;
         public int ImprovementIndex { get; set; } = -1;
+    }
+    
+    public enum ActionType
+    {
+        None = 0,
+        Building = 1, // Used for both planet improvements
+        RecruitingUnit = 2, // Used for units
+        MovingOrExploring = 3, // Used for both moving and exploring, since they can happen together
+        BuildingShip = 4 // Used for building ships
     }
 
     public partial class BH : Game
@@ -242,7 +251,7 @@ namespace BroadenHorizons
 
             _regionBonusManager.UpdateHabitats(HabitatTypes);
             _unitManager = new UnitManager(this, UnitTypes);
-            _shipManager = new ShipManager(this, Planets, Techs, _messageManager, TurnActions);
+            _shipManager = new ShipManager(TurnActions, Planets, Techs, _messageManager);
             _productionManager = new ProductionManager(Planets, HabitatTypes, UnitTypes, PlanetImprovements, _regionBonusManager, _unitManager, _shipManager, Techs);
             _techManager = new TechManager(Techs, Constants.STARTING_SCIENCE, _messageManager, HabitatTypes);
         }

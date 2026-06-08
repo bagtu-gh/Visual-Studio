@@ -7,7 +7,7 @@ namespace BroadenHorizons
     {
         public int ID { get; set; } // Unique ID
         public string Name { get; set; }
-        public int TypeIndex { get; set; } // Index in GameData.ShipTypes
+        public ShipTypeEnum TypeIndex { get; set; } // Index in GameData.ShipTypes
         public int AssignedPlanet { get; set; }
         public ShipStatus Status { get; set; } = ShipStatus.Docked;
         public Vector2 CurrentPosition { get; set; }
@@ -43,7 +43,7 @@ namespace BroadenHorizons
 
     public enum ShipStatus
     {
-        Building,
+        UnderConstruction,
         Docked,
         InTransit,
         PerformingAction

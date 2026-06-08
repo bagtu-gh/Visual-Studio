@@ -29,7 +29,7 @@ namespace BroadenHorizons
             // World
             public Planet[] Planets;
             public List<Unit> Units { get; set; }
-            public int NextUnitId { get; set; } = 0;
+            public int NextID { get; set; } = 0;
             public List<TurnAction> TurnActions;
             public RegionData[] RegionDatas;
             public List<RegionBonus> RegionBonusTypes;
@@ -196,7 +196,7 @@ namespace BroadenHorizons
                 // World
                 Planets = Planets,
                 Units = _unitManager._units,
-                NextUnitId = _unitManager.NextUnitId,
+                NextID = Constants.NEXT_ID,
                 TurnActions = new List<TurnAction>(TurnActions ?? new List<TurnAction>()),
                 RegionDatas = RegionDatas,
                 RegionBonusTypes = new List<RegionBonus>(_regionBonusManager.RegionBonusTypes ?? new List<RegionBonus>()),
@@ -213,7 +213,6 @@ namespace BroadenHorizons
 
                 // === SHIPS ===
                 Ships = new List<Ship>(_shipManager.Ships ?? new List<Ship>()),
-                NextShipId = _shipManager.NextShipId
             };
         }
 
@@ -293,8 +292,9 @@ namespace BroadenHorizons
             }
 
             // 9) Restore ships and units (managers already recreated in InitializeBasicData)
-            _shipManager.SetShipsAndId(state.Ships, state.NextShipId);
-            _unitManager.SetUnitsAndId(state.Units, state.NextUnitId);
+            _shipManager.SetShipsAndId(state.Ships);
+            _unitManager.SetUnitsAndId(state.Units);
+            Constants.NEXT_ID = state.NextID;
 
             // 9) Clamp scroll offsets
             ScrollOffset.X = MathHelper.Clamp(ScrollOffset.X, 0,

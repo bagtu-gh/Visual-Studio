@@ -72,7 +72,8 @@ namespace BroadenHorizons
             // Ship maintenance: maintenance is applied to the planet the ship is assigned to
             foreach (var ship in _shipManager.GetShipsOnPlanet(planetIndex))
             {
-                var st = GameData.ShipTypes[ship.TypeIndex];
+                if (ship.Status == ShipStatus.UnderConstruction) continue; // skip maintenance for ships that are still being built
+                var st = GameData.ShipTypes[ship.TypeIndex.GetHashCode()];
                 int maint = st.MaintCost;
                 if (maint != 0)
                 {

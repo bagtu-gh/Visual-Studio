@@ -182,7 +182,7 @@ namespace BroadenHorizons.Screens
 
             foreach (var ship in _game._shipManager.GetShipsInTransit())
             {
-                var tex = _game.Textures[GameData.ShipTypes[ship.TypeIndex].TextureId];
+                var tex = _game.Textures[GameData.ShipTypes[ship.TypeIndex.GetHashCode()].TextureId];
                 Vector2 adjustedPosition = ship.CurrentPosition - _game.ScrollOffset;
                 _game._spriteBatch.Draw(tex, adjustedPosition, null, Color.White, 0f, Vector2.Zero, 0.05f, SpriteEffects.None, 0f);
             }

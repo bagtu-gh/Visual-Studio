@@ -105,27 +105,12 @@ namespace BroadenHorizons.Screens
                                     SelectedUnitID = -1;
                                     PossibleDestinations.Clear();
                                     Ship ship = shipsOnPlanet[i - totalUnits];
-                                    if (ship.Status == ShipStatus.Docked)
-                                        switch (ship.TypeIndex)
-                                        {
-                                            case (int)ShipTypeEnum.Probe:
-                                                _game._shipManager.ShowProbeLaunchMenu(ship, Constants.TURN);
-                                                break;
-                                            case (int)ShipTypeEnum.ColonyShip:
-                                                _game._shipManager.ShowColonyLaunchMenu(ship, Constants.TURN);
-                                                break;
-                                            case (int)ShipTypeEnum.Freighter:
-                                                _game._shipManager.ShowFreighterLaunchMenu(ship, Constants.TURN);
-                                                break;
-                                            case (int)ShipTypeEnum.Terraformer:
-                                                _game._shipManager.ShowTerraformerLaunchMenu(ship, Constants.TURN);
-                                                break;
-                                        }
-                                    else if (ship.Status == ShipStatus.InTransit)
-                                    {
-                                        _game._messageManager.Show($"Your {ship.Name} is travelling to {_game.Planets[ship.TargetPlanet].Name}", MessageType.Info);
-                                        break;
-                                    }
+                                    _game._shipManager.HandleShipClicked(
+                                        ship,
+                                        _game.TurnActions,
+                                        _game.Planets,
+                                        _game._messageManager
+                                    );
                                 }
                             }
                         }
@@ -187,7 +172,7 @@ namespace BroadenHorizons.Screens
                                 {
                                     if (result)
                                     {
-                                        _game._shipManager.StartBuildingShip(_game.CurrentPlanet, shipIndex, Constants.TURN);
+                                        _game._shipManager.StartBuildingShip(_game.CurrentPlanet, shipType, Constants.TURN);
                                         _game.hasRecruitedThisTurn[_game.CurrentPlanet] = true;
                                     }
                                 });
@@ -195,7 +180,7 @@ namespace BroadenHorizons.Screens
                             }
                             else
                             {
-                                _game._messageManager.Show("There are not enough resources", MessageType.Info);
+                                _game._messageManager.Show("The planet does not have enough resources", MessageType.Info);
                                 _game.requireMouseRelease = true;
                             }
                         }
@@ -249,7 +234,7 @@ namespace BroadenHorizons.Screens
                                                 {
                                                     _game.Planets[n].Mat -= improvement.MatCost;
                                                     selectedUnit.Status = UnitStatus.Busy;
-                                                    _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + improvement.TurnsToBuild, PlanetCode = n, UnitID = SelectedUnitID, UnitActionType = UnitActionType.Building, TargetReg = clickedReg, ImprovementIndex = availableImprovementIndices[0] });
+                                                    _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + improvement.TurnsToBuild, PlanetCode = n, ID = SelectedUnitID, ActionType = ActionType.Building, TargetReg = clickedReg, ImprovementIndex = availableImprovementIndices[0] });
                                                     _game._messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name}\n it will available on turn {Constants.TURN + improvement.TurnsToBuild}.", MessageType.Info);
                                                     SelectedUnitID = -1;
                                                     PossibleDestinations.Clear();
@@ -266,7 +251,7 @@ namespace BroadenHorizons.Screens
                                     else if (availableImprovementIndices.Count > 1)
                                     {
                                         habitatName = GameData.HabitatTypes[hab].Name;
-                                        var optionStrings = availableImprovementIndices.Select(idx =>
+                                        List<string> optionStrings = availableImprovementIndices.Select(idx =>
                                             $"{_game.PlanetImprovements[idx].Name} (Cost: {_game.PlanetImprovements[idx].MatCost} mat, Turns: {_game.PlanetImprovements[idx].TurnsToBuild})"
                                         ).ToList();
 
@@ -275,7 +260,7 @@ namespace BroadenHorizons.Screens
                                             if (selectedIndex >= 0) // Valid selection (not cancel)
                                             {
                                                 int improvementIdx = availableImprovementIndices[selectedIndex];
-                                                var improvement = _game.PlanetImprovements[improvementIdx];
+                                                PlanetImprovement improvement = _game.PlanetImprovements[improvementIdx];
                                                 if (_game.Planets[n].Mat >= improvement.MatCost)
                                                 {
                                                     _game._messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete.", MessageType.Confirm, confirmResult =>
@@ -289,8 +274,8 @@ namespace BroadenHorizons.Screens
                                                                 ActionTurn = Constants.TURN,
                                                                 TurnFinal = Constants.TURN + improvement.TurnsToBuild,
                                                                 PlanetCode = n,
-                                                                UnitID = SelectedUnitID,
-                                                                UnitActionType = UnitActionType.Building,
+                                                                ID = SelectedUnitID,
+                                                                ActionType = ActionType.Building,
                                                                 TargetReg = clickedReg,
                                                                 ImprovementIndex = improvementIdx
                                                             });
@@ -317,7 +302,7 @@ namespace BroadenHorizons.Screens
                                 }
                                 else if (clickedReg == currentReg && imp >= 0 && _game.Planets[n].OccupiedByUnit[clickedReg] == -1 && unitCode == _game.PlanetImprovements[imp].AllowedUnit)
                                 {
-                                    var improvement = _game.PlanetImprovements[imp];
+                                    PlanetImprovement improvement = _game.PlanetImprovements[imp];
                                     _game._messageManager.Show($"Occupy {improvement.Name}?\nIt will provide extra {_game.UnitTypes[(int)unitCode].ExtraFoodProd} food, {_game.UnitTypes[(int)unitCode].ExtraMatProd} materials, {_game.UnitTypes[(int)unitCode].ExtraSciProd} science.\nThe unit will remain here without consuming resources.", MessageType.Confirm, result =>
                                     {
                                         if (result)
@@ -326,7 +311,7 @@ namespace BroadenHorizons.Screens
                                             selectedUnit.Status = UnitStatus.InImprovement;
                                             for (int j = _game.TurnActions.Count - 1; j >= 0; j--)
                                             {
-                                                if (_game.TurnActions[j].PlanetCode == n && _game.TurnActions[j].UnitID == selectedUnit.ID)
+                                                if (_game.TurnActions[j].PlanetCode == n && _game.TurnActions[j].ID == selectedUnit.ID)
                                                 {
                                                     _game.TurnActions.RemoveAt(j);
                                                 }
@@ -346,7 +331,7 @@ namespace BroadenHorizons.Screens
                                         {
                                             selectedUnit.Region = clickedReg;
                                             selectedUnit.Status = UnitStatus.Busy;
-                                            _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + Functions.GetTurnsToExplore(clickedReg), PlanetCode = n, UnitID = selectedUnit.ID, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
+                                            _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + Functions.GetTurnsToExplore(clickedReg), PlanetCode = n, ID = selectedUnit.ID, ActionType = ActionType.MovingOrExploring, TargetReg = clickedReg });
                                             _game._messageManager.Show($"Exploring a new region, it will be available on turn {Functions.GetTurnsToExplore(clickedReg) + Constants.TURN}", MessageType.Info);
                                             SelectedUnitID = -1;
                                             PossibleDestinations.Clear();
@@ -362,7 +347,7 @@ namespace BroadenHorizons.Screens
                                         {
                                             selectedUnit.Region = clickedReg;
                                             selectedUnit.Status = UnitStatus.Busy;
-                                            _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + 1, PlanetCode = n, UnitID = selectedUnit.ID, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
+                                            _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + 1, PlanetCode = n, ID = selectedUnit.ID, ActionType = ActionType.MovingOrExploring, TargetReg = clickedReg });
                                             //messageManager.Show($"Moving to habitat {clickedReg}", MessageType.Info);
                                             SelectedUnitID = -1;
                                             PossibleDestinations.Clear();
@@ -424,8 +409,8 @@ namespace BroadenHorizons.Screens
 
         public string GetPopulationTooltip(int planetIndex)
         {
-            var planet = _game.Planets[planetIndex];
-            var tooltipLines = new List<string>{
+            Planet planet = _game.Planets[planetIndex];
+            List<string> tooltipLines = new List<string>{
                 "Summary:"
             };
 
@@ -451,9 +436,9 @@ namespace BroadenHorizons.Screens
             {
                 tooltipLines.Add("No explored regions yet.");
             }
-            var dataList = Functions.GetTemperatureRangeData(planet.Temperature);
-            var DeltaFood = double.Parse(_game._productionManager.CalculateProductionTurn(planetIndex, "Food"));
-            var result = (DeltaFood >= 0) ? (1 + DeltaFood * Constants.POPULATION_FOOD_GROWTH) : (0.5 + DeltaFood * Constants.POPULATION_FOOD_GROWTH);
+            Dictionary<string, object> dataList = Functions.GetTemperatureRangeData(planet.Temperature);
+            double DeltaFood = double.Parse(_game._productionManager.CalculateProductionTurn(planetIndex, "Food"));
+            double result = (DeltaFood >= 0) ? (1 + DeltaFood * Constants.POPULATION_FOOD_GROWTH) : (0.5 + DeltaFood * Constants.POPULATION_FOOD_GROWTH);
             int foodConsumption = _game._productionManager.CalculatePopulationFoodConsumption(planetIndex);
             tooltipLines.Add($"Food consumption: -{foodConsumption} food ({Constants.POPULATION_FOOD_CONSUMPTION} pop per food)");
             tooltipLines.Add($"Modifiers:\nBase: {Constants.POPULATION_BASE_GROWTH:P0}\nTemp factor: {(float)dataList["Modifier"]:P0}\nFood factor: {result:P0}");
@@ -493,16 +478,16 @@ namespace BroadenHorizons.Screens
 
                     if (hab >= 0)
                     {
-                        var texture = _game.Textures[_game.HabitatTypes[Math.Abs(hab)].TextureId];
+                        Texture2D texture = _game.Textures[_game.HabitatTypes[Math.Abs(hab)].TextureId];
                         Color textureColor = _game.Planets[_game.CurrentPlanet].HabitatPopulated[i] ? Color.White : Color.Gray;
-                        var textureScale = (float)Math.Round(Constants.HEX_SIZE / (decimal)texture.Width, 3);
+                        float textureScale = (float)Math.Round(Constants.HEX_SIZE / (decimal)texture.Width, 3);
                         _game._spriteBatch.Draw(texture, new Vector2(center.X - Constants.HEX_SIZE / 2, center.Y - Constants.HEX_SIZE / 2 * 1.1547f), null, textureColor, 0f, Vector2.Zero, textureScale, SpriteEffects.None, 0f);
 
                         int imp = _game.Planets[_game.CurrentPlanet].Improvements[i];
                         if (imp >= 0)
                         {
-                            var improvement = _game.PlanetImprovements[imp];
-                            var textureImp = _game.Textures[improvement.TextureId];
+                            PlanetImprovement improvement = _game.PlanetImprovements[imp];
+                            Texture2D textureImp = _game.Textures[improvement.TextureId];
                             _game._spriteBatch.Draw(textureImp, new Vector2(center.X - textureImp.Width * 0.165f + 10, center.Y - textureImp.Height * 0.165f + 10), null, Color.White * 0.8f, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
                         }
 
@@ -531,7 +516,7 @@ namespace BroadenHorizons.Screens
                 }
             }
             // Draw available units
-            var unitsOnPlanet = _game._unitManager.GetUnitsOnPlanet(_game.CurrentPlanet);
+            List<Unit> unitsOnPlanet = _game._unitManager.GetUnitsOnPlanet(_game.CurrentPlanet);
             int totalUnits = unitsOnPlanet.Count;
             _game._spriteBatch.DrawString(_game._bitmapFont, $"Available Units/Ships", new Vector2(Constants.UNIT_MENU_X, Constants.TOP_BAR_HEIGHT + Constants.UNIT_MENU_PADDING), Color.White);
             for (int i = 0; i < totalUnits; i++)
@@ -541,14 +526,14 @@ namespace BroadenHorizons.Screens
                 int region = unit.Region;
                 if (region >= _game.RegionDatas.Length) continue;
 
-                Vector2 center = new Vector2(_game.RegionDatas[region].XC, _game.RegionDatas[region].YC);
-                var unitTexture = _game.Textures[_game.UnitTypes[(int)unitCode].TextureId];
+                Vector2 regCenter = new Vector2(_game.RegionDatas[region].XC, _game.RegionDatas[region].YC);
+                Texture2D unitTexture = _game.Textures[_game.UnitTypes[(int)unitCode].TextureId];
                 float unitScale = ((float)Constants.UNIT_MENU_ROW_HEIGHT - Constants.UNIT_MENU_PADDING) / unitTexture.Height;
 
                 // Draw units icon on grid (grayed out if inactive)
                 float gridScale = unitScale * Constants.UNIT_GRID_SCALE;
                 Color gridColor = (unit.Status != UnitStatus.Idle) ? Color.Gray * 0.7f : Color.White;
-                _game._spriteBatch.Draw(unitTexture, center, null, gridColor, 0f, Vector2.Zero, gridScale, SpriteEffects.None, 0f);
+                _game._spriteBatch.Draw(unitTexture, regCenter, null, gridColor, 0f, Vector2.Zero, gridScale, SpriteEffects.None, 0f);
 
                 // Draw units in menu (grayed out if inactive)
                 _game._spriteBatch.Draw(unitTexture, new Vector2(Constants.UNIT_MENU_X, Constants.UNIT_MENU_START_Y + i * Constants.UNIT_MENU_ROW_HEIGHT), null, gridColor, 0f, Vector2.Zero, unitScale, SpriteEffects.None, 0f);
@@ -557,21 +542,21 @@ namespace BroadenHorizons.Screens
                 _game._spriteBatch.DrawString(_game._bitmapFont, $"{_game.UnitTypes[(int)unitCode].Name} ({region})", new Vector2(Constants.UNIT_MENU_X + unitTexture.Width * unitScale + Constants.UNIT_MENU_PADDING, Constants.UNIT_MENU_START_Y + (Constants.UNIT_MENU_ROW_HEIGHT - Constants.UNIT_MENU_PADDING) / 2 - yOffset + i * Constants.UNIT_MENU_ROW_HEIGHT), textColor);
             }
             // Draw available ships
-            var shipsOnPlanet = _game._shipManager.GetShipsOnPlanet(_game.CurrentPlanet);
+            List<Ship> shipsOnPlanet = _game._shipManager.GetShipsOnPlanet(_game.CurrentPlanet);
             int totalShips = shipsOnPlanet.Count;
             for (int i = 0; i < totalShips; i++)
             {
                 int pos = totalUnits + i;
                 Ship ship = shipsOnPlanet[i];
-                int shipCode = ship.TypeIndex;
-                var shipTexture = _game.Textures[GameData.ShipTypes[shipCode].TextureId];
+                int shipCode = ship.TypeIndex.GetHashCode();
+                Texture2D shipTexture = _game.Textures[GameData.ShipTypes[shipCode].TextureId];
                 float shipScale = ((float)Constants.UNIT_MENU_ROW_HEIGHT - Constants.UNIT_MENU_PADDING) / shipTexture.Height;
-                Color gridColor = (ship.Status == ShipStatus.Building || ship.Status == ShipStatus.InTransit) ? Color.Gray : Color.White;
+                Color gridColor = (ship.Status == ShipStatus.UnderConstruction || ship.Status == ShipStatus.InTransit) ? Color.Gray : Color.White;
 
                 // Draw ships in menu (grayed out if inactive)
                 _game._spriteBatch.Draw(shipTexture, new Vector2(Constants.UNIT_MENU_X, Constants.UNIT_MENU_START_Y + pos * Constants.UNIT_MENU_ROW_HEIGHT), null, gridColor, 0f, Vector2.Zero, shipScale, SpriteEffects.None, 0f);
                 float yOffset = _game._bitmapFont.MeasureString(GameData.ShipTypes[shipCode].Name).Height / 2;
-                Color textColor = (ship.Status == ShipStatus.Building || ship.Status == ShipStatus.InTransit) ? Color.Gray : Color.White;
+                Color textColor = (ship.Status == ShipStatus.UnderConstruction || ship.Status == ShipStatus.InTransit) ? Color.Gray : Color.White;
                 _game._spriteBatch.DrawString(_game._bitmapFont, $"{GameData.ShipTypes[shipCode].Name}", new Vector2(Constants.UNIT_MENU_X + shipTexture.Width * shipScale + Constants.UNIT_MENU_PADDING, Constants.UNIT_MENU_START_Y + (Constants.UNIT_MENU_ROW_HEIGHT - Constants.UNIT_MENU_PADDING) / 2 - yOffset + pos * Constants.UNIT_MENU_ROW_HEIGHT), textColor);
             }
             //Draw recruit units menu
@@ -582,7 +567,7 @@ namespace BroadenHorizons.Screens
                 int unitPos = 0;
                 for (int i = 0; i < _game.UnitTypes.Count; i++)
                 {
-                    var unit = _game.UnitTypes[i];
+                    UnitType unit = _game.UnitTypes[i];
                     if (unit.RequiredTech != -1 && !_game.Techs[unit.RequiredTech].IsResearched) continue;
                     Vector2 pos = new Vector2(Constants.RECRUIT_MENU_X, Constants.UNIT_MENU_START_Y + unitPos * Constants.UNIT_MENU_ROW_HEIGHT);
                     float iconScale = ((float)Constants.UNIT_MENU_ROW_HEIGHT - Constants.UNIT_MENU_PADDING) / _game.Textures[unit.TextureId].Height;
@@ -596,7 +581,7 @@ namespace BroadenHorizons.Screens
                     unitPos++;
                 }
                 //Draw recruit ships menu
-                foreach (var ship in _game._shipManager.GetAvailableShipTypes())
+                foreach (int ship in _game._shipManager.GetAvailableShipTypes())
                 {
                     Vector2 pos = new Vector2(Constants.RECRUIT_MENU_X, Constants.UNIT_MENU_START_Y + unitPos * Constants.UNIT_MENU_ROW_HEIGHT);
                     float shipScale = ((float)Constants.UNIT_MENU_ROW_HEIGHT - Constants.UNIT_MENU_PADDING) / _game.Textures[_game.Ships[ship].TextureId].Height;

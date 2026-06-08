@@ -85,27 +85,28 @@ namespace BroadenHorizons
             {
                 var ta = _game.TurnActions[i];
 
-                var selectedUnit = _game._unitManager.GetUnitById(ta.UnitID);
-
                 if (Constants.TURN < ta.TurnFinal)
                     continue;
 
-                switch (ta.UnitActionType)
+                switch (ta.ActionType)
                 {
-                    case UnitActionType.Building:
+                    case ActionType.Building:
                         HandleBuildingAction(ta, summary);
                         break;
 
-                    case UnitActionType.Recruiting:
-                        HandleRecruitingAction(ta, selectedUnit, summary);
+                    case ActionType.RecruitingUnit:
+                        HandleRecruitingAction(ta, _game._unitManager.GetUnitById(ta.ID), summary);
                         break;
 
-                    case UnitActionType.MovingOrExploring:
-                        HandleMovementAction(ta, selectedUnit, summary);
+                    case ActionType.MovingOrExploring:
+                        HandleMovementAction(ta, _game._unitManager.GetUnitById(ta.ID), summary);
+                        break;
+
+                    case ActionType.BuildingShip:
+                        HandleBuildingShipAction(_game._shipManager.GetShipById(ta.ID), summary);
                         break;
                 }
 
-                selectedUnit.Status = UnitStatus.Idle;
                 _game.TurnActions.RemoveAt(i);
             }
         }
@@ -135,6 +136,7 @@ namespace BroadenHorizons
         {
             string unitName = selectedUnit.Name;
             string planetName = _game.Planets[ta.PlanetCode].Name;
+            selectedUnit.Status = UnitStatus.Idle;
 
             summary.Add(
                 $"A new unit of {unitName} has been recruited\n" +
@@ -170,6 +172,18 @@ namespace BroadenHorizons
                     $"They are now ready to work or move again."
                 );
             }
+            selectedUnit.Status = UnitStatus.Idle;
+        }
+
+        private void HandleBuildingShipAction(Ship ship, List<string> messages)
+        {
+            string shipName = ship.Name;
+            string planetName = _game.Planets[ship.AssignedPlanet].Name;
+
+            ship.Status = ShipStatus.Docked;
+            ship.CurrentPosition = _game._shipManager.GetPlanetPosition(ship.AssignedPlanet);
+
+            messages.Add($"{ship.Name} built on {planetName}.");
         }
 
         private void HandleExplorerDiscovery(
@@ -236,7 +250,7 @@ namespace BroadenHorizons
                         .DefaultIfEmpty(-1) // in case no true values are found
                         .Max();
                     planet.HabitatPopulated[highestPopulatedIndex] = false;
-                    summary.Add($"Warning! Region {highestPopulatedIndex} ({GameData.HabitatTypes[planet.Habitat[highestPopulatedIndex]].Name}) at {planet.Name} is now unpopulated\n due to population loss.") ;
+                    summary.Add($"Warning! Region {highestPopulatedIndex} ({GameData.HabitatTypes[planet.Habitat[highestPopulatedIndex]].Name}) at {planet.Name} is now unpopulated\n due to population loss.");
                 }
             }
         }
@@ -247,7 +261,7 @@ namespace BroadenHorizons
             {
                 if (planet.Status != PlanetStatus.Owned)
                     continue;
-                    
+
                 if (planet.Food < 0)
                 {
                     int foodShortage = -planet.Food;

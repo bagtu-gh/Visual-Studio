@@ -44,13 +44,4 @@ namespace BroadenHorizons
 	    Idle = 0,
 	    Busy = 1
 	}
-
-    public enum UnitActionType
-    {
-        None = 0,
-        Building = 1,
-        Recruiting = 2,
-        MovingOrExploring = 3
-    }
-
 }

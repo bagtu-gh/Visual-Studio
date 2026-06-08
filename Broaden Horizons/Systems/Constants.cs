@@ -12,6 +12,7 @@ namespace BroadenHorizons
         public const int MIN_PLANET_DISTANCE = 150;
         public static int NUM_PLANETS { get; set; } = 20;
         public static int TURN { get; set; } = 1;
+        public static int NEXT_ID { get; set; } = 0;
         public const int TERRAFORMER_TEMP_CHANGE = 1;
         public const float POPULATION_BASE_GROWTH = 0.04f;
         public const float POPULATION_FOOD_GROWTH = 0.01f;

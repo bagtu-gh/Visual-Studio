@@ -5,33 +5,29 @@ using System.Linq;
 
 namespace BroadenHorizons
 {
-    public class ShipManager(BH game, Planet[] planets, List<Tech> techs, MessageManager messageManager, List<TurnAction> turnActions)
+    public class ShipManager(List<TurnAction> turnAction, Planet[] planets, List<Tech> techs, MessageManager messageManager)
     {
-        private readonly BH _game = game;
+        private readonly List<TurnAction> _turnAction = turnAction;
         private readonly Planet[] _planets = planets;
         private readonly List<Tech> _techs = techs;
         private readonly MessageManager _messageManager = messageManager;
-        private readonly List<TurnAction> _turnActions = turnActions;
         private readonly List<Ship> _ships = new List<Ship>();
-        private int nextShipId = 0;
 
         // Save/Load Support
         public IReadOnlyList<Ship> Ships => _ships;             // Read-only access
-        public int NextShipId => nextShipId;                    // Read-only
-        public void SetShipsAndId(List<Ship> ships, int nextId)  // For restoring
+        public void SetShipsAndId(List<Ship> ships)  // For restoring
         {
             _ships.Clear();
             if (ships != null) _ships.AddRange(ships);
-            nextShipId = nextId;
         }
 
         public void StartingShips(int planetId)
         {
             var startingShip = new Ship
             {
-                ID = nextShipId++,
+                ID = Constants.NEXT_ID++,
                 Name = "Probe 1",
-                TypeIndex = ShipTypeEnum.Probe.GetHashCode(),
+                TypeIndex = ShipTypeEnum.Probe,
                 AssignedPlanet = planetId,
                 Status = ShipStatus.Docked,
                 CurrentPosition = new Vector2(_planets[planetId].XPos, _planets[planetId].YPos)
@@ -39,9 +35,9 @@ namespace BroadenHorizons
             _ships.Add(startingShip);
             /*var startingShip2 = new Ship
             {
-                Id = nextShipId++,
+                Id = Constants.NEXT_ID++,
                 Name = "Colony Ship 2",
-                TypeIndex = ShipTypeEnum.ColonyShip.GetHashCode(),
+                TypeIndex = ShipTypeEnum.ColonyShip,
                 AssignedPlanet = planetId,
                 Status = ShipStatus.Docked,
                 CurrentPosition = new Vector2(_planets[planetId].XPos, _planets[planetId].YPos)
@@ -49,9 +45,9 @@ namespace BroadenHorizons
             _ships.Add(startingShip2);
             /*var startingShip3 = new Ship
             {
-                Id = nextShipId++,
+                Id = Constants.NEXT_ID++,
                 Name = "Freighter 1",
-                TypeIndex = ShipTypeEnum.Freighter.GetHashCode(),
+                TypeIndex = ShipTypeEnum.Freighter,
                 AssignedPlanet = planetId,
                 Status = ShipStatus.Docked,
                 CurrentPosition = new Vector2(_planets[planetId].XPos, _planets[planetId].YPos)
@@ -73,7 +69,7 @@ namespace BroadenHorizons
 
         public List<Ship> GetShipsOnPlanet(int planetId)
         {
-            return _ships.FindAll(u => u.AssignedPlanet == planetId && u.Status != ShipStatus.Building);
+            return _ships.FindAll(u => u.AssignedPlanet == planetId);
         }
 
         public List<Ship> GetShipsInTransit()
@@ -81,28 +77,37 @@ namespace BroadenHorizons
             return _ships.FindAll(u => u.Status == ShipStatus.InTransit);
         }
 
-        public void StartBuildingShip(int planetId, int typeIndex, int turn)
+        public Ship GetShipById(int id)
         {
-            ShipType st = GameData.ShipTypes[typeIndex];
+            return _ships.FirstOrDefault(s => s.ID == id);
+        }
+
+        public void StartBuildingShip(int planetId, ShipType st, int turn)
+        {
             _planets[planetId].Mat -= st.MatCost;
 
             Ship ship = new Ship
             {
-                ID = nextShipId++,
-                Name = $"{GameData.ShipTypes[typeIndex].Name} {nextShipId}",
-                TypeIndex = typeIndex,
+                ID = Constants.NEXT_ID++,
+                Name = $"{st.Name} {Constants.NEXT_ID}",
+                TypeIndex = st.Type,
                 AssignedPlanet = planetId,
-                Status = ShipStatus.Building,
-                FinalTurnAction = turn + st.TurnsToBuild
+                Status = ShipStatus.UnderConstruction
             };
             _ships.Add(ship);
+            _turnAction.Add(new TurnAction
+            {
+                ActionTurn = turn,
+                TurnFinal = turn + st.TurnsToBuild,
+                PlanetCode = planetId,
+                ID = ship.ID,
+                ActionType = ActionType.BuildingShip
+            });
         }
 
         public List<string> ProcessEndTurn(int currentTurn)
         {
             var messages = new List<string>();
-
-            ProcessCompletedBuilds(currentTurn, messages);
 
             foreach (var ship in GetActiveShips().ToList())
             {
@@ -112,32 +117,17 @@ namespace BroadenHorizons
             return messages;
         }
 
-        private void ProcessCompletedBuilds(int currentTurn, List<string> messages)
-        {
-            var completedBuilds = _ships.Where(s =>
-                s.Status == ShipStatus.Building &&
-                s.FinalTurnAction == currentTurn);
-
-            foreach (var ship in completedBuilds)
-            {
-                ship.Status = ShipStatus.Docked;
-                ship.CurrentPosition = GetPlanetPosition(ship.AssignedPlanet);
-
-                messages.Add($"{ship.Name} built on {_planets[ship.AssignedPlanet].Name}.");
-            }
-        }
-
         private IEnumerable<Ship> GetActiveShips()
         {
             return _ships.Where(s =>
                 s.Status == ShipStatus.InTransit ||
-                (GameData.ShipTypes[s.TypeIndex].Type == ShipTypeEnum.Terraformer &&
+                (s.TypeIndex == ShipTypeEnum.Terraformer &&
                  s.Status == ShipStatus.Docked));
         }
 
         private void ProcessShip(Ship ship, int currentTurn, List<string> messages)
         {
-            switch (GameData.ShipTypes[ship.TypeIndex].Type)
+            switch (ship.TypeIndex)
             {
                 case ShipTypeEnum.Probe:
                     ProcessProbe(ship, currentTurn, messages);
@@ -310,7 +300,7 @@ namespace BroadenHorizons
                 $"(From {oldTemp} to {planet.Temperature})");
         }
 
-        private Vector2 GetPlanetPosition(int planetId)
+        public Vector2 GetPlanetPosition(int planetId)
         {
             var planet = _planets[planetId];
             return new Vector2(planet.XPos, planet.YPos);
@@ -358,9 +348,9 @@ namespace BroadenHorizons
                         new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos),
                         new Vector2(_planets[i].XPos, _planets[i].YPos)
                     );
-                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex].Speed);
+                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex.GetHashCode()].Speed);
                     turnsNeeded = Math.Max(1, turnsNeeded);
-                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex].EnergyperTurn;
+                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex.GetHashCode()].EnergyperTurn;
                     string optionString = $"{_planets[i].Name} ({distance:0} units) Turns to come back: {turnsNeeded * 2} Energy: {energyNeeded * 2}";
 
                     planetData.Add((i, _planets[i].Name, distance, turnsNeeded, energyNeeded, energyNeeded * 2 <= _planets[ship.AssignedPlanet].Energy, optionString));
@@ -402,9 +392,9 @@ namespace BroadenHorizons
                         new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos),
                         new Vector2(_planets[i].XPos, _planets[i].YPos)
                     );
-                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex].Speed);
+                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex.GetHashCode()].Speed);
                     turnsNeeded = Math.Max(1, turnsNeeded);
-                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex].EnergyperTurn;
+                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex.GetHashCode()].EnergyperTurn;
                     string optionString = $"{_planets[i].Name} ({distance:0} units) Turns to arrive: {turnsNeeded} Energy: {energyNeeded}";
                     planetData.Add((i, _planets[i].Name, distance, turnsNeeded, energyNeeded, energyNeeded <= _planets[ship.AssignedPlanet].Energy, optionString));
                 }
@@ -441,9 +431,9 @@ namespace BroadenHorizons
                         new Vector2(_planets[ship.AssignedPlanet].XPos, _planets[ship.AssignedPlanet].YPos),
                         new Vector2(_planets[i].XPos, _planets[i].YPos)
                     );
-                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex].Speed);
+                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex.GetHashCode()].Speed);
                     turnsNeeded = Math.Max(1, turnsNeeded);
-                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex].EnergyperTurn;
+                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex.GetHashCode()].EnergyperTurn;
                     string optionString = $"{_planets[i].Name} ({distance:0} units) Temp: {_planets[i].Temperature} Turns: {turnsNeeded} Energy: {energyNeeded}";
 
                     planetData.Add((i, _planets[i].Name, distance, turnsNeeded, energyNeeded, energyNeeded <= _planets[ship.AssignedPlanet].Energy, optionString));
@@ -479,7 +469,7 @@ namespace BroadenHorizons
             var originPlanet = _planets[ship.AssignedPlanet];
             int maxFood = originPlanet.Food;
             int maxMat = originPlanet.Mat;
-            int capacity = GameData.ShipTypes[ship.TypeIndex].Capacity;
+            int capacity = GameData.ShipTypes[ship.TypeIndex.GetHashCode()].Capacity;
 
             _messageManager.ShowFreighterCargoSelection($"Select cargo for freighter to {_planets[targetPlanet].Name} (Capacity: {capacity})", maxFood, maxMat, capacity, (foodAmount, matAmount) =>
             {
@@ -543,9 +533,9 @@ namespace BroadenHorizons
                         new Vector2(_planets[i].XPos, _planets[i].YPos)
                     );
 
-                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex].Speed);
+                    int turnsNeeded = (int)Math.Ceiling(distance / GameData.ShipTypes[ship.TypeIndex.GetHashCode()].Speed);
                     turnsNeeded = Math.Max(1, turnsNeeded);
-                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex].EnergyperTurn;
+                    int energyNeeded = turnsNeeded * GameData.ShipTypes[ship.TypeIndex.GetHashCode()].EnergyperTurn;
 
                     bool canLaunch = CanLaunchColonyShip(ship, i, energyNeeded, out _);
 
@@ -694,6 +684,37 @@ namespace BroadenHorizons
                 _planets[ship.TargetPlanet].Status = PlanetStatus.ProbeEnRoute;
             }
             _messageManager.Show($"Probe launched to {_planets[ship.TargetPlanet].Name}.\nIt will arrive there in {oneWayTurns} turns and come back at turn {ship.FinalTurnAction}", MessageType.Info);
+        }
+
+        public void HandleShipClicked(Ship ship, List<TurnAction> turnActions, Planet[] planets, MessageManager messageManager)
+        {
+            if (ship.Status == ShipStatus.Docked)
+            {
+                switch (ship.TypeIndex)
+                {
+                    case ShipTypeEnum.Probe:
+                        ShowProbeLaunchMenu(ship, Constants.TURN);
+                        break;
+                    case ShipTypeEnum.ColonyShip:
+                        ShowColonyLaunchMenu(ship, Constants.TURN);
+                        break;
+                    case ShipTypeEnum.Freighter:
+                        ShowFreighterLaunchMenu(ship, Constants.TURN);
+                        break;
+                    case ShipTypeEnum.Terraformer:
+                        ShowTerraformerLaunchMenu(ship, Constants.TURN);
+                        break;
+                }
+            }
+            else if (ship.Status == ShipStatus.InTransit)
+            {
+                messageManager.Show($"Your {ship.Name} is travelling to {planets[ship.TargetPlanet].Name}", MessageType.Info);
+            }
+            else if (ship.Status == ShipStatus.UnderConstruction)
+            {
+                var ta = turnActions.FirstOrDefault(t => t.ID == ship.ID);
+                messageManager.Show($"Your {ship.Name} is being built. They will be available at turn {ta.TurnFinal}", MessageType.Info);
+            }
         }
     }
 }
