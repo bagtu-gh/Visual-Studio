@@ -13,6 +13,9 @@ namespace BroadenHorizons.Screens
         private BH _game;
         private bool showRegionNumber = true;
         private int SelectedUnitID = -1;
+        private List<int> PossibleDestinations = [];
+        private List<int> availableUnitIndices = [];
+        private List<int> availableImprovementIndices = [];
 
         public PlanetScreen(BH game)
         {
@@ -53,8 +56,8 @@ namespace BroadenHorizons.Screens
                     _game.CurrentState = BH.GameState.GalaxyMap;
                     _game.CurrentPlanet = -1;
                     SelectedUnitID = -1;
-                    _game.PossibleDestinations.Clear();
-                    _game.availableImprovementIndices.Clear();
+                    PossibleDestinations.Clear();
+                    availableImprovementIndices.Clear();
                 }
 
                 if (keyboard.IsKeyDown(Keys.Tab) && !_game.WasKeyDown(Keys.Tab))
@@ -80,7 +83,7 @@ namespace BroadenHorizons.Screens
                                 if (i < totalUnits)
                                 {
                                     SelectedUnitID = -1;
-                                    _game.PossibleDestinations.Clear();
+                                    PossibleDestinations.Clear();
                                     SelectedUnitID = unitsOnPlanet[i].ID;
                                     _game._unitManager.HandleUnitClicked(
                                         unitsOnPlanet[i],
@@ -92,7 +95,7 @@ namespace BroadenHorizons.Screens
                                         _game.Neighbors,
                                         _game.HabitatTypes,
                                         ref SelectedUnitID,
-                                        ref _game.PossibleDestinations,
+                                        ref PossibleDestinations,
                                         _game._messageManager
                                     );
                                     break;
@@ -100,7 +103,7 @@ namespace BroadenHorizons.Screens
                                 else //Ship clicked
                                 {
                                     SelectedUnitID = -1;
-                                    _game.PossibleDestinations.Clear();
+                                    PossibleDestinations.Clear();
                                     Ship ship = shipsOnPlanet[i - totalUnits];
                                     if (ship.TypeIndex == (int)ShipTypeEnum.Probe && ship.Status == ShipStatus.Docked)
                                     {
@@ -134,12 +137,12 @@ namespace BroadenHorizons.Screens
                     {
                         int index = (mouse.Y - Constants.UNIT_MENU_START_Y) / Constants.UNIT_MENU_ROW_HEIGHT;
                         //Available units to recruit
-                        _game.availableUnitIndices.Clear();
-                        _game.availableUnitIndices = UnitManager.GetAvailableUnitTypes(_game.Techs);
+                        availableUnitIndices.Clear();
+                        availableUnitIndices = UnitManager.GetAvailableUnitTypes(_game.Techs);
 
-                        if (index >= 0 && index < _game.availableUnitIndices.Count)
+                        if (index >= 0 && index < availableUnitIndices.Count)
                         {
-                            int unitIndex = _game.availableUnitIndices[index];
+                            int unitIndex = availableUnitIndices[index];
                             var unit = _game.UnitTypes[unitIndex];
                             if (_game.hasRecruitedThisTurn[_game.CurrentPlanet])
                             {
@@ -166,8 +169,8 @@ namespace BroadenHorizons.Screens
                             return;
                         }
                         //Available ships to recruit
-                        int lastIndex = _game.availableUnitIndices.Count;
-                        _game.availableUnitIndices.Clear();
+                        int lastIndex = availableUnitIndices.Count;
+                        availableUnitIndices.Clear();
                         var availableShips = _game._shipManager.GetAvailableShipTypes();
 
                         if (index >= lastIndex && index < lastIndex + availableShips.Count)
@@ -205,7 +208,7 @@ namespace BroadenHorizons.Screens
                         if (SelectedUnitID != -1)
                         {
                             int clickedReg = Functions.GetClickedReg(_game.RegionDatas, (int)_game.mousePos.X, (int)_game.mousePos.Y);
-                            if (clickedReg != -1 && _game.PossibleDestinations.Contains(clickedReg))
+                            if (clickedReg != -1 && PossibleDestinations.Contains(clickedReg))
                             {
                                 int n = _game.CurrentPlanet;
                                 int u = SelectedUnitID;
@@ -213,7 +216,7 @@ namespace BroadenHorizons.Screens
                                 if (selectedUnit == null || selectedUnit.Planet != n)
                                 {
                                     SelectedUnitID = -1;
-                                    _game.PossibleDestinations.Clear();
+                                    PossibleDestinations.Clear();
                                     return;
                                 }
 
@@ -225,24 +228,24 @@ namespace BroadenHorizons.Screens
                                 //Build Improvement
                                 if (clickedReg == currentReg && unitCode == UnitTypeEnum.Builders && hab >= 0 && imp == -1)
                                 {
-                                    _game.availableImprovementIndices.Clear();
+                                    availableImprovementIndices.Clear();
                                     string habitatName = _game.HabitatTypes[Math.Abs(_game.Planets[_game.CurrentPlanet].Habitat[clickedReg])].Name;
                                     for (int j = 0; j < _game.PlanetImprovements.Count; j++)
                                     {
                                         var improvement = _game.PlanetImprovements[j];
                                         if (improvement.RequiredTech != -1 && !_game.Techs[improvement.RequiredTech].IsResearched) continue;
                                         if (improvement.AllowedHabitat != _game.HabitatTypes[Math.Abs(_game.Planets[_game.CurrentPlanet].Habitat[clickedReg])].Type) continue;
-                                        _game.availableImprovementIndices.Add(j);
+                                        availableImprovementIndices.Add(j);
                                     }
 
-                                    if (_game.availableImprovementIndices.Count == 0)
+                                    if (availableImprovementIndices.Count == 0)
                                     {
                                         _game._messageManager.Show($"No improvement available for {habitatName}", MessageType.Info);
                                         _game.requireMouseRelease = true;
                                     }
-                                    else if (_game.availableImprovementIndices.Count == 1)
+                                    else if (availableImprovementIndices.Count == 1)
                                     {
-                                        var improvement = _game.PlanetImprovements[_game.availableImprovementIndices[0]];
+                                        var improvement = _game.PlanetImprovements[availableImprovementIndices[0]];
                                         if (_game.Planets[n].Mat >= improvement.MatCost)
                                         {
                                             _game._messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete\nand it will cost {improvement.MatCost} materials.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Confirm, result =>
@@ -251,10 +254,10 @@ namespace BroadenHorizons.Screens
                                                 {
                                                     _game.Planets[n].Mat -= improvement.MatCost;
                                                     selectedUnit.Status = UnitStatus.Busy;
-                                                    _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + improvement.TurnsToBuild, PlanetCode = n, UnitID = SelectedUnitID, UnitActionType = UnitActionType.Building, TargetReg = clickedReg, ImprovementIndex = _game.availableImprovementIndices[0] });
+                                                    _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + improvement.TurnsToBuild, PlanetCode = n, UnitID = SelectedUnitID, UnitActionType = UnitActionType.Building, TargetReg = clickedReg, ImprovementIndex = availableImprovementIndices[0] });
                                                     _game._messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name}\n it will available on turn {Constants.TURN + improvement.TurnsToBuild}.", MessageType.Info);
                                                     SelectedUnitID = -1;
-                                                    _game.PossibleDestinations.Clear();
+                                                    PossibleDestinations.Clear();
                                                 }
                                             });
                                             _game.requireMouseRelease = true;
@@ -265,10 +268,10 @@ namespace BroadenHorizons.Screens
                                             _game.requireMouseRelease = true;
                                         }
                                     }
-                                    else if (_game.availableImprovementIndices.Count > 1)
+                                    else if (availableImprovementIndices.Count > 1)
                                     {
                                         habitatName = GameData.HabitatTypes[hab].Name;
-                                        var optionStrings = _game.availableImprovementIndices.Select(idx =>
+                                        var optionStrings = availableImprovementIndices.Select(idx =>
                                             $"{_game.PlanetImprovements[idx].Name} (Cost: {_game.PlanetImprovements[idx].MatCost} mat, Turns: {_game.PlanetImprovements[idx].TurnsToBuild})"
                                         ).ToList();
 
@@ -276,7 +279,7 @@ namespace BroadenHorizons.Screens
                                         {
                                             if (selectedIndex >= 0) // Valid selection (not cancel)
                                             {
-                                                int improvementIdx = _game.availableImprovementIndices[selectedIndex];
+                                                int improvementIdx = availableImprovementIndices[selectedIndex];
                                                 var improvement = _game.PlanetImprovements[improvementIdx];
                                                 if (_game.Planets[n].Mat >= improvement.MatCost)
                                                 {
@@ -298,7 +301,7 @@ namespace BroadenHorizons.Screens
                                                             });
                                                             _game._messageManager.Show($"Started building {improvement.Name} on {_game.HabitatTypes[_game.Planets[n].Habitat[clickedReg]].Name},\nit will cost {improvement.MatCost} materials and take {improvement.TurnsToBuild} turns.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Info);
                                                             SelectedUnitID = -1;
-                                                            _game.PossibleDestinations.Clear();
+                                                            PossibleDestinations.Clear();
                                                         }
                                                     });
                                                     _game.requireMouseRelease = true;
@@ -333,10 +336,11 @@ namespace BroadenHorizons.Screens
                                                     _game.TurnActions.RemoveAt(j);
                                                 }
                                             }
-                                            _game.PossibleDestinations.Clear();
+                                            PossibleDestinations.Clear();
                                             _game._messageManager.Show($"Occupied {improvement.Name} with {_game.UnitTypes[(int)unitCode].Name},\ngaining extra {_game.UnitTypes[(int)unitCode].ExtraFoodProd} food, {_game.UnitTypes[(int)unitCode].ExtraMatProd} materials, {_game.UnitTypes[(int)unitCode].ExtraSciProd} science.\nThe unit will remain here without consuming resources.", MessageType.Info);
                                         }
                                     });
+                                    PossibleDestinations.Clear();
                                     _game.requireMouseRelease = true;
                                 }
                                 else if (unitCode == UnitTypeEnum.Explorers && hab < 0) // Explorer moving to unexplored region
@@ -350,7 +354,7 @@ namespace BroadenHorizons.Screens
                                             _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + Functions.GetTurnsToExplore(clickedReg), PlanetCode = n, UnitID = selectedUnit.ID, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
                                             _game._messageManager.Show($"Exploring a new region, it will be available on turn {Functions.GetTurnsToExplore(clickedReg) + Constants.TURN}", MessageType.Info);
                                             SelectedUnitID = -1;
-                                            _game.PossibleDestinations.Clear();
+                                            PossibleDestinations.Clear();
                                         }
                                     });
                                     _game.requireMouseRelease = true;
@@ -366,7 +370,7 @@ namespace BroadenHorizons.Screens
                                             _game.TurnActions.Add(new TurnAction { ActionTurn = Constants.TURN, TurnFinal = Constants.TURN + 1, PlanetCode = n, UnitID = selectedUnit.ID, UnitActionType = UnitActionType.MovingOrExploring, TargetReg = clickedReg });
                                             //messageManager.Show($"Moving to habitat {clickedReg}", MessageType.Info);
                                             SelectedUnitID = -1;
-                                            _game.PossibleDestinations.Clear();
+                                            PossibleDestinations.Clear();
                                         }
                                     });
                                     _game.requireMouseRelease = true;
@@ -375,7 +379,7 @@ namespace BroadenHorizons.Screens
                             else
                             {
                                 SelectedUnitID = -1;
-                                _game.PossibleDestinations.Clear();
+                                PossibleDestinations.Clear();
                             }
                         }
                         else // Allow to populate or unpopulate regions
@@ -484,7 +488,7 @@ namespace BroadenHorizons.Screens
 
                     Color lineColor = Color.White;
 
-                    if (_game.PossibleDestinations.Contains(i))
+                    if (PossibleDestinations.Contains(i))
                     {
                         lineColor = Color.Red;
                     }

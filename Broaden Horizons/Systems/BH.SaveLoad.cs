@@ -24,7 +24,6 @@ namespace BroadenHorizons
             public Vector2 ScrollOffset;
             public int PosX, PosY;
             public int CurrentPlanet;
-            public List<int> PossibleDestinations;
             public bool[] hasRecruitedThisTurn;
 
             // World
@@ -192,7 +191,6 @@ namespace BroadenHorizons
                 PosX = PosX,
                 PosY = PosY,
                 CurrentPlanet = CurrentPlanet,
-                PossibleDestinations = new List<int>(PossibleDestinations ?? new List<int>()),
                 hasRecruitedThisTurn = (bool[])hasRecruitedThisTurn.Clone(),
 
                 // World
@@ -260,7 +258,6 @@ namespace BroadenHorizons
             PosX = state.PosX;
             PosY = state.PosY;
             CurrentPlanet = state.CurrentPlanet;
-            PossibleDestinations = state.PossibleDestinations ?? new List<int>();
             hasRecruitedThisTurn = state.hasRecruitedThisTurn ?? new bool[Constants.NUM_PLANETS];
 
             Techs = state.Techs ?? GameData.Technologies.ToList();

@@ -67,11 +67,8 @@ namespace BroadenHorizons
         internal BitmapFont _bitmapFontMessages;
         internal Texture2D _pixel;
         internal Texture2D _logoTexture;
-        internal List<int> PossibleDestinations = new List<int>();
         internal List<Vector2> StarPositions = new List<Vector2>();
         internal bool[] hasRecruitedThisTurn = new bool[Constants.NUM_PLANETS];
-        internal List<int> availableImprovementIndices = new List<int>();
-        internal List<int> availableUnitIndices = new List<int>();
         internal KeyboardState _prevKeyboard;
         internal MouseState _prevMouse;
         internal Vector2 mousePos;
@@ -285,8 +282,6 @@ namespace BroadenHorizons
             ScrollOffset = Vector2.Zero;
             PosX = 0; PosY = 0;
             CurrentPlanet = -1;
-            PossibleDestinations.Clear();
-            availableImprovementIndices.Clear();
 
             // World defaults not done by InitializeData:
             hasRecruitedThisTurn = new bool[Constants.NUM_PLANETS];
