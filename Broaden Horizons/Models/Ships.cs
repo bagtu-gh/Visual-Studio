@@ -5,7 +5,7 @@ namespace BroadenHorizons
 {
     public class Ship
     {
-        public int Id { get; set; } // Unique ID
+        public int ID { get; set; } // Unique ID
         public string Name { get; set; }
         public int TypeIndex { get; set; } // Index in GameData.ShipTypes
         public int AssignedPlanet { get; set; }

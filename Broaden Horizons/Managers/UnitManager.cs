@@ -3,17 +3,15 @@ using System.Linq;
 
 namespace BroadenHorizons
 {
-    public class UnitManager(BH game, List<UnitType> unitTypes, MessageManager messageManager)
+    public class UnitManager(BH game, List<UnitType> unitTypes)
     {
         private readonly BH _game = game;
         public Planet[] _planets => _game.Planets;
         private readonly List<UnitType> _unitTypes = unitTypes;
-        private readonly MessageManager _messageManager = messageManager;
         public List<Unit> _units = new List<Unit>();
         private int nextUnitId = 0;
 
         // Save/Load Support
-        public IReadOnlyList<Unit> Units => _units;
         public int NextUnitId => nextUnitId;
         public void SetUnitsAndId(List<Unit> units, int nextId)
         {

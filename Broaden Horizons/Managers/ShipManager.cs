@@ -5,12 +5,13 @@ using System.Linq;
 
 namespace BroadenHorizons
 {
-    public class ShipManager
+    public class ShipManager(BH game, Planet[] planets, List<Tech> techs, MessageManager messageManager, List<TurnAction> turnActions)
     {
-        private readonly Planet[] _planets;
-        private readonly List<Tech> _techs;
-        private readonly MessageManager _messageManager;
-        private readonly List<TurnAction> _turnActions;
+        private readonly BH _game = game;
+        private readonly Planet[] _planets = planets;
+        private readonly List<Tech> _techs = techs;
+        private readonly MessageManager _messageManager = messageManager;
+        private readonly List<TurnAction> _turnActions = turnActions;
         private readonly List<Ship> _ships = new List<Ship>();
         private int nextShipId = 0;
 
@@ -24,19 +25,11 @@ namespace BroadenHorizons
             nextShipId = nextId;
         }
 
-        public ShipManager(Planet[] planets, List<Tech> techs, MessageManager messageManager, List<TurnAction> turnActions)
-        {
-            _planets = planets;
-            _techs = techs;
-            _messageManager = messageManager;
-            _turnActions = turnActions;
-        }
-
         public void StartingShips(int planetId)
         {
             var startingShip = new Ship
             {
-                Id = nextShipId++,
+                ID = nextShipId++,
                 Name = "Probe 1",
                 TypeIndex = ShipTypeEnum.Probe.GetHashCode(),
                 AssignedPlanet = planetId,
@@ -90,12 +83,12 @@ namespace BroadenHorizons
 
         public void StartBuildingShip(int planetId, int typeIndex, int turn)
         {
-            var st = GameData.ShipTypes[typeIndex];
+            ShipType st = GameData.ShipTypes[typeIndex];
             _planets[planetId].Mat -= st.MatCost;
 
-            var ship = new Ship
+            Ship ship = new Ship
             {
-                Id = nextShipId++,
+                ID = nextShipId++,
                 Name = $"{GameData.ShipTypes[typeIndex].Name} {nextShipId}",
                 TypeIndex = typeIndex,
                 AssignedPlanet = planetId,

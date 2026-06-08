@@ -241,8 +241,8 @@ namespace BroadenHorizons
                 RegionDatas[i] = new RegionData();
 
             _regionBonusManager.UpdateHabitats(HabitatTypes);
-            _unitManager = new UnitManager(this, UnitTypes, _messageManager);
-            _shipManager = new ShipManager(Planets, Techs, _messageManager, TurnActions);
+            _unitManager = new UnitManager(this, UnitTypes);
+            _shipManager = new ShipManager(this, Planets, Techs, _messageManager, TurnActions);
             _productionManager = new ProductionManager(Planets, HabitatTypes, UnitTypes, PlanetImprovements, _regionBonusManager, _unitManager, _shipManager, Techs);
             _techManager = new TechManager(Techs, Constants.STARTING_SCIENCE, _messageManager, HabitatTypes);
         }

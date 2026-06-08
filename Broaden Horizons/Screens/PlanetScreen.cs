@@ -67,8 +67,8 @@ namespace BroadenHorizons.Screens
 
                 if (mouse.LeftButton == ButtonState.Pressed && _game._prevMouse.LeftButton == ButtonState.Released)
                 {
-                    var unitsOnPlanet = _game._unitManager.GetUnitsOnPlanet(_game.CurrentPlanet);
-                    var shipsOnPlanet = _game._shipManager.GetShipsOnPlanet(_game.CurrentPlanet);
+                    List<Unit> unitsOnPlanet = _game._unitManager.GetUnitsOnPlanet(_game.CurrentPlanet);
+                    List<Ship> shipsOnPlanet = _game._shipManager.GetShipsOnPlanet(_game.CurrentPlanet);
                     //Available menu clicked
                     if (mouse.X >= Constants.UNIT_MENU_X && mouse.X <= Constants.UNIT_MENU_ROW_HEIGHT + Constants.UNIT_MENU_X - Constants.UNIT_MENU_PADDING)
                     {
@@ -105,24 +105,22 @@ namespace BroadenHorizons.Screens
                                     SelectedUnitID = -1;
                                     PossibleDestinations.Clear();
                                     Ship ship = shipsOnPlanet[i - totalUnits];
-                                    if (ship.TypeIndex == (int)ShipTypeEnum.Probe && ship.Status == ShipStatus.Docked)
-                                    {
-                                        _game._shipManager.ShowProbeLaunchMenu(ship, Constants.TURN);
-                                        break;
-                                    }
-                                    else if (ship.TypeIndex == (int)ShipTypeEnum.ColonyShip && ship.Status == ShipStatus.Docked)
-                                    {
-                                        _game._shipManager.ShowColonyLaunchMenu(ship, Constants.TURN);
-                                        break;
-                                    }
-                                    else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Freighter && ship.Status == ShipStatus.Docked)
-                                    {
-                                        _game._shipManager.ShowFreighterLaunchMenu(ship, Constants.TURN);
-                                    }
-                                    else if (GameData.ShipTypes[ship.TypeIndex].Type == ShipTypeEnum.Terraformer && ship.Status == ShipStatus.Docked)
-                                    {
-                                        _game._shipManager.ShowTerraformerLaunchMenu(ship, Constants.TURN);
-                                    }
+                                    if (ship.Status == ShipStatus.Docked)
+                                        switch (ship.TypeIndex)
+                                        {
+                                            case (int)ShipTypeEnum.Probe:
+                                                _game._shipManager.ShowProbeLaunchMenu(ship, Constants.TURN);
+                                                break;
+                                            case (int)ShipTypeEnum.ColonyShip:
+                                                _game._shipManager.ShowColonyLaunchMenu(ship, Constants.TURN);
+                                                break;
+                                            case (int)ShipTypeEnum.Freighter:
+                                                _game._shipManager.ShowFreighterLaunchMenu(ship, Constants.TURN);
+                                                break;
+                                            case (int)ShipTypeEnum.Terraformer:
+                                                _game._shipManager.ShowTerraformerLaunchMenu(ship, Constants.TURN);
+                                                break;
+                                        }
                                     else if (ship.Status == ShipStatus.InTransit)
                                     {
                                         _game._messageManager.Show($"Your {ship.Name} is travelling to {_game.Planets[ship.TargetPlanet].Name}", MessageType.Info);
@@ -143,10 +141,10 @@ namespace BroadenHorizons.Screens
                         if (index >= 0 && index < availableUnitIndices.Count)
                         {
                             int unitIndex = availableUnitIndices[index];
-                            var unit = _game.UnitTypes[unitIndex];
+                            UnitType unit = _game.UnitTypes[unitIndex];
                             if (_game.hasRecruitedThisTurn[_game.CurrentPlanet])
                             {
-                                _game._messageManager.Show("Only one unit can be recruited per turn on each planet", MessageType.Info);
+                                _game._messageManager.Show("Only one unit/ship can be recruited per turn on this planet", MessageType.Info);
                             }
                             else if (_game.Planets[_game.CurrentPlanet].Food >= unit.FoodCost &&
                                      _game.Planets[_game.CurrentPlanet].Mat >= unit.MatCost &&
@@ -156,7 +154,7 @@ namespace BroadenHorizons.Screens
                                 {
                                     if (result)
                                     {
-                                        var unit = _game.UnitTypes[unitIndex];
+                                        UnitType unit = _game.UnitTypes[unitIndex];
                                         _game._unitManager.RecruitUnit(_game.CurrentPlanet, unitIndex, Constants.TURN);
                                         _game.hasRecruitedThisTurn[_game.CurrentPlanet] = true;
                                     }
@@ -171,16 +169,16 @@ namespace BroadenHorizons.Screens
                         //Available ships to recruit
                         int lastIndex = availableUnitIndices.Count;
                         availableUnitIndices.Clear();
-                        var availableShips = _game._shipManager.GetAvailableShipTypes();
+                        List<int> availableShips = _game._shipManager.GetAvailableShipTypes();
 
                         if (index >= lastIndex && index < lastIndex + availableShips.Count)
                         {
                             int shipIndex = availableShips[index - lastIndex];
-                            var shipType = GameData.ShipTypes[shipIndex];
+                            ShipType shipType = GameData.ShipTypes[shipIndex];
 
                             if (_game.hasRecruitedThisTurn[_game.CurrentPlanet])
                             {
-                                _game._messageManager.Show("Only one unit can be recruited per turn on this planet", MessageType.Info);
+                                _game._messageManager.Show("Only one unit/ship can be recruited per turn on this planet", MessageType.Info);
                                 _game.requireMouseRelease = true;
                             }
                             else if (_game.Planets[_game.CurrentPlanet].Mat >= shipType.MatCost)
@@ -211,7 +209,6 @@ namespace BroadenHorizons.Screens
                             if (clickedReg != -1 && PossibleDestinations.Contains(clickedReg))
                             {
                                 int n = _game.CurrentPlanet;
-                                int u = SelectedUnitID;
                                 Unit selectedUnit = _game._unitManager.GetUnitById(SelectedUnitID);
                                 if (selectedUnit == null || selectedUnit.Planet != n)
                                 {
@@ -219,8 +216,6 @@ namespace BroadenHorizons.Screens
                                     PossibleDestinations.Clear();
                                     return;
                                 }
-
-                                int selectedUnitId = selectedUnit.ID;
                                 int currentReg = selectedUnit.Region;
                                 UnitTypeEnum unitCode = selectedUnit.Type;
                                 int hab = _game.Planets[n].Habitat[clickedReg];
@@ -229,12 +224,12 @@ namespace BroadenHorizons.Screens
                                 if (clickedReg == currentReg && unitCode == UnitTypeEnum.Builders && hab >= 0 && imp == -1)
                                 {
                                     availableImprovementIndices.Clear();
-                                    string habitatName = _game.HabitatTypes[Math.Abs(_game.Planets[_game.CurrentPlanet].Habitat[clickedReg])].Name;
+                                    string habitatName = _game.HabitatTypes[Math.Abs(_game.Planets[n].Habitat[clickedReg])].Name;
                                     for (int j = 0; j < _game.PlanetImprovements.Count; j++)
                                     {
-                                        var improvement = _game.PlanetImprovements[j];
+                                        PlanetImprovement improvement = _game.PlanetImprovements[j];
                                         if (improvement.RequiredTech != -1 && !_game.Techs[improvement.RequiredTech].IsResearched) continue;
-                                        if (improvement.AllowedHabitat != _game.HabitatTypes[Math.Abs(_game.Planets[_game.CurrentPlanet].Habitat[clickedReg])].Type) continue;
+                                        if (improvement.AllowedHabitat != _game.HabitatTypes[Math.Abs(_game.Planets[n].Habitat[clickedReg])].Type) continue;
                                         availableImprovementIndices.Add(j);
                                     }
 
@@ -245,7 +240,7 @@ namespace BroadenHorizons.Screens
                                     }
                                     else if (availableImprovementIndices.Count == 1)
                                     {
-                                        var improvement = _game.PlanetImprovements[availableImprovementIndices[0]];
+                                        PlanetImprovement improvement = _game.PlanetImprovements[availableImprovementIndices[0]];
                                         if (_game.Planets[n].Mat >= improvement.MatCost)
                                         {
                                             _game._messageManager.Show($"Build {improvement.Name}? It will take {improvement.TurnsToBuild} turns to complete\nand it will cost {improvement.MatCost} materials.\nUpon completion, it will yield {improvement.FoodProd} food, {improvement.MatProd} materials,\nand {improvement.SciProd} science", MessageType.Confirm, result =>
