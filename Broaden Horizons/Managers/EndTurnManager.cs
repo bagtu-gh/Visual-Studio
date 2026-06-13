@@ -295,7 +295,7 @@ namespace BroadenHorizons
             }
         }
 
-        private string BuildSummaryText(List<string> summary)
+        private static string BuildSummaryText(List<string> summary)
         {
             if (summary.Count > 0)
             {
@@ -306,7 +306,7 @@ namespace BroadenHorizons
             return $"Turn {Constants.TURN - 1} completed. No actions finished this turn.";
         }
 
-        private void LogTurnToFile(string summaryText)
+        private static void LogTurnToFile(string summaryText)
         {
             try
             {
@@ -329,39 +329,6 @@ namespace BroadenHorizons
             }
             catch
             {
-            }
-        }
-
-        public void ShowTurnLog()
-        {
-            try
-            {
-                string filePath = Constants.TURN_LOG_FILE;
-
-                if (System.IO.File.Exists(filePath))
-                {
-                    string content =
-                        System.IO.File.ReadAllText(filePath);
-
-                    _game._messageManager.Show(
-                        $"=== TURN LOG ===\n\n{content}",
-                        MessageType.Help
-                    );
-                }
-                else
-                {
-                    _game._messageManager.Show(
-                        "No turn log yet.\nPlay a few turns first!",
-                        MessageType.Info
-                    );
-                }
-            }
-            catch
-            {
-                _game._messageManager.Show(
-                    "Could not read turn log.",
-                    MessageType.Info
-                );
             }
         }
     }

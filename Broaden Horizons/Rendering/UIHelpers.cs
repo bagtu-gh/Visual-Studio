@@ -23,11 +23,24 @@ namespace BroadenHorizons
             var buttons = new List<Button>();
             int buttonY = (Constants.TOP_BAR_HEIGHT - Constants.TOP_BAR_BUTTON_HEIGHT) / 2;
 
+            // Log Screen Button
+            buttons.Add(new Button
+            {
+                Rect = new Rectangle(
+                    Constants.SCREEN_WIDTH - Constants.TOP_BAR_BUTTON_SPACING - Constants.TOP_BAR_BUTTON_WIDTH * 6 - Constants.TOP_BAR_BUTTON_SPACING * 5,
+                    buttonY,
+                    Constants.TOP_BAR_BUTTON_WIDTH,
+                    Constants.TOP_BAR_BUTTON_HEIGHT
+                ),
+                Label = "(L)og",
+                OnClick = () => messageManager.ShowTurnLog()
+            });
+
             // Ships Screen Button
             buttons.Add(new Button
             {
                 Rect = new Rectangle(
-                    Constants.SCREEN_WIDTH - 15 - Constants.TOP_BAR_BUTTON_WIDTH * 5 - Constants.TOP_BAR_BUTTON_SPACING * 4,
+                    Constants.SCREEN_WIDTH - Constants.TOP_BAR_BUTTON_SPACING - Constants.TOP_BAR_BUTTON_WIDTH * 5 - Constants.TOP_BAR_BUTTON_SPACING * 4,
                     buttonY,
                     Constants.TOP_BAR_BUTTON_WIDTH,
                     Constants.TOP_BAR_BUTTON_HEIGHT
@@ -40,7 +53,7 @@ namespace BroadenHorizons
             buttons.Add(new Button
             {
                 Rect = new Rectangle(
-                    Constants.SCREEN_WIDTH - 15 - Constants.TOP_BAR_BUTTON_WIDTH * 4 - Constants.TOP_BAR_BUTTON_SPACING * 3,
+                    Constants.SCREEN_WIDTH - Constants.TOP_BAR_BUTTON_SPACING - Constants.TOP_BAR_BUTTON_WIDTH * 4 - Constants.TOP_BAR_BUTTON_SPACING * 3,
                     buttonY,
                     Constants.TOP_BAR_BUTTON_WIDTH,
                     Constants.TOP_BAR_BUTTON_HEIGHT
@@ -53,7 +66,7 @@ namespace BroadenHorizons
             buttons.Add(new Button
             {
                 Rect = new Rectangle(
-                    Constants.SCREEN_WIDTH - 15 - Constants.TOP_BAR_BUTTON_WIDTH * 3 - Constants.TOP_BAR_BUTTON_SPACING * 2,
+                    Constants.SCREEN_WIDTH - Constants.TOP_BAR_BUTTON_SPACING - Constants.TOP_BAR_BUTTON_WIDTH * 3 - Constants.TOP_BAR_BUTTON_SPACING * 2,
                     buttonY,
                     Constants.TOP_BAR_BUTTON_WIDTH,
                     Constants.TOP_BAR_BUTTON_HEIGHT
@@ -66,7 +79,7 @@ namespace BroadenHorizons
             buttons.Add(new Button
             {
                 Rect = new Rectangle(
-                    Constants.SCREEN_WIDTH - 15 - Constants.TOP_BAR_BUTTON_WIDTH * 2 - Constants.TOP_BAR_BUTTON_SPACING,
+                    Constants.SCREEN_WIDTH - Constants.TOP_BAR_BUTTON_SPACING - Constants.TOP_BAR_BUTTON_WIDTH * 2 - Constants.TOP_BAR_BUTTON_SPACING,
                     buttonY,
                     Constants.TOP_BAR_BUTTON_WIDTH,
                     Constants.TOP_BAR_BUTTON_HEIGHT
@@ -79,7 +92,7 @@ namespace BroadenHorizons
             buttons.Add(new Button
             {
                 Rect = new Rectangle(
-                    Constants.SCREEN_WIDTH - 15 - Constants.TOP_BAR_BUTTON_WIDTH,
+                    Constants.SCREEN_WIDTH - Constants.TOP_BAR_BUTTON_SPACING - Constants.TOP_BAR_BUTTON_WIDTH,
                     buttonY,
                     Constants.TOP_BAR_BUTTON_WIDTH,
                     Constants.TOP_BAR_BUTTON_HEIGHT

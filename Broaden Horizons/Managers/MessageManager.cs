@@ -112,10 +112,10 @@ namespace BroadenHorizons
 
             selectionSelectability = selectability ?? Enumerable.Repeat(true, options.Count).ToList();
             int falseCount = selectionSelectability.Count(item => item == false);
-            
+
             string messageText = $"{title}\n";
-            messageText += "Press A-" + 
-                          Convert.ToChar('A' + Math.Min(25, options.Count - 1 - falseCount)) + 
+            messageText += "Press A-" +
+                          Convert.ToChar('A' + Math.Min(25, options.Count - 1 - falseCount)) +
                           " or click an option, Escape to cancel\n\n";
 
             for (int i = 0; i < options.Count; i++)
@@ -749,6 +749,39 @@ namespace BroadenHorizons
             }
             spriteBatch.End();
             spriteBatch.Begin();
+        }
+
+        public void ShowTurnLog()
+        {
+            try
+            {
+                string filePath = Constants.TURN_LOG_FILE;
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    string content =
+                        System.IO.File.ReadAllText(filePath);
+
+                    _game._messageManager.Show(
+                        $"=== TURN LOG ===\n\n{content}",
+                        MessageType.Help
+                    );
+                }
+                else
+                {
+                    _game._messageManager.Show(
+                        "No turn log yet.\nPlay a few turns first!",
+                        MessageType.Info
+                    );
+                }
+            }
+            catch
+            {
+                _game._messageManager.Show(
+                    "Could not read turn log.",
+                    MessageType.Info
+                );
+            }
         }
     }
 }

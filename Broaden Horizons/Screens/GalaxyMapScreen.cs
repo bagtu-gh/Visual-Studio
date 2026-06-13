@@ -45,7 +45,7 @@ namespace BroadenHorizons.Screens
 
             if (keyboard.IsKeyDown(Keys.L) && !_game.WasKeyDown(Keys.L))
             {
-                _game._endTurnManager.ShowTurnLog();
+                _game._messageManager.ShowTurnLog();
             }
 
             if (keyboard.IsKeyDown(Keys.E) && !_game.WasKeyDown(Keys.E))
