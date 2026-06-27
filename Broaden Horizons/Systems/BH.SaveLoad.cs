@@ -129,11 +129,11 @@ namespace BroadenHorizons
                 string json = JsonSerializer.Serialize(state, _saveOptions);
                 AtomicWrite(GetSaveSlotPath(slotIndex), json);
 
-                _messageManager.Show($"Game saved to slot {slotIndex + 1}.", MessageType.Info);
+                _messageManager.Show($"Game saved to slot {slotIndex + 1}.", MessageType.Info, null, "INFO");
             }
             catch (Exception ex)
             {
-                _messageManager.Show($"Failed to save game: {ex.Message}", MessageType.Info);
+                _messageManager.Show($"Failed to save game: {ex.Message}", MessageType.Info, null, "INFO");
             }
         }
 
@@ -144,7 +144,7 @@ namespace BroadenHorizons
                 string path = GetSaveSlotPath(slotIndex);
                 if (!File.Exists(path))
                 {
-                    _messageManager.Show("This save slot is empty.", MessageType.Info);
+                    _messageManager.Show("This save slot is empty.", MessageType.Info, null, "INFO");
                     return;
                 }
 
@@ -153,18 +153,18 @@ namespace BroadenHorizons
 
                 if (state == null)
                 {
-                    _messageManager.Show("Save file is empty or invalid.", MessageType.Info);
+                    _messageManager.Show("Save file is empty or invalid.", MessageType.Info, null, "INFO");
                     return;
                 }
 
                 RestoreFromSaveState(state);
 
                 CurrentState = GameState.GalaxyMap;
-                _messageManager.Show($"Loaded game from slot {slotIndex + 1}.", MessageType.Info);
+                _messageManager.Show($"Loaded game from slot {slotIndex + 1}.", MessageType.Info, null, "INFO");
             }
             catch (Exception ex)
             {
-                _messageManager.Show($"Failed to load game: {ex.Message}", MessageType.Info);
+                _messageManager.Show($"Failed to load game: {ex.Message}", MessageType.Info, null, "INFO");
             }
         }
 
@@ -267,7 +267,7 @@ namespace BroadenHorizons
             // 7) Starfield
             if (state.StarPositions != null && state.StarPositions.Count > 0)
             {
-                StarPositions = new List<Vector2>(state.StarPositions);
+                StarPositions = [.. state.StarPositions];
             }
             else
             {

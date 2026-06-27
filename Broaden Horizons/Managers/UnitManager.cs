@@ -168,11 +168,11 @@ namespace BroadenHorizons
 
                     messageManager.Show(
                         $"{unit.Name} are {actionDesc}\nThey will be available at turn {availableTurn}",
-                        MessageType.Info);
+                        MessageType.Info, null, "INFO");
                 }
                 else
                 {
-                    messageManager.Show("Unit busy", MessageType.Info);
+                    messageManager.Show("Unit busy", MessageType.Info, null, "INFO");
                 }
             }
             else // Free unit
@@ -181,7 +181,7 @@ namespace BroadenHorizons
 
                 if (possibleDestinations.Count == 0)
                 {
-                    messageManager.Show("No potential actions", MessageType.Info);
+                    messageManager.Show("No potential actions", MessageType.Info, null, "INFO");
                     selectedUnitID = -1;
                 }
             }

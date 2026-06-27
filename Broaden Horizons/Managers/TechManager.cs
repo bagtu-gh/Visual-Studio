@@ -45,7 +45,7 @@ namespace BroadenHorizons
                         _currentResearch = techId;
                         _globalScience -= t.MinScience;
                     }
-                });
+                }, "CONFIRMATION");
             }
             else
             {
@@ -58,7 +58,7 @@ namespace BroadenHorizons
                         t.IsInProgress = true;
                         _currentResearch = techId;
                     }
-                });
+                }, "RESEARCH CONFIRMATION");
             }
         }
 

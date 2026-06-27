@@ -49,7 +49,7 @@ namespace BroadenHorizons.Screens
             {
                 if (!slotInfo.Exists)
                 {
-                    _game._messageManager.Show("This slot is empty.", MessageType.Info);
+                    _game._messageManager.Show("This slot is empty.", MessageType.Info, null, "INFO");
                     return;
                 }
 
@@ -65,7 +65,7 @@ namespace BroadenHorizons.Screens
                         {
                             _game.SaveGameToSlot(slotIndex, gameTime);
                         }
-                    });
+                    }, "CONFIRMATION");
                 }
                 else
                 {

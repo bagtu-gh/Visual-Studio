@@ -41,10 +41,23 @@ namespace BroadenHorizons
         private readonly Color DialogBorder1 = new(120, 200, 255);
         private readonly Color DialogBorder2 = new(70, 140, 220);
         private readonly Color DialogBorder3 = new(40, 90, 160);
+        private readonly Color WarningDialogBackground1 = new(95, 30, 30);
+        private readonly Color WarningDialogBackground2 = new(155, 40, 40);
+        private readonly Color WarningDialogBorder1 = new(255, 140, 140);
+        private readonly Color WarningDialogBorder2 = new(220, 95, 95);
+        private readonly Color WarningDialogBorder3 = new(180, 55, 55);
         private readonly Color DialogInnerPanel = new(8, 20, 40, 240);
+        private readonly Color WarningInnerPanel = new(60, 15, 15, 240);
+        private readonly Color TitleBarBackground = Color.Blue;
+        private readonly Color TitleBarBorder = Color.White;
+        private readonly Color TitleBarTextColor = Color.White;
+        private const float TitleWidthPercent = 0.6f;
+        private const int TitlePadding = 4;
 
         public bool IsActive { get; private set; }
         public string MessageText { get; private set; }
+        public string Title { get; private set; }
+        public bool IsWarning { get; private set; }
         public MessageType Type { get; private set; }
         public Action<bool> OnResult;
 
@@ -82,14 +95,20 @@ namespace BroadenHorizons
         private Texture2D _roundedDialogTexture;
         private bool _textureNeedsUpdate = true;
 
+        private Texture2D _titleBarTexture;
+        private int _titleBarTextureWidth;
+        private int _titleBarTextureHeight;
+
         public MessageManager(BH game)
         {
             _game = game;
         }
 
-        public void Show(string text, MessageType type, Action<bool> onResult = null)
+        public void Show(string text, MessageType type, Action<bool> onResult = null, string title = null, bool isWarning = false)
         {
             MessageText = string.IsNullOrEmpty(text) ? "No message provided" : text;
+            Title = title;
+            IsWarning = isWarning;
             Type = type;
             IsActive = true;
             OnResult = onResult;
@@ -113,10 +132,9 @@ namespace BroadenHorizons
             selectionSelectability = selectability ?? Enumerable.Repeat(true, options.Count).ToList();
             int falseCount = selectionSelectability.Count(item => item == false);
 
-            string messageText = $"{title}\n";
-            messageText += "Press A-" +
-                          Convert.ToChar('A' + Math.Min(25, options.Count - 1 - falseCount)) +
-                          " or click an option, Escape to cancel\n\n";
+            string messageText = "Press A-" +
+                                 Convert.ToChar('A' + Math.Min(25, options.Count - 1 - falseCount)) +
+                                 " or click an option, Escape to cancel\n\n";
 
             for (int i = 0; i < options.Count; i++)
             {
@@ -136,7 +154,7 @@ namespace BroadenHorizons
 
             selectionOptions = options;
             this.onSelection = onSelection;
-            Show(messageText, MessageType.Selection);
+            Show(messageText, MessageType.Selection, null, title);
         }
 
         public void ShowFreighterCargoSelection(string title, int maxFood, int maxMat, int capacity, Action<int, int> onCargoSelected)
@@ -151,12 +169,14 @@ namespace BroadenHorizons
             this.onCargoSelected = onCargoSelected;
 
             UpdateCargoMessage(title);
-            Show(MessageText, MessageType.Selection);
+            Show(MessageText, MessageType.Selection, null, title);
         }
 
         private void UpdateCargoMessage(string title = null)
         {
-            string currentTitle = title ?? MessageText?.Split('\n')[0] ?? string.Empty;
+            if (!string.IsNullOrEmpty(title))
+                Title = title;
+
             int usedCapacity = cargoFood + cargoMat;
             int availableCapacity = Math.Max(0, cargoCapacity - usedCapacity);
 
@@ -167,8 +187,7 @@ namespace BroadenHorizons
                 ? $"-> Materials: {cargoMat}/{cargoMaxMat}"
                 : $"   Materials: {cargoMat}/{cargoMaxMat}";
 
-            MessageText = $"{currentTitle}\n\n" +
-                          $"{foodLine}\n" +
+            MessageText = $"{foodLine}\n" +
                           $"{matLine}\n\n" +
                           $"Total: {usedCapacity}/{cargoCapacity}   Remaining: {availableCapacity}\n\n" +
                           $"Use Up/Down or click to select, Left/Right to change, Enter to confirm, Esc to cancel";
@@ -182,16 +201,16 @@ namespace BroadenHorizons
                 return false;
 
             if (isCargoSelection)
-                return lineIndex == 2 || lineIndex == 3;
+                return lineIndex == 0 || lineIndex == 1;
 
-            const int optionStart = 3;
+            const int optionStart = 2;
             int optionIndex = lineIndex - optionStart;
             return optionIndex >= 0 && optionIndex < selectionOptions.Count && selectionSelectability[optionIndex];
         }
 
         private int SelectionLineToOptionIndex(int lineIndex)
         {
-            const int optionStart = 3;
+            const int optionStart = 2;
             return lineIndex - optionStart;
         }
 
@@ -205,6 +224,8 @@ namespace BroadenHorizons
             scrollOffset = 0;
             maxScroll = 0;
             _textureNeedsUpdate = true;
+            Title = null;
+            IsWarning = false;
 
             if (Type == MessageType.Selection)
             {
@@ -222,6 +243,11 @@ namespace BroadenHorizons
 
             _roundedDialogTexture?.Dispose();
             _roundedDialogTexture = null;
+
+            _titleBarTexture?.Dispose();
+            _titleBarTexture = null;
+            _titleBarTextureWidth = 0;
+            _titleBarTextureHeight = 0;
         }
 
         private Texture2D CreateDialogRoundedTexture(int width, int height)
@@ -231,7 +257,8 @@ namespace BroadenHorizons
                 // Tiny fallback
                 Texture2D tex = new Texture2D(_game.GraphicsDevice, width, height);
                 Color[] data = new Color[width * height];
-                for (int i = 0; i < data.Length; i++) data[i] = DialogBackground1;
+                Color fill = IsWarning ? WarningDialogBackground1 : DialogBackground1;
+                for (int i = 0; i < data.Length; i++) data[i] = fill;
                 tex.SetData(data);
                 return tex;
             }
@@ -246,8 +273,12 @@ namespace BroadenHorizons
                 borderRadius = Math.Max(6, (minDim / 2) - borderThickness - 4);
             }
 
-            var backgroundColors = new List<Color> { DialogBackground1, DialogBackground2 };
-            var borderColors = new List<Color> { DialogBorder1, DialogBorder2, DialogBorder3 };
+            var backgroundColors = IsWarning
+                ? new List<Color> { WarningDialogBackground1, WarningDialogBackground2 }
+                : new List<Color> { DialogBackground1, DialogBackground2 };
+            var borderColors = IsWarning
+                ? new List<Color> { WarningDialogBorder1, WarningDialogBorder2, WarningDialogBorder3 }
+                : new List<Color> { DialogBorder1, DialogBorder2, DialogBorder3 };
 
             return CreateRoundedRectangleTexture(_game.GraphicsDevice, width, height,
                 borderThickness, borderRadius, borderShadow,
@@ -651,13 +682,56 @@ namespace BroadenHorizons
 
             spriteBatch.Draw(_roundedDialogTexture, outerRect, Color.White);
 
+            if (!string.IsNullOrEmpty(Title))
+            {
+                Vector2 titleSize = font.MeasureString(Title);
+
+                float titleHeight = font.MeasureString("Ay").Height;
+                int titleBarHeight = (int)titleHeight + TitlePadding * 2;
+                int titleBarWidth = (int)(outerRect.Width * TitleWidthPercent);
+                int titleBarX = outerRect.X + (outerRect.Width - titleBarWidth) / 2;
+                int titleBarY = outerRect.Y - titleBarHeight / 2 - BorderPadding;
+                Rectangle titleBarRect = new Rectangle(titleBarX, titleBarY, titleBarWidth, titleBarHeight);
+                if (_titleBarTexture == null || _titleBarTextureWidth != titleBarWidth || _titleBarTextureHeight != titleBarHeight)
+                {
+                    _titleBarTexture?.Dispose();
+                    List<Color> titleBackgroundColors = IsWarning
+                        ? [WarningDialogBackground1, WarningDialogBackground2]
+                        : [DialogBackground1, DialogBackground2];
+                    List<Color> titleBorderColors = IsWarning
+                        ? [WarningDialogBorder1, WarningDialogBorder2, WarningDialogBorder3]
+                        : [DialogBorder1, DialogBorder2, DialogBorder3];
+
+                    _titleBarTexture = CreateRoundedRectangleTexture(
+                        graphicsDevice,
+                        titleBarWidth,
+                        titleBarHeight,
+                        6,                                  // border thickness
+                        Math.Min(8, titleBarHeight / 2),    // radius
+                        1,                                  // shadow
+                        titleBackgroundColors,              
+                        titleBorderColors,                  
+                        0.15f,
+                        0.05f);
+
+                    _titleBarTextureWidth = titleBarWidth;
+                    _titleBarTextureHeight = titleBarHeight;
+                }
+
+                spriteBatch.Draw(_titleBarTexture, titleBarRect, Color.White);
+
+                float titleX = titleBarRect.X + (titleBarRect.Width - titleSize.X) / 2f;
+                float titleY = titleBarRect.Y + (titleBarRect.Height - titleHeight) / 2f;
+                spriteBatch.DrawString(font, Title, new Vector2(titleX, titleY), TitleBarTextColor);
+            }
+
             Rectangle innerRect = new Rectangle(outerRect.X + BorderPadding, outerRect.Y + BorderPadding,
                 outerRect.Width - 2 * BorderPadding, outerRect.Height - 2 * BorderPadding);
             int contentHeightDraw = innerRect.Height - 2 * ContentPadding;
 
             if (Type == MessageType.Confirm)
             {
-                contentHeightDraw -= (ButtonHeight + ContentPadding);
+                contentHeightDraw -= ButtonHeight + ContentPadding;
             }
 
             Rectangle contentRect = new Rectangle(
@@ -667,7 +741,9 @@ namespace BroadenHorizons
                 contentHeightDraw
             );
 
-            spriteBatch.Draw(pixel, innerRect, DialogInnerPanel);
+            Color innerPanelColor = IsWarning ? WarningInnerPanel : DialogInnerPanel;
+
+            spriteBatch.Draw(pixel, innerRect, innerPanelColor);
 
             if (Type == MessageType.Selection && hoveredLineIndex >= 0 && hoveredLineIndex < lineHitRectangles.Count)
             {
@@ -764,14 +840,14 @@ namespace BroadenHorizons
 
                     _game._messageManager.Show(
                         $"=== TURN LOG ===\n\n{content}",
-                        MessageType.Help
+                        MessageType.Help, null, "TURN LOG"
                     );
                 }
                 else
                 {
                     _game._messageManager.Show(
                         "No turn log yet.\nPlay a few turns first!",
-                        MessageType.Info
+                        MessageType.Info, null, "TURN LOG"
                     );
                 }
             }
@@ -779,7 +855,7 @@ namespace BroadenHorizons
             {
                 _game._messageManager.Show(
                     "Could not read turn log.",
-                    MessageType.Info
+                    MessageType.Info, null, "TURN LOG"
                 );
             }
         }

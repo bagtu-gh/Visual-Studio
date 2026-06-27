@@ -85,7 +85,7 @@ namespace BroadenHorizons
                     Constants.TOP_BAR_BUTTON_HEIGHT
                 ),
                 Label = "(H)elp",
-                OnClick = () => messageManager.Show(Constants.HELP_TEXT, MessageType.Help)
+                OnClick = () => messageManager.Show(Constants.HELP_TEXT, MessageType.Help, null, "HELP")
             });
 
             // End Turn Button
@@ -106,14 +106,14 @@ namespace BroadenHorizons
                         messageManager.Show("Research actions are available. End turn anyway?", MessageType.Confirm, result =>
                         {
                             if (result) endTurnAction?.Invoke(gameTime);
-                        });
+                        }, "END TURN CONFIRMATION", true);
                     }
                     else
                     {
                         messageManager.Show("End turn?", MessageType.Confirm, result =>
                         {
                             if (result) endTurnAction?.Invoke(gameTime);
-                        });
+                        }, "END TURN CONFIRMATION");
                     }
                 }
             });

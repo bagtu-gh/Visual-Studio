@@ -47,7 +47,7 @@ namespace BroadenHorizons.Screens
                     _game._messageManager.Show("Are you sure you want to quit?", MessageType.Confirm, result =>
                     {
                         if (result) _game.Exit();
-                    });
+                    }, "CONFIRMATION");
                 }
             }
 

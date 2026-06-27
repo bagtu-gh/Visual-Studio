@@ -40,7 +40,7 @@ namespace BroadenHorizons.Screens
 
             if (keyboard.IsKeyDown(Keys.H) && !_game.WasKeyDown(Keys.H))
             {
-                _game._messageManager.Show(Constants.HELP_TEXT, MessageType.Help);
+                _game._messageManager.Show(Constants.HELP_TEXT, MessageType.Help, null, "HELP");
             }
 
             if (keyboard.IsKeyDown(Keys.L) && !_game.WasKeyDown(Keys.L))
@@ -56,14 +56,14 @@ namespace BroadenHorizons.Screens
                     _game._messageManager.Show("Research actions are available. End turn anyway?", MessageType.Confirm, result =>
                     {
                         if (result) _game._endTurnManager.EndTurn(gameTime);
-                    });
+                    }, "END TURN CONFIRMATION", true);
                 }
                 else
                 {
                     _game._messageManager.Show("End turn?", MessageType.Confirm, result =>
                     {
                         if (result) _game._endTurnManager.EndTurn(gameTime);
-                    });
+                    }, "END TURN CONFIRMATION");
                 }
             }
 
@@ -118,7 +118,7 @@ namespace BroadenHorizons.Screens
                             }
                             if (_game.Planets[i].Status == PlanetStatus.Unexplored)
                             {
-                                _game._messageManager.Show($"{_game.Planets[i].Name} is not explored yet", MessageType.Info);
+                                _game._messageManager.Show($"{_game.Planets[i].Name} is not explored yet", MessageType.Info, null, "INFO");
                                 break;
                             }
                         }

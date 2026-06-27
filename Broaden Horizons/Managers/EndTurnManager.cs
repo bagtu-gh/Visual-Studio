@@ -33,7 +33,7 @@ namespace BroadenHorizons
 
             string summaryText = BuildSummaryText(summary);
 
-            _game._messageManager.Show(summaryText, MessageType.Info);
+            _game._messageManager.Show(summaryText, MessageType.Info, null, "END TURN SUMMARY");
 
             LogTurnToFile(summaryText);
         }

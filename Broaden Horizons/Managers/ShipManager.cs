@@ -402,7 +402,7 @@ namespace BroadenHorizons
 
             if (planetData.Count == 0)
             {
-                _messageManager.Show("No other owned planets to send cargo to", MessageType.Info);
+                _messageManager.Show("No other owned planets to send cargo to", MessageType.Info, null, "INFO");
                 return;
             }
 
@@ -495,7 +495,7 @@ namespace BroadenHorizons
             ship.CargoMat = matAmount;
 
             _messageManager.Show($"Freighter launched to {_planets[targetPlanet].Name} with {foodAmount} Food and {matAmount} Materials.\n" +
-                                $"It will arrive in {turnsNeeded} turns.", MessageType.Info);
+                                $"It will arrive in {turnsNeeded} turns.", MessageType.Info, null, "INFO");
         }
 
         public void LaunchTerraformerShip(Ship ship, int targetPlanet, int turn, int energyCost, int turnsNeeded)
@@ -509,7 +509,7 @@ namespace BroadenHorizons
             ship.FinalTurnAction = turn + turnsNeeded;
             origin.Energy -= energyCost;
             _messageManager.Show($"Terraformer launched to {_planets[targetPlanet].Name}.\n" +
-                                $"It will arrive in {turnsNeeded} turns.", MessageType.Info);
+                                $"It will arrive in {turnsNeeded} turns.", MessageType.Info, null, "INFO");
         }
 
         public void ShowColonyLaunchMenu(Ship ship, int turn)
@@ -518,7 +518,7 @@ namespace BroadenHorizons
 
             if (!CanPrepareColonyShip(ship, out string reason))
             {
-                _messageManager.Show(reason, MessageType.Info);
+                _messageManager.Show(reason, MessageType.Info, null, "WARNING", true);
                 return;
             }
 
@@ -550,13 +550,13 @@ namespace BroadenHorizons
 
             if (planetData.Count == 0)
             {
-                _messageManager.Show("No explored planets are available for colonization.", MessageType.Info);
+                _messageManager.Show("No explored planets are available for colonization.", MessageType.Info, null, "WARNING");
                 return;
             }
 
             if (!planetData.Any(data => data.CanLaunch))
             {
-                _messageManager.Show("Not enough energy to reach any explored planet with this colony ship.", MessageType.Info);
+                _messageManager.Show("Not enough energy to reach any explored planet with this colony ship.", MessageType.Info, null, "WARNING");
                 return;
             }
 
@@ -580,7 +580,7 @@ namespace BroadenHorizons
 
             if (!CanLaunchColonyShip(ship, targetPlanet, energyCost, out string reason))
             {
-                _messageManager.Show(reason, MessageType.Info);
+                _messageManager.Show(reason, MessageType.Info, null, "WARNING", true);
                 return;
             }
 
@@ -598,7 +598,7 @@ namespace BroadenHorizons
                 $"Colony ship launched to {_planets[targetPlanet].Name}.\n" +
                 $"It carries {Constants.COLONY_POPULATION_COST} colonists, {Constants.COLONY_FOOD_CARGO} food, " +
                 $"{Constants.COLONY_MATERIAL_CARGO} materials and will arrive in {turnsNeeded} turns.",
-                MessageType.Info);
+                MessageType.Info, null, "INFO");
         }
 
         private bool CanLaunchColonyShip(Ship ship, int targetPlanet, int energyCost, out string reason)
@@ -668,7 +668,7 @@ namespace BroadenHorizons
             // Check energy on origin planet (deduct from AssignedPlanet)
             if (_planets[ship.AssignedPlanet].Energy < roundTripEnergy)
             {
-                _messageManager.Show("Not enough energy to launch!", MessageType.Info);
+                _messageManager.Show("Not enough energy to launch!", MessageType.Info, null, "WARNING", true);
                 return;
             }
 
@@ -683,7 +683,7 @@ namespace BroadenHorizons
             {
                 _planets[ship.TargetPlanet].Status = PlanetStatus.ProbeEnRoute;
             }
-            _messageManager.Show($"Probe launched to {_planets[ship.TargetPlanet].Name}.\nIt will arrive there in {oneWayTurns} turns and come back at turn {ship.FinalTurnAction}", MessageType.Info);
+            _messageManager.Show($"Probe launched to {_planets[ship.TargetPlanet].Name}.\nIt will arrive there in {oneWayTurns} turns and come back at turn {ship.FinalTurnAction}", MessageType.Info, null, "INFO");
         }
 
         public void HandleShipClicked(Ship ship, List<TurnAction> turnActions, Planet[] planets, MessageManager messageManager)
@@ -708,12 +708,12 @@ namespace BroadenHorizons
             }
             else if (ship.Status == ShipStatus.InTransit)
             {
-                messageManager.Show($"Your {ship.Name} is travelling to {planets[ship.TargetPlanet].Name}", MessageType.Info);
+                messageManager.Show($"Your {ship.Name} is travelling to {planets[ship.TargetPlanet].Name}", MessageType.Info, null, "INFO");
             }
             else if (ship.Status == ShipStatus.UnderConstruction)
             {
                 var ta = turnActions.FirstOrDefault(t => t.ID == ship.ID);
-                messageManager.Show($"Your {ship.Name} is being built. They will be available at turn {ta.TurnFinal}", MessageType.Info);
+                messageManager.Show($"Your {ship.Name} is being built. They will be available at turn {ta.TurnFinal}", MessageType.Info, null, "INFO");
             }
         }
     }
