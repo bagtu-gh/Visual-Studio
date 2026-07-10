@@ -488,7 +488,12 @@ namespace BroadenHorizons.Screens
                         {
                             PlanetImprovement improvement = _game.PlanetImprovements[imp];
                             Texture2D textureImp = _game.Textures[improvement.TextureId];
-                            _game._spriteBatch.Draw(textureImp, new Vector2(center.X - textureImp.Width * 0.165f + 10, center.Y - textureImp.Height * 0.165f + 10), null, Color.White * 0.8f, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
+                            float improvementIconSize = Constants.HEX_SIZE * 0.32f;
+                            float improvementScale = Math.Min(improvementIconSize / textureImp.Width, improvementIconSize / textureImp.Height);
+                            Vector2 improvementPosition = new Vector2(
+                                center.X - textureImp.Width * improvementScale / 2f + Constants.HEX_SIZE * 0.12f,
+                                center.Y - textureImp.Height * improvementScale / 2f + Constants.HEX_SIZE * 0.02f);
+                            _game._spriteBatch.Draw(textureImp, improvementPosition, null, Color.White * 0.8f, 0f, Vector2.Zero, improvementScale, SpriteEffects.None, 0f);
                         }
 
                         _game._regionBonusManager.DrawRegionBonus(_game.Planets[_game.CurrentPlanet], i, center, _game._spriteBatch, _game.Textures);
